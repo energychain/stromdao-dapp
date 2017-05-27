@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	 <script src="/parity-utils/inject.js"></script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">    
+    <title>StromDAO/Business Object - Blockchain Browser</title>
+	<link href="css/jquery-ui.min.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+	
+  </head>
+  <body >
+	<div class="container" style="margin-top:30px;">
+		    <div class="row">
+				<div class="col-md-12" style="text-align:right"> 
+					<a href='https://stromdao.de/'><img src='./stromdao_logo.png'/></a><br/>
+					<em style='color:#999999'>digital energy infrastructure for tomorrow.</em>
+			    </div>
+			</div>
+		<h1>Deployment</h1>
+		<hr/>
+		<form class="form-inline" onsubmit="return false;"  style="margin-top:10px;">
+			<div class="form-group">
+					<input type="text" class="form-control" id="dconf" placeholder="" disabled size="42">
+					<button id="deployConnectionFactory" class="btn btn-danger">Deploy ConnectionFactory</button>
+			</div>
+		</form>
+		<form class="form-inline" onsubmit="return false;" style="margin-top:10px;">
+			<div class="form-group">
+					<input type="text" class="form-control" id="dcharf" placeholder="" disabled size="42">
+					<button id="deployChargingFactory" class="btn btn-danger">Deploy ChargingFactory</button>
+			</div>
+		</form>
+		<form class="form-inline" onsubmit="return false;" style="margin-top:10px;">
+			<div class="form-group">
+					<input type="text" class="form-control" id="newBLK" placeholder="" disabled size="42">
+					<button id="deployNewBLK" class="btn btn-danger">Deploy BLK</button>
+			</div>
+		</form>
+		<hr/>
+
+			
+		<footer style="margin-top:60px;">&copy; 2017 <a href="https://stromdao.de/">StromDAO Ltd.</a> | Block #<span class="lastBlock"></span> | Peers <span class="peerCount"></span> </footer>
+	</div>
+	<!-- <script src="https://cdn.ethers.io/scripts/ethers-v2.0.min.js" type="text/javascript">
+	</script>-->
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="js/jquery-3.2.1.min.js"></script>        
+    <script src="js/bootstrap.min.js"></script>
+	<script src="js/deployBLK.js"></script>
+	
+  </body>
+</html>

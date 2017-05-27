@@ -1,0 +1,8 @@
+{
+    "id": "myfirstdapp",
+    "name": "Cool DApp",
+    "description": "This is just a toy dapp with almost no functionality",
+    "version": "0.0.1",
+    "author": "Joe Bloggs",
+    "iconUrl": "stromdao_logo.png"
+}
