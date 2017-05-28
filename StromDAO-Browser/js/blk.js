@@ -16,7 +16,7 @@ $('#load_exid').click(function() {
 		document.node.directbalancinggroupfactory().then(function(factory) {
 		    	console.log(factory.obj.abi);
 				var blg_web3_sc = web3.eth.contract(factory.obj.abi);
-				var blg_web3 = blg_web3_sc.at("0x0a57238F15BC6b055C60A237d45d4C5EeA516E63");
+				var blg_web3 = blg_web3_sc.at("0x9265373F8524e6605fE18ef973224766b6180f54");
 				blg_web3.build( {from:node.wallet.address,value:"0x0",gasPrice:"0x0",gas:9997819},function(a,b) {					
 						//node.storage.setItemSync("blk_"+$('#extid').val(),cadr);
 						//$('#contract_address').val(cadr);

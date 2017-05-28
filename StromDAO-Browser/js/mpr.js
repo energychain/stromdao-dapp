@@ -37,7 +37,7 @@ function getBlockTime(blockNumber) {
 
 function updateReading() {
 		document.node.mpr().then(function(mpr) {
-			mpr.readings(document.node.wallet.address).then(function(o) {
+			mpr.readings($('#contract_address').val()).then(function(o) {
 				console.log(o.time.toString());
 			$('#reading_value').val(o.power.toString());	
 			var d= new Date(o.time.toString()*1000);
