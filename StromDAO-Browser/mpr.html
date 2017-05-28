@@ -21,17 +21,22 @@
 		<h1>Meter Point Reading (Genesis)</h1>
 		<hr/>
 			<h2>Meter Point</h2>
-			<form class="form-inline" onsubmit="return false;"  style="margin-top:10px;">
-				<div class="form-group">
-						<label for="contract_address">Blockchain Address</label><br/>
-						<input type="text" class="form-control" id="contract_address" placeholder="" size="42" value="">
-						<button id="load_contract" class="btn btn-danger">use</button>
-				</div>
-				<div class="form-group">
+			<form class="form-group" onsubmit="return false;"  style="margin-top:10px;">
+								<div class="form-group">
 						<label for="extid">Other ID</label><br>
 						<input type="text" class="form-control" id="extid" placeholder="" size="42" value="">
 						<button id="load_exid" class="btn btn-danger">use</button>
 				</div>
+				<div class="form-group">
+						<label for="contract_address">Blockchain Address</label><br/>
+						<input type="text" class="form-control" id="contract_address" placeholder="" size="42" value="">
+						<button id="load_contract" class="btn btn-danger">use</button><br/>
+				</div>
+				<div class="form-group">
+						<label for="contract_address">Smart ID</label><br/>
+						<input type="text" class="form-control" id="smart_name" placeholder="" size="42" value="" disabled>
+				</div>
+
 			</form>
 		<hr/>
 			<h2>Reading</h2>

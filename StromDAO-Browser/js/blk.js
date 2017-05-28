@@ -76,10 +76,17 @@ if(window.localStorage.getItem("blk_"+node.options.external_id)!=null) {
 		$('#contract_address').val(window.localStorage.getItem("blk_"+node.options.external_id));
 }
 function addFeedin() {
+	var mp="";
+	if($('#via_address').val().length>0) {
+			mp=$('#via_address').val();
+	} else {
+			mp=$('#selmp').val();
+	}
 	$('#add_feedin').attr('disabled','disabled');
 	node.blg($('#contract_address').val()).then(function(blg) {
-		blg.addFeedIn($('#selmp').val(),$('#selmp').val(),$('#in_cpe').val(),$('#in_cpd').val()).then(function(o) {
+		blg.addFeedIn(mp,mp,$('#in_cpe').val(),$('#in_cpd').val()).then(function(o) {
 			$('#add_feedin').removeAttr('disabled');
+			withContract();
 		});
 	});
 }
@@ -87,10 +94,17 @@ $('#add_feedin').click( function() {
 	addFeedin();
 });
 function addFeedout() {
+	var mp="";
+	if($('#via_address').val().length>0) {
+			mp=$('#via_address').val();
+	} else {
+			mp=$('#selmp').val();
+	}
 	$('#add_feedout').attr('disabled','disabled');
 	node.blg($('#contract_address').val()).then(function(blg) {
-		blg.addFeedOut($('#selmp').val(),$('#selmp').val(),$('#in_cpe').val(),$('#in_cpd').val()).then(function(o) {
+		blg.addFeedOut(mp,mp,$('#in_cpe').val(),$('#in_cpd').val()).then(function(o) {
 			 $('#add_feedout').removeAttr('disabled');
+			 withContract();
 		});
 	});
 }
@@ -193,6 +207,7 @@ function getFeedOuts(idx) {
 	} catch(e) {}
 }
 function withContract() {
+	$('#connections').html("<tr><th>From</th><th>To</th><th>Cost per Day</th><th>Cost Per Energy</th></tr>");
 		node.blg($('#contract_address').val()).then( function(blg) {	
 		document.blg=blg;		
 		$('#hasContract').show();
@@ -268,7 +283,9 @@ getMeterPointList=function() {
 	});
 	return p2;
 }
-
+$('#selmp').on('change',function() {
+	$('#via_address').val($('#selmp').val());
+});
 var c=getParameterByName("c");
 
 if((typeof c != "undefined")&&(c.length>40)) { $('#contract_address').val(c); }

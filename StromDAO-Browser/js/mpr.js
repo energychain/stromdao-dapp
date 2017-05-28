@@ -45,6 +45,7 @@ function updateReading() {
 			});
 		});
 		updateLogs();
+		$('#smart_name').val(document.node._label(node.wallet.address));
 		
 	
 }
@@ -52,9 +53,12 @@ $('#load_exid').click(function() {
 	document.node= new document.StromDAOBO.Node({external_id:$('#extid').val(),testMode:true,rpc:"http://localhost:8540"});
 	node = document.node;
 	$('#contract_address').val(node.wallet.address);
+	$('#smart_name').val(document.node._label(node.wallet.address));
 	 updateReading();
 });
-
+$('#load_contract').click(function() {
+	updateReading();	
+});
 $('#commit_reading').click(function() {
 		$('#commit_reading').attr("disabled","disabled");
 		node.mpr().then(function(mpr) { 
