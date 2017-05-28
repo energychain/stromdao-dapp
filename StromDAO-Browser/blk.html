@@ -27,11 +27,7 @@
 						<input type="text" class="form-control" id="contract_address" placeholder="" size="42" value="">
 						<button id="load_contract" class="btn btn-danger">use</button>
 				</div>
-				<div class="form-group">
-						<label for="extid">Other ID</label><br>
-						<input type="text" class="form-control" id="extid" placeholder="" size="42" value="">
-						<button id="load_exid" class="btn btn-danger">use</button>
-				</div>
+				
 			</form>
 		<hr/>
 		<div id="hasContract" style="display:none">
@@ -44,44 +40,28 @@
 			</div>
 			<div id="balances" style="margin-top:30px;">
 			</div>
+			<h2>Connections</h2>	
+			<table class="table table-striped" id="connections">
+				<tr><th>From</th><th>To</th><th>Cost per Day</th><th>Cost Per Energy</th></tr>
+			</table>
 			<h2>Manage</h2>
 			<button id="charge" class="btn btn-primary">charge</button>
-			<h3>Feed In</h3>
 			<form class="form" onsubmit="return false;"  style="margin-top:10px;">
 				<div class="form-group">
-						<label for="in_mp">Meter Point</label>
-						<input type="text" class="form-control" id="in_mp" name="in_mp" placeholder="" size="42" value="0x74E1AF0Dd9B6104Da9AbAb0b2C8a22824AE38957">
-						
-						<label for="in_account">Account</label>
-						<input type="text" class="form-control" id="in_account" name="in_account" placeholder="" size="42" value="0x74E1AF0Dd9B6104Da9AbAb0b2C8a22824AE38957">
-						
-						<label for="in_cpe">Cost Per Energy</label>
-						<input type="number" class="form-control" id="in_cpe" name="in_cpe" placeholder="" size="42" value="0">
-						
-						<label for="in_cpd">Cost Per Day</label>
-						<input type="number" class="form-control" id="in_cpd" name="in_cpd" placeholder="" size="42" value="0">
-						
-						<button id="add_feedin" class="btn btn-danger">Add FeedIn</button>
+					<label for="selmp">Available Meter Points</label>
+					<select class="form-control" name="selmp" id="selmp">
+					</select>
+					<label for="in_cpe">Cost Per Energy</label>
+					<input type="number" class="form-control" id="in_cpe" name="in_cpe" placeholder="" size="42" value="0">
+					
+					<label for="in_cpd">Cost Per Day</label>
+					<input type="number" class="form-control" id="in_cpd" name="in_cpd" placeholder="" size="42" value="0">
+					
+					<button id="add_feedin" class="btn btn-danger">Add FeedIn</button>
+					<button id="add_feedout" class="btn btn-danger">Add FeedOut</button>
 				</div>
 			</form>
-			<h3>Feed Out</h3>
-			<form class="form" onsubmit="return false;"  style="margin-top:10px;">
-				<div class="form-group">
-						<label for="out_mp">Meter Point</label>
-						<input type="text" class="form-control" id="out_mp" name="out_mp" placeholder="" size="42" value="0x4b2F3cA7277f36d5fbb02cF4C7f83864F961cDa6">
-						
-						<label for="out_account">Account</label>
-						<input type="text" class="form-control" id="out_account" name="out_account" placeholder="" size="42" value="0x4b2F3cA7277f36d5fbb02cF4C7f83864F961cDa6">
-						
-						<label for="out_cpe">Cost Per Energy</label>
-						<input type="number" class="form-control" id="out_cpe" name="out_cpe" placeholder="" size="42" value="0">
-						
-						<label for="out_cpd">Cost Per Day</label>
-						<input type="number" class="form-control" id="out_cpd" name="out_cpd" placeholder="" size="42" value="0">
-						
-						<button id="add_feedout" class="btn btn-danger">Add FeedOut</button>
-				</div>
-			</form>
+			
 			
 		</div>
 		<hr/>	

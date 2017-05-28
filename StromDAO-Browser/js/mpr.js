@@ -117,4 +117,4 @@ function updateLogs(fromBlock) {
 		});
 	});
 }
-
+$('#extid').val(node.options.external_id);

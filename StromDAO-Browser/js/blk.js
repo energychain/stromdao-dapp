@@ -7,19 +7,23 @@ var mapping=[];
 $('#load_exid').click(function() {
 	document.node= new document.StromDAOBO.Node({external_id:$('#extid').val(),testMode:true,rpc:"http://localhost:8540"});
 	node = document.node;
-	var cadr=node.storage.getItemSync("blk_"+$('#extid').val());
+	var cadr=node.storage.getItemSync("myblk_"+$('#extid').val());
 	console.log("CADR",cadr);
 	if(cadr!=null) {
 		$('#contract_address').val(cadr);
 		withContract();
 	} else {
-			node.directbalancinggroupfactory().then(function(factory) {
-					factory.build().then(function(cadr) {
-						node.storage.setItemSync("blk_"+$('#extid').val(),cadr);
-						$('#contract_address').val(cadr);
-						withContract();
-					});
-			});
+		document.node.directbalancinggroupfactory().then(function(factory) {
+		    	console.log(factory.obj.abi);
+				var blg_web3_sc = web3.eth.contract(factory.obj.abi);
+				var blg_web3 = blg_web3_sc.at("0x0a57238F15BC6b055C60A237d45d4C5EeA516E63");
+				blg_web3.build( {from:node.wallet.address,value:"0x0",gasPrice:"0x0",gas:9997819},function(a,b) {					
+						//node.storage.setItemSync("blk_"+$('#extid').val(),cadr);
+						//$('#contract_address').val(cadr);
+						//withContract();
+						console.log(a,b);
+				 });
+		});
 	}
 	 
 });
@@ -64,18 +68,18 @@ afterInit();
 
 
 $('#load_contract').click( function() {
+	node.storage.setItemSync("blk_"+node.options.external_id,$('#contract_address').val());
 	withContract();
 });
 
+if(window.localStorage.getItem("blk_"+node.options.external_id)!=null) {
+		$('#contract_address').val(window.localStorage.getItem("blk_"+node.options.external_id));
+}
 function addFeedin() {
-	/*
-	var blg_web3_sc = web3.eth.contract(document.blg.obj.abi);
-	var blg_web3 = blg_web3_sc.at($('#contract_address').val());
-	blg_web3.addFeedIn($('#in_account').val(),$('#in_mp').val(),$('#in_cpe').val(),$('#in_cpd').val(),function() {$('#in_account').val();});
-*/
+	$('#add_feedin').attr('disabled','disabled');
 	node.blg($('#contract_address').val()).then(function(blg) {
-		blg.addFeedIn($('#in_account').val(),$('#in_mp').val(),$('#in_cpe').val(),$('#in_cpd').val()).then(function(o) {
-			 $('#in_account').val("");
+		blg.addFeedIn($('#selmp').val(),$('#selmp').val(),$('#in_cpe').val(),$('#in_cpd').val()).then(function(o) {
+			$('#add_feedin').removeAttr('disabled');
 		});
 	});
 }
@@ -83,9 +87,10 @@ $('#add_feedin').click( function() {
 	addFeedin();
 });
 function addFeedout() {
+	$('#add_feedout').attr('disabled','disabled');
 	node.blg($('#contract_address').val()).then(function(blg) {
-		blg.addFeedOut($('#out_account').val(),$('#out_mp').val(),$('#out_cpe').val(),$('#out_cpd').val()).then(function(o) {
-			 $('#out_account').val("");
+		blg.addFeedOut($('#selmp').val(),$('#selmp').val(),$('#in_cpe').val(),$('#in_cpd').val()).then(function(o) {
+			 $('#add_feedout').removeAttr('disabled');
 		});
 	});
 }
@@ -95,11 +100,21 @@ $('#add_feedout').click( function() {
 
 function doCharge() {
 	$('#charge').attr('disabled','disabled');
+	/*
 	node.blg($('#contract_address').val()).then(function(blg) {
 		blg.charge().then(function(o) {
-			 $('#charge').removeAttr('disabled');
+			
 		});
 	});
+	*/
+	var abi=document.blg.obj.abi;
+	var blg_web3_sc = web3.eth.contract(abi);
+	var blg_web3 = blg_web3_sc.at($('#contract_address').val());
+	blg_web3.charge( {from:node.wallet.address,value:"0x0",gasPrice:"0x0",gas:"5499819"},function(a,b) {
+		console.log("done",a,b);
+	 $('#charge').removeAttr('disabled');
+	 });
+
 }
 $('#charge').click( function() {
 	doCharge();
@@ -131,6 +146,51 @@ function fillBalances(cnt) {
 					});					
 			});
 	}
+}
+
+function renderConnection(o) {
+	blg=document.blg;	
+	node=document.node;
+	$('#connections').append("<tr><td id='from_"+o+"'></td><td id='to_"+o+"'></td><td id='cpd_"+o+"'></td><td id='cpe_"+o+"'></td></tr>");
+	node.directconnection(o).then(function(dcon) {	
+			console.log(dcon);
+			dcon.from().then( function(from) {
+					$('#from_'+o).html("<a href='./mpr.html?c="+from+"'>"+document.node._label(from)+"</a>");
+			});
+			dcon.to().then(function(to) {
+					$('#to_'+o).html("<a href='./mpr.html?c="+to+"'>"+document.node._label(to)+"</a>");
+			});
+			dcon.cost_per_day().then( function(cpd) {					
+					$('#cpd_'+o).html(cpd);
+			});
+			dcon.cost_per_energy().then(function(cpe) {					
+					$('#cpe_'+o).html(cpe);
+			});			
+	});			
+}
+function getFeedIns(idx) {
+	if(typeof idx =="undefined") idx=0;
+	blg=document.blg;	
+	node=document.node;
+	try {
+	blg.feedIn(idx).then(function(o) {	
+			renderConnection(o);	
+			idx++;
+			getFeedIns(idx);
+	});	
+	} catch(e) {}
+}
+function getFeedOuts(idx) {
+	if(typeof idx =="undefined") idx=0;
+	blg=document.blg;	
+	node=document.node;
+	try {
+	blg.feedOut(idx).then(function(o) {	
+			renderConnection(o);	
+			idx++;
+			getFeedOuts(idx);
+	});	
+	} catch(e) {}
 }
 function withContract() {
 		node.blg($('#contract_address').val()).then( function(blg) {	
@@ -167,7 +227,46 @@ function withContract() {
 				fillBalances(o.toString()*1);
 		});
 		
+		getMeterPointList().then( function(meter_points) {
+			var html="";
+			for (var k in meter_points){
+				if (meter_points.hasOwnProperty(k)) {
+					 html+="<option value='"+k+"'>"+document.node._label(k)+"</option>";	
+				}
+			}			
+			$("#selmp").html(html);
+		});
+		getFeedIns();
+		getFeedOuts();
 	});
+}
+getMeterPointList=function() {
+	var p2 = new Promise(function(resolve2, reject2) { 
+		web3.eth.getBlock("latest",function(e,o) {		
+					lastblock=o.number
+					toBlock=lastblock;
+					fromBlock=lastblock-500;
+					if(fromBlock<0) fromBlock=0;
+					node.wallet.provider.getLogs({address:"0x0000000000000000000000000000000000000008",fromBlock:fromBlock,toBlock:toBlock}).then(
+						function(logs) {
+							meter_points=[];
+							for(var i=0;i<logs.length;i++) {
+									var data = logs[i].data;
+									if(data.length>64) {
+										data=data.substr(2);
+										_meter_point ="0x"+ split64(data).substr(26);
+										data=data.substr(64);
+										_power =web3.toDecimal("0x"+split64(data).substr(26));	
+										meter_points[""+_meter_point]=_power;							
+										
+									}
+							}
+							resolve2(meter_points);
+						}
+					);
+				});
+	});
+	return p2;
 }
 
 var c=getParameterByName("c");
