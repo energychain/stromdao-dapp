@@ -38,14 +38,15 @@
 				<div class="col-md-2" style="text-align:center"><a href="" class="btn btn-primary" id="stromkontoDelta">Delta</a></div>
 				<div class="col-md-2" style="text-align:right"><a href="" class="btn btn-default" id="stromkontoOut">Out</a></div>
 			</div>
+			<button id="charge" class="btn btn-primary">charge</button>
 			<div id="balances" style="margin-top:30px;">
 			</div>
 			<h2>Connections</h2>	
 			<table class="table table-striped" id="connections">
-				<tr><th>From</th><th>To</th><th>Cost per Day</th><th>Cost Per Energy</th></tr>
+				<tr><th>ID</th><th>From</th><th>To</th><th>Cost per Day</th><th>Cost Per Energy</th></tr>
 			</table>
-			<h2>Manage</h2>
-			<button id="charge" class="btn btn-primary">charge</button>
+			<h2>Add Connection</h2>
+			
 			<form class="form" onsubmit="return false;"  style="margin-top:10px;">
 				<div class="form-group">
 					<label for="selmp">via Smart Name - Meter Points</label>

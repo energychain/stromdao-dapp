@@ -86,7 +86,7 @@ function updateLogs(fromBlock) {
 									setTimeout(getBlockTime(blockNumber),3000);
 									html+="<tr>";
 									html+="<td class='ts_"+blockNumber+"'>"+blockNumber+"</td>";
-									html+="<td><a href='#' onclick='$(\"#account_address\").val(\""+peer+"\");withAccount();'>"+document.node._label(peer)+"</a></td>";
+									html+="<td>&gt;<a href='#' onclick='$(\"#account_address\").val(\""+_from+"\");withAccount();'>"+document.node._label(_from)+"</a><br/>&lt;<a href='#' onclick='$(\"#account_address\").val(\""+_to+"\");withAccount();'>"+document.node._label(_to)+"</a></td>";
 									html+="<td align='right'>"+_base+"</td>";
 									html+="<td align='right'>"+_value+"</td>";
 									html+="<td align='right'>"+saldo+"</td>";

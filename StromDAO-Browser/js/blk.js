@@ -165,11 +165,21 @@ function fillBalances(cnt) {
 function renderConnection(o) {
 	blg=document.blg;	
 	node=document.node;
-	$('#connections').append("<tr><td id='from_"+o+"'></td><td id='to_"+o+"'></td><td id='cpd_"+o+"'></td><td id='cpe_"+o+"'></td></tr>");
+	$('#connections').append("<tr><td id='con_"+o+"'></td><td id='from_"+o+"'></td><td id='to_"+o+"'></td><td id='cpd_"+o+"'></td><td><input type='number' id='cpe_"+o+"' value='0' class='cpe_update'></td></tr>");
+	$('#cpe_'+o).on('change',function(t) {
+			console.log($(this).val(),o);
+			$(this).attr("disabled","disabled");
+			blg.setCostPerEnergy(o,$(this).val()).then(function() {
+					$(this).removeAttr("disabled");
+			});
+	});
 	node.directconnection(o).then(function(dcon) {	
 			console.log(dcon);
+			$('#con_'+o).html(document.node._label(o));
+			$('#con_'+o).attr('title',o);
 			dcon.from().then( function(from) {
 					$('#from_'+o).html("<a href='./mpr.html?c="+from+"'>"+document.node._label(from)+"</a>");
+					
 			});
 			dcon.to().then(function(to) {
 					$('#to_'+o).html("<a href='./mpr.html?c="+to+"'>"+document.node._label(to)+"</a>");
@@ -178,7 +188,7 @@ function renderConnection(o) {
 					$('#cpd_'+o).html(cpd);
 			});
 			dcon.cost_per_energy().then(function(cpe) {					
-					$('#cpe_'+o).html(cpe);
+					$('#cpe_'+o).val(cpe);
 			});			
 	});			
 }
@@ -207,7 +217,7 @@ function getFeedOuts(idx) {
 	} catch(e) {}
 }
 function withContract() {
-	$('#connections').html("<tr><th>From</th><th>To</th><th>Cost per Day</th><th>Cost Per Energy</th></tr>");
+	$('#connections').html("<tr><th>ID</th><th>From</th><th>To</th><th>Cost per Day</th><th>Cost Per Energy</th></tr>");
 		node.blg($('#contract_address').val()).then( function(blg) {	
 		document.blg=blg;		
 		$('#hasContract').show();

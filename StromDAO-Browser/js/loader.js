@@ -104,6 +104,22 @@ this.blg=function(obj_or_address) {
 					});
 					return p2;
 				}
+				instance.setCostPerEnergy=function(connection,cost_per_energy) {
+					var p2 = new Promise(function(resolve2, reject2) { 
+							instance.obj.setCostPerEnergy(connection,cost_per_energy).then(function(o) {
+								parent._waitForTransactionKeepRef(o,resolve2);													
+							});									
+					});
+					return p2;
+				}
+				instance.setCostPerDay=function(connection,cost_per_day) {
+					var p2 = new Promise(function(resolve2, reject2) { 
+							instance.obj.setCostPerDay(connection,cost_per_day).then(function(o) {
+								parent._waitForTransactionKeepRef(o,resolve2);													
+							});									
+					});
+					return p2;
+				}			
 				instance.balancesheets_cnt=function() {
 					var p2 = new Promise(function(resolve2, reject2) { 
 							instance.obj.balancesheets_cnt().then(function(o) {									
@@ -1215,8 +1231,7 @@ module.exports = {
               }
         } else
         if(typeof options.privateKey == "undefined") options.privateKey='0x1471693ac4ae1646256c6a96edf2d808ad2dc6b75df69aa2709c4140e16bc7c4';
-        this.options=options;
-        console.log(options);        
+        this.options=options;             
         this.wallet = new ethers.Wallet(options.privateKey,rpcprovider);
         this.options.address = this.wallet.address;
         this._saveLabel('EXT '+options.external_id,this.wallet.address);		
