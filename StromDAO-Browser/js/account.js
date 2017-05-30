@@ -86,7 +86,7 @@ function getBlockTime(obj,cb) {
 					
 							balanceInInfo(""+bl.balanceIn,bl.blockNumber,sumBase,sumTx,obj.base,obj.value);
 																		
-					});
+					}));
 			}
 	}
 };
