@@ -88,8 +88,8 @@ function updateLogs(fromBlock) {
 									html+="<td class='ts_"+blockNumber+"'>"+blockNumber+"</td>";
 									html+="<td>&gt;<a href='#' onclick='$(\"#account_address\").val(\""+_from+"\");withAccount();'>"+document.node._label(_from)+"</a><br/>&lt;<a href='#' onclick='$(\"#account_address\").val(\""+_to+"\");withAccount();'>"+document.node._label(_to)+"</a></td>";
 									html+="<td align='right'>"+_base+"</td>";
-									html+="<td align='right'>"+_value+"</td>";
-									html+="<td align='right'>"+saldo+"</td>";
+									html+="<td align='right'>"+(_value*1).money()+"</td>";
+									html+="<td align='right'>"+(saldo*1).money()+"</td>";
 									html+="</tr>";
 
 								}
@@ -115,11 +115,11 @@ $('#load_contract').click( function() {
 function withAccount() {
 		$('#haveAccount').show();
 		document.stromkonto.balancesSoll($('#account_address').val()).then( function(tx_result) {
-			$('.soll').html(tx_result);
+			$('.soll').html((tx_result*1).money());
 			$('.saldo').html($('.haben').html()-$('.soll').html());
 		});
 		document.stromkonto.balancesHaben($('#account_address').val()).then( function(tx_result) {
-			$('.haben').html(tx_result);
+			$('.haben').html((tx_result*1).money());
 			$('.saldo').html($('.haben').html()-$('.soll').html());
 		});
 		updateLogs();	

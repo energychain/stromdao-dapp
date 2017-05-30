@@ -145,7 +145,7 @@ function fillBalances(cnt) {
 								$('#inBase'+a.idx).html(o);
 							});
 							stromkonto.sumTx().then(function(o) {
-								$('#inTx'+a.idx).html(o);
+								$('#inTx'+a.idx).html((o*1).money());
 							});
 					});
 				$('#out'+a.idx).attr('href',"./stromkonto.html?c="+a.balanceOut);
@@ -155,7 +155,7 @@ function fillBalances(cnt) {
 								$('#outBase'+a.idx).html(o);
 							});
 							stromkonto.sumTx().then(function(o) {
-								$('#outTx'+a.idx).html(o);
+								$('#outTx'+a.idx).html((o*1).money());
 							});
 					});					
 			});
@@ -178,11 +178,14 @@ function renderConnection(o) {
 			$('#con_'+o).html(document.node._label(o));
 			$('#con_'+o).attr('title',o);
 			dcon.from().then( function(from) {
-					$('#from_'+o).html("<a href='./mpr.html?c="+from+"'>"+document.node._label(from)+"</a>");
-					
+					if(from==document.stromkontoDelta) { $('#from_'+o).html ("This BLG");} else {
+					$('#from_'+o).html("<a href='./mpr.html?c="+from+"'>"+from+"</a>");
+				}	
 			});
 			dcon.to().then(function(to) {
-					$('#to_'+o).html("<a href='./mpr.html?c="+to+"'>"+document.node._label(to)+"</a>");
+				if(to==document.stromkontoDelta) { $('#to_'+o).html ("This BLG");} else {
+					$('#to_'+o).html("<a href='./mpr.html?c="+to+"'>"+to+"</a>");
+				}
 			});
 			dcon.cost_per_day().then( function(cpd) {					
 					$('#cpd_'+o).html(cpd);
@@ -217,7 +220,7 @@ function getFeedOuts(idx) {
 	} catch(e) {}
 }
 function withContract() {
-	$('#connections').html("<tr><th>ID</th><th>From</th><th>To</th><th>Cost per Day</th><th>Cost Per Energy</th></tr>");
+	$('#connections').html("<tr><th>ID</th><th>Pay From </th><th>Pay To </th><th>Cost per Day</th><th>Cost Per Energy</th></tr>");
 		node.blg($('#contract_address').val()).then( function(blg) {	
 		document.blg=blg;		
 		$('#hasContract').show();
@@ -226,7 +229,18 @@ function withContract() {
 
 		});
 		blg.stromkontoDelta().then(function(o) {
+				document.stromkontoDelta=o;
 				$('#stromkontoDelta').attr("href","./stromkonto.html?c="+o);
+				node.stromkonto(o).then(function(stromkonto) {
+					stromkonto.balancesSoll(o).then( function(value) {
+									$('.soll').html(value.money());
+									$('.saldo').html(($('.haben').html()-$('.soll').html()));
+					});
+					stromkonto.balancesHaben(o).then( function(value) {
+									$('.haben').html(value.money());
+									$('.saldo').html($('.haben').html()-$('.soll').html());
+					});
+				});
 
 		});
 		blg.stromkontoOut().then(function(o) {

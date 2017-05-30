@@ -8,7 +8,11 @@
     <title>StromDAO/Business Object - Blockchain Browser</title>
 	<link href="css/jquery-ui.min.css" rel="stylesheet">
     <link href="css/bootstrap.min.css" rel="stylesheet">
-	
+	  <style>
+    h3 {
+			color:#909090;
+	}
+    </style>
   </head>
   <body >
 	<div class="container" style="margin-top:30px;">
@@ -31,6 +35,22 @@
 			</form>
 		<hr/>
 		<div id="hasContract" style="display:none">
+			<h2>Settlement</h2>
+			<div class="row">
+				<div class="col-md-4">
+					<h3>Liability</h3>
+					<h1 class="soll"></h1>
+				</div>
+				<div class="col-md-4" style="text-align:center"> 
+					<h3>Equity</h3>
+					<h1 class="haben"></h1>
+				</div>
+				<div class="col-md-4" style="text-align:right"> 
+					<h3>Balance</h3>
+					<h1 class="saldo"></h1>
+				</div>
+			</div>
+				
 			<h2>Balances</h2>			
 			<div class="row">
 				<div class="col-md-2">Open #<span id="balance_cnt"></span></div>
@@ -43,7 +63,7 @@
 			</div>
 			<h2>Connections</h2>	
 			<table class="table table-striped" id="connections">
-				<tr><th>ID</th><th>From</th><th>To</th><th>Cost per Day</th><th>Cost Per Energy</th></tr>
+				<tr><th>ID</th><th>Pay From (Engery To)</th><th>Pay To (Energy From)</th><th>Cost per Day</th><th>Cost Per Energy</th></tr>
 			</table>
 			<h2>Add Connection</h2>
 			
