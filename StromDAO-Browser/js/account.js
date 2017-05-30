@@ -32,13 +32,14 @@ function loadBalancesheets(idx,cb) {
 }
 
 function balanceInInfo(bin,bbl,sumBase,obase) {
-document.node.wallet.provider.getLogs({address:bin,fromBlock:bbl-1000,toBlock:bbl}).then(
+document.node.wallet.provider.getLogs({address:bin,fromBlock:bbl,toBlock:bbl}).then(
 	function(logs) {
 			console.log("LOGS",logs);
 			var html="";
 			for(var i=0;i<logs.length;i++) {
 				var data = logs[i].data;
-				if(data.length>256) {											
+				if(data.length>256) {	
+					html="";										
 					data=data.substr(2);
 					_from ="0x"+ split64(data).substr(26);
 					data=data.substr(64);
@@ -56,10 +57,11 @@ document.node.wallet.provider.getLogs({address:bin,fromBlock:bbl-1000,toBlock:bb
 					data=data.substr(64);
 					_toHaben =web3.toDecimal(split64(data));
 					data=data.substr(64);
-					html+="<tr><td>"+_to+"</td><td>"+((_base/sumBase)*obase).money()+"</td></tr>";
+					html+="<tr><td>"+_to+"</td><td>-"+((_base/sumBase)*obase).money()+"</td></tr>";
 					$('#txbl_'+bbl).append(html);											
 				}
 			}	
+			$('#txbl_'+bbl).append("<tr><th>Total</th><th>-"+_base.money()+"</td></tr>");
 	});
 }
 function getBlockTime(obj,cb) {
@@ -77,11 +79,12 @@ function getBlockTime(obj,cb) {
 			if(document.balancesheets[i].blockNumber==obj.blockNumber) {
 					var bl=document.balancesheets[i];
 					bl.stromkontoIn.sumBase().then(function(sumBase) {
+						bl.stromkontoIn.sumTx().then(function(sumBase) {
 							if(sumBase==0) return;
 							console.log("sumBase",sumBase);
-							setTimeout("balanceInInfo('"+bl.balanceIn+"',"+bl.blockNumber+","+sumBase+","+obj.base+");",500);
+							//setTimeout("balanceInInfo('"+bl.balanceIn+"',"+bl.blockNumber+","+sumBase+","+obj.base+");",500);
 					
-							//console.log("balanceInInfo('"+bl.balanceIn+"',"+bl.blockNumber+","+sumBase+","+obj.base+");");
+							balanceInInfo(""+bl.balanceIn,bl.blockNumber,sumBase,sumTx,obj.base,obj.value);
 																		
 					});
 			}
@@ -190,12 +193,13 @@ function updateLogs(fromBlock) {
 					}
 					html+="<tr><td colspan=3><a href='#' onclick='updateLogs("+(fromBlock-500)+");' class='btn btn-primary'>more</a></tr>";
 					html+="</table>";
-					$('#txLog').html(html);		
+					$('#txLog').html(html);	
+					
 					for(var i=0;i<inforeq.length;i++) {						
 						getBlockTime(inforeq[i]);						
 					}					
 		});
 	});
 }
-
+$('.account').html(account);
 afterInit();
