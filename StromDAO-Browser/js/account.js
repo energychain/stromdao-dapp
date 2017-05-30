@@ -79,14 +79,13 @@ function getBlockTime(obj,cb) {
 			if(document.balancesheets[i].blockNumber==obj.blockNumber) {
 					var bl=document.balancesheets[i];
 					bl.stromkontoIn.sumBase().then(function(sumBase) {
-						bl.stromkontoIn.sumTx().then(function(sumBase) {
 							if(sumBase==0) return;
 							console.log("sumBase",sumBase);
 							//setTimeout("balanceInInfo('"+bl.balanceIn+"',"+bl.blockNumber+","+sumBase+","+obj.base+");",500);
 					
-							balanceInInfo(""+bl.balanceIn,bl.blockNumber,sumBase,sumTx,obj.base,obj.value);
+							balanceInInfo(""+bl.balanceIn,bl.blockNumber,sumBase,obj.base);
 																		
-					}));
+					});
 			}
 	}
 };
