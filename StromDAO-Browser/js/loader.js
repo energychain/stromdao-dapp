@@ -42,7 +42,7 @@ this.blg=function(obj_or_address) {
 				instance.charge=function()  {		
 		
 					var p2 = new Promise(function(resolve2, reject2) { 
-							instance.obj.charge().then(function(o) {									
+							instance.obj.charge({gasLimit:5499819,gasPrice:0}).then(function(o) {									
 								parent._waitForTransactionKeepRef(o,resolve2);												
 							});									
 					});
@@ -20436,6 +20436,18 @@ Number.prototype.money = function() {
 	var re = '\\d(?=(\\d{' + (x || 3) + '})+' + (n > 0 ? '\\D' : '$') + ')',
     num = this.toFixed(Math.max(0, ~~n));
 	num=num/10000000;
+	num=num+"";
+    return (c ? num.replace('.', c) : num).replace(new RegExp(re, 'g'), '$&' + (s || ','));
+};
+
+Number.prototype.energy = function() {
+	n=5;
+	x=3;
+	s="";
+	c=".";
+	var re = '\\d(?=(\\d{' + (x || 3) + '})+' + (n > 0 ? '\\D' : '$') + ')',
+    num = this.toFixed(Math.max(0, ~~n));
+	num=num/100000;
 	num=num+"";
     return (c ? num.replace('.', c) : num).replace(new RegExp(re, 'g'), '$&' + (s || ','));
 };

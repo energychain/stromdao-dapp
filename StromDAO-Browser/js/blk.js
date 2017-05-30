@@ -114,13 +114,15 @@ $('#add_feedout').click( function() {
 
 function doCharge() {
 	$('#charge').attr('disabled','disabled');
-	/*
+	
 	node.blg($('#contract_address').val()).then(function(blg) {
 		blg.charge().then(function(o) {
-			
+			console.log("DONE",o);
+			$('#charge').removeAttr('disabled');
 		});
 	});
-	*/
+	
+	/*
 	var abi=document.blg.obj.abi;
 	var blg_web3_sc = web3.eth.contract(abi);
 	var blg_web3 = blg_web3_sc.at($('#contract_address').val());
@@ -128,7 +130,7 @@ function doCharge() {
 		console.log("done",a,b);
 	 $('#charge').removeAttr('disabled');
 	 });
-
+*/
 }
 $('#charge').click( function() {
 	doCharge();

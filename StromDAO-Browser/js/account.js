@@ -57,11 +57,11 @@ document.node.wallet.provider.getLogs({address:bin,fromBlock:bbl,toBlock:bbl}).t
 					data=data.substr(64);
 					_toHaben =web3.toDecimal(split64(data));
 					data=data.substr(64);
-					html+="<tr><td>"+_to+"</td><td>-"+((_base/sumBase)*obase).money()+"</td></tr>";
+					html+="<tr><td class='"+_to+"'>"+document.node._label(_to)+"</td><td>-"+((_base/sumBase)*obase).money()+"</td><td>"+Math.round((_base/sumBase)*1000)/10+"%</tr>";
 					$('#txbl_'+bbl).append(html);											
 				}
 			}	
-			$('#txbl_'+bbl).append("<tr><th>Total</th><th>-"+_base.money()+"</td></tr>");
+			//$('#txbl_'+bbl).append("<tr><th>Total Energy</th><th>-"+_base+"</td></tr>");
 	});
 }
 function getBlockTime(obj,cb) {
@@ -74,7 +74,7 @@ function getBlockTime(obj,cb) {
 					if(typeof cb != "undefined") cb();
 		}	else {console.log(error);}		
 	})
-	$("#blk_"+blockNumber).html("<table class='table table-condensed' id='txbl_"+obj.blockNumber+"'><tr><th>Source</th><th>Value</th></tr></table>");	
+	$("#blk_"+blockNumber).html("<table class='table table-condensed' id='txbl_"+obj.blockNumber+"'><tr><th>Source</th><th>Value</th><th>%</tr></table>");	
 	for(var i=0;i<document.balancesheets.length;i++) {			
 			if(document.balancesheets[i].blockNumber==obj.blockNumber) {
 					var bl=document.balancesheets[i];
@@ -142,7 +142,7 @@ function updateLogs(fromBlock) {
 			function(logs) {							
 					logs=logs.reverse();
 					var html="<table class='table table-striped'>"
-					html+="<tr><th>Settlement</th><th>From/To</th><th style='text-align:right'>Energy</th><th style='text-align:right'>Value</th><th style='text-align:right'>Balance</th></tr>";
+					html+="<tr><th>Settlement</th><th>From/To</th><th style='text-align:right'></th><th style='text-align:right'>Value</th><th style='text-align:right'>Price</th><th style='text-align:right'>Balance</th></tr>";
 					var inforeq=[];
 					for(var i=0;i<logs.length;i++) {
 							var data = logs[i].data;
@@ -151,11 +151,11 @@ function updateLogs(fromBlock) {
 								_from ="0x"+ split64(data).substr(26);
 								data=data.substr(64);
 								_to ="0x"+split64(data).substr(26);
-								data=data.substr(64);
-									
+								data=data.substr(64);									
 								_value =web3.toDecimal(split64(data));
 								data=data.substr(64);
 								_base =web3.toDecimal(split64(data));
+								console.log(_value,_base);
 								data=data.substr(64);
 								_fromSoll =web3.toDecimal(split64(data));
 								data=data.substr(64);
@@ -182,8 +182,9 @@ function updateLogs(fromBlock) {
 									html+="<tr>";
 									html+="<td class='ts_"+blockNumber+"'>"+blockNumber+"</td>";
 									html+="<td id='blk_"+blockNumber+"'>TBD</td>"																		
-									html+="<td align='right'>"+_base+"</td>";
+									html+="<td align='right'></td>";
 									html+="<td align='right'>"+(_value*1).money()+"</td>";
+									html+="<td align='right'>"+((_value*1)/(_base*1))+"</td>";
 									html+="<td align='right'>"+(saldo*1).money()+"</td>";
 									html+="</tr>";
 
