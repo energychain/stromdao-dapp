@@ -80,7 +80,7 @@ document.node.wallet.provider.getLogs({address:bin,fromBlock:bbl-10,toBlock:bbl}
 					data=data.substr(64);
 					_fromHaben =node._utils.bigNumberify(split64(data));
 					data=data.substr(64);
-					_toSoll =node._utils.bigNumberifyl(split64(data));
+					_toSoll =node._utils.bigNumberify(split64(data));
 					data=data.substr(64);
 					_toHaben =node._utils.bigNumberify(split64(data));
 					data=data.substr(64);
