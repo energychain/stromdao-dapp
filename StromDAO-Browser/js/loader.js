@@ -20471,7 +20471,16 @@ Number.prototype.energy = function() {
 	num=num+"";
     return (c ? num.replace('.', c) : num).replace(new RegExp(re, 'g'), '$&' + (s || ','));
 };
-
+Number.prototype.mcurrency = function() {
+	n=5;
+	x=3;
+	s="";
+	c=".";
+	var re = '\\d(?=(\\d{' + (x || 3) + '})+' + (n > 0 ? '\\D' : '$') + ')',
+    num = this.toFixed(Math.max(0, ~~n));
+	num=num+"";
+    return (c ? num.replace('.', c) : num).replace(new RegExp(re, 'g'), '$&' + (s || ','));
+};
 
 document.StromDAOBO = require("stromdao-businessobject");   
 var StromDAOBO =document.StromDAOBO;

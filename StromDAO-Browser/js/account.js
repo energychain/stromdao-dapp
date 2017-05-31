@@ -72,9 +72,10 @@ document.node.wallet.provider.getLogs({address:bin,fromBlock:bbl-10,toBlock:bbl}
 					data=data.substr(64);
 					_to ="0x"+split64(data).substr(26);
 					data=data.substr(64);												
-					_value =node._utils.bigNumberify(split64(data));
+					_value =node._utils.bigNumberify(split64(data)).toNumber();
 					data=data.substr(64);
-					_base =node._utils.bigNumberify(split64(data));
+					_base =node._utils.bigNumberify(split64(data)).toNumber();
+					console.log(_base);
 					data=data.substr(64);
 					_fromSoll =node._utils.bigNumberify(split64(data));
 					data=data.substr(64);
@@ -112,7 +113,7 @@ document.node.wallet.provider.getLogs({address:bin,fromBlock:bbl-10,toBlock:bbl}
 					_toHaben =node._utils.bigNumberify(split64(data)).toNumber();
 					data=data.substr(64);
 					portion=_base/total;
-					html+="<tr><td class='"+_to+" bl_"+bl.blockNumber+" account' data-account='"+_to+"'>"+document.node._label(_to)+"</td><td>-"+(bl.txSoll*portion).money()+"</td><td>"+Math.round(portion*1000)/10+"%</tr>";
+					html+="<tr><td class='"+_to+" bl_"+bl.blockNumber+" account' data-account='"+_to+"'>"+document.node._label(_to)+"</td><td align='right'>-"+(1*(bl.txSoll*portion).money()).mcurrency()+"</td><td align='right'>"+Math.round(portion*1000)/10+"%</tr>";
 					$('#txbl_'+bbl).append(html);	
 					$('.price_'+bl.blockNumber).html((sumTx/sumBase)/100000);
 					$('.energy_'+bl.blockNumber).html((bl.txSoll/(sumTx/sumBase)));
@@ -144,7 +145,7 @@ function getBlockTime(blockNumber,bl) {
 		});
 	}
 	
-	$("#blk_"+blockNumber).html("<table class='table table-condensed' id='txbl_"+blockNumber+"'><tr><th>Source</th><th>Value</th><th>%</tr></table>");	
+	$("#blk_"+blockNumber).html("<table class='table table-condensed' id='txbl_"+blockNumber+"' width='100%' ><tr><th width='33%'>Source</th><th style='text-align:right' width='33%'>Value</th><th style='text-align:right'>%</tr></table>");	
 			
 	bl.stromkontoIn.sumTx().then(function(sumTx) {
 							if(sumTx==0) return;
@@ -173,13 +174,13 @@ function afterInit() {
 						
 						node.stromkonto(stromkontoDelta).then(function(stromkonto) {
 								stromkonto.balancesSoll(account).then( function(value) {
-									$('.soll').html(value.money());
+									$('.soll').html((1*value.money()).mcurrency());
 									document.soll=value;
 									document.saldo=document.haben-document.soll;
 									$('.saldo').html(($('.haben').html()-$('.soll').html()));
 								});
 								stromkonto.balancesHaben(account).then( function(value) {
-									$('.haben').html(value.money());
+									$('.haben').html((value.money()*1).mcurrency());
 									document.haben=value;
 									document.saldo=document.haben-document.soll;
 									$('.saldo').html($('.haben').html()-$('.soll').html());
@@ -220,12 +221,12 @@ function updateLogs(fromBlock) {
 		// "+((_value*1)/(_base*1))+"
 		html+="<td align='right' class='energy_"+bs[i].blockNumber+"'>TBD</td>";
 		html+="<td align='right' class='price_"+bs[i].blockNumber+"'>TBD</td>";
-		html+="<td align='right'>-"+(bs[i].txSoll*1).money()+"</td>";
-		html+="<td align='right'>"+(saldo*1).money()+"</td>";		
+		html+="<td align='right'>-"+(1*(bs[i].txSoll*1).money()).mcurrency()+"</td>";
+		html+="<td align='right'>"+(1*(saldo*1).money()).mcurrency()+"</td>";		
 		html+="</tr>";
 		saldo+=bs[i].txSoll;
 	}
-	html+="<tr><td colspan=3><a href='#' onclick='document.tobl-=3;afterInit();' class='btn btn-primary'>more</a></tr>";
+	html+="<tr><td colspan=6><a href='#' onclick='document.tobl-=3;afterInit();' class='btn btn-primary'>more</a></tr>";
 	html+="</table>";
 	$('#txLog').html(html);	
 	for(var i=0;i<bs.length;i++) {	
