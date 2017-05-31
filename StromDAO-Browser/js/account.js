@@ -19,24 +19,30 @@ function loadBalancesheets(idx,cb) {
 	idx--;
 	if(idx<0) cb();
 	node.blg(blk).then(function(blg) {
-				blg.balancesheets(idx).then(function(a,b) {
-							
-						node.stromkonto(a.balanceIn).then(function(stromkonto) {
-							bl = { balanceIn:a.balanceIn, balanceOut:a.balanceOut,blockNumber:(a.blockNumber.toString()*1),stromkontoIn:stromkonto };
-							document.balancesheets.push(bl);
-							loadBalancesheets(idx,cb)							
-						});					
-						;
-				});
+		blg.balancesheets(idx).then(function(a,b) {							
+			node.stromkonto(a.balanceIn).then(
+				function(stromkontoIn) {
+
+						node.stromkonto(a.balanceOut).then(function(stromkontoOut) {
+								stromkontoOut.balancesSoll(account).then(function(outSoll) {
+									bl = { balanceIn:a.balanceIn, balanceOut:a.balanceOut,blockNumber:(a.blockNumber.toString()*1),stromkontoIn:stromkontoOut,stromkontoOut:stromkontoOut,txSoll:outSoll };
+									document.balancesheets.push(bl);
+									loadBalancesheets(idx,cb)							
+								});
+						});
+					
+			});								
+		});
 	});
 	
 }
 
-function balanceInInfo(bin,bbl,sumBase,obase) {
-document.node.wallet.provider.getLogs({address:bin,fromBlock:bbl,toBlock:bbl}).then(
+function balanceInInfo(bin,bbl,sumBase,sumTx,bl) {
+document.node.wallet.provider.getLogs({address:bin,fromBlock:bbl-10,toBlock:bbl}).then(
 	function(logs) {
 			console.log("LOGS",logs);
 			var html="";
+			total=0;
 			for(var i=0;i<logs.length;i++) {
 				var data = logs[i].data;
 				if(data.length>256) {	
@@ -58,37 +64,66 @@ document.node.wallet.provider.getLogs({address:bin,fromBlock:bbl,toBlock:bbl}).t
 					data=data.substr(64);
 					_toHaben =web3.toDecimal(split64(data));
 					data=data.substr(64);
-					html+="<tr><td class='"+_to+"'>"+document.node._label(_to)+"</td><td>-"+((_base/sumBase)*obase).money()+"</td><td>"+Math.round((_base/sumBase)*1000)/10+"%</tr>";
-					$('#txbl_'+bbl).append(html);											
+					portion=1;
+					total+=_base;
+		
+										
+				}
+			}
+			for(var i=0;i<logs.length;i++) {
+				var data = logs[i].data;
+				if(data.length>256) {	
+					html="";										
+					data=data.substr(2);
+					_from ="0x"+ split64(data).substr(26);
+					data=data.substr(64);
+					_to ="0x"+split64(data).substr(26);
+					data=data.substr(64);												
+					_value =node._utils.bigNumberify(split64(data)).toNumber();
+					data=data.substr(64);
+					_base =node._utils.bigNumberify(split64(data)).toNumber();
+					data=data.substr(64);
+					_fromSoll =node._utils.bigNumberify(split64(data)).toNumber();
+					data=data.substr(64);
+					_fromHaben =node._utils.bigNumberify(split64(data)).toNumber();
+					data=data.substr(64);
+					_toSoll =node._utils.bigNumberify(split64(data)).toNumber();
+					data=data.substr(64);
+					_toHaben =node._utils.bigNumberify(split64(data)).toNumber();
+					data=data.substr(64);
+					portion=_base/total;
+					html+="<tr><td class='"+_to+" bl_"+bl.blockNumber+"'>"+document.node._label(_to)+"</td><td>-"+(bl.txSoll*portion).money()+"</td><td>"+Math.round(portion*1000)/10+"%</tr>";
+					$('#txbl_'+bbl).append(html);	
+					$('.price_'+bl.blockNumber).html((sumTx/sumBase)/100000);
+					$('.energy_'+bl.blockNumber).html((bl.txSoll/(sumTx/sumBase)));
 				}
 			}	
 			//$('#txbl_'+bbl).append("<tr><th>Total Energy</th><th>-"+_base+"</td></tr>");
 	});
 }
-function getBlockTime(obj,cb) {
-	
-	blockNumber=obj.blockNumber;
-	web3.eth.getBlock(obj.blockNumber, function(error, result){
-		if(!error) {
-					d=new Date(result.timestamp*1000);					
-					$('.ts_'+obj.blockNumber).html("#"+obj.blockNumber+" "+d.toLocaleString());
-					if(typeof cb != "undefined") cb();
-		}	else {console.log(error);}		
-	})
-	$("#blk_"+blockNumber).html("<table class='table table-condensed' id='txbl_"+obj.blockNumber+"'><tr><th>Source</th><th>Value</th><th>%</tr></table>");	
-	for(var i=0;i<document.balancesheets.length;i++) {			
-			if(document.balancesheets[i].blockNumber==obj.blockNumber) {
-					var bl=document.balancesheets[i];
-					bl.stromkontoIn.sumBase().then(function(sumBase) {
-							if(sumBase==0) return;
-							console.log("sumBase",sumBase);
-							//setTimeout("balanceInInfo('"+bl.balanceIn+"',"+bl.blockNumber+","+sumBase+","+obj.base+");",500);
-					
-							balanceInInfo(""+bl.balanceIn,bl.blockNumber,sumBase,obj.base);
-																		
-					});
-			}
+function getBlockTime(blockNumber,bl) {		
+	if(typeof web3 != "undefined") {
+		web3.eth.getBlock(blockNumber, function(error, result){
+			if(!error) {
+						d=new Date(result.timestamp*1000);					
+						$('.ts_'+blockNumber).html("#"+blockNumber+" "+d.toLocaleString());
+						if(typeof cb != "undefined") cb();
+			}	else {console.log(error);}		
+		});
 	}
+	
+	$("#blk_"+blockNumber).html("<table class='table table-condensed' id='txbl_"+blockNumber+"'><tr><th>Source</th><th>Value</th><th>%</tr></table>");	
+			
+	bl.stromkontoIn.sumTx().then(function(sumTx) {
+							if(sumTx==0) return;
+							console.log("sumTx",sumTx);
+							bl.stromkontoIn.sumBase().then(function(sumBase) {
+								balanceInInfo(""+bl.balanceIn,bl.blockNumber,sumBase,sumTx,bl);	
+							});
+							//setTimeout("balanceInInfo('"+bl.balanceIn+"',"+bl.blockNumber+","+sumBase+","+obj.base+");",500);											
+					});
+			
+
 };
 
 function split64(data) { return "0x"+data.substr(0,64);}
@@ -106,13 +141,18 @@ function afterInit() {
 						node.stromkonto(stromkontoDelta).then(function(stromkonto) {
 								stromkonto.balancesSoll(account).then( function(value) {
 									$('.soll').html(value.money());
+									document.soll=value;
+									document.saldo=document.haben-document.soll;
 									$('.saldo').html(($('.haben').html()-$('.soll').html()));
 								});
 								stromkonto.balancesHaben(account).then( function(value) {
 									$('.haben').html(value.money());
+									document.haben=value;
+									document.saldo=document.haben-document.soll;
 									$('.saldo').html($('.haben').html()-$('.soll').html());
 									
 									blk.balancesheets_cnt().then(function(o) {
+											document.blcnt=o*1;
 											loadBalancesheets(o*1,function() {
 												updateLogs();
 											 });
@@ -129,78 +169,32 @@ function afterInit() {
 
 
 function updateLogs(fromBlock) {
+	bs=document.balancesheets;
+	//bs=bs.reverse();
+	var html="<table class='table table-striped'>"
+	html+="<tr><th>Settlement</th><th>From/To</th><th style='text-align:right'></th><th style='text-align:right'>Energy</th><th style='text-align:right'>Price</th><th style='text-align:right'>Value</th><th style='text-align:right'>Balance</th></tr>";
+	saldo=document.saldo;
+	for(var i=0;i<bs.length;i++) {		
+		html+="<tr>";
+		html+="<td class='ts_"+bs[i].blockNumber+"'>"+bs[i].blockNumber+"</td>";
+		html+="<td id='blk_"+bs[i].blockNumber+"'>TBD</td>"																		
+		html+="<td align='right'></td>";
+		
+		// "+((_value*1)/(_base*1))+"
+		html+="<td align='right' class='energy_"+bs[i].blockNumber+"'>TBD</td>";
+		html+="<td align='right' class='price_"+bs[i].blockNumber+"'>TBD</td>";
+		html+="<td align='right'>-"+(bs[i].txSoll*1).money()+"</td>";
+		html+="<td align='right'>"+(saldo*1).money()+"</td>";		
+		html+="</tr>";
+		saldo+=bs[i].txSoll;
+	}
+	html+="<tr><td colspan=3><a href='#' onclick='updateLogs("+(fromBlock-500)+");' class='btn btn-primary'>more</a></tr>";
+	html+="</table>";
+	$('#txLog').html(html);	
+	for(var i=0;i<bs.length;i++) {	
+		getBlockTime(bs[i].blockNumber,bs[i]);
+	}
 
-	var grep=account.toLowerCase();
-	web3.eth.getBlock("latest",function(e,o) {		
-			lastblock=o.number
-			toBlock=lastblock;
-			if((typeof fromBlock=="undefined")||(fromBlock<1)) {
-					fromBlock=lastblock-500;
-			}			
-			if(fromBlock<0) fromBlock=0;
-			
-			document.node.wallet.provider.getLogs({address:address_stromkonto,fromBlock:fromBlock,toBlock:toBlock}).then(			
-			function(logs) {							
-					logs=logs.reverse();
-					var html="<table class='table table-striped'>"
-					html+="<tr><th>Settlement</th><th>From/To</th><th style='text-align:right'></th><th style='text-align:right'>Value</th><th style='text-align:right'>Price</th><th style='text-align:right'>Balance</th></tr>";
-					var inforeq=[];
-					for(var i=0;i<logs.length;i++) {
-							var data = logs[i].data;
-							if(data.length>256) {
-								data=data.substr(2);
-								_from ="0x"+ split64(data).substr(26);
-								data=data.substr(64);
-								_to ="0x"+split64(data).substr(26);
-								data=data.substr(64);									
-								_value =web3.toDecimal(split64(data));
-								data=data.substr(64);
-								_base =web3.toDecimal(split64(data));
-								console.log(_value,_base);
-								data=data.substr(64);
-								_fromSoll =web3.toDecimal(split64(data));
-								data=data.substr(64);
-								_fromHaben =web3.toDecimal(split64(data));
-								data=data.substr(64);
-								_toSoll =web3.toDecimal(split64(data));
-								data=data.substr(64);
-								_toHaben =web3.toDecimal(split64(data));
-								data=data.substr(64);
-								if((_from.toLowerCase()==grep)||(_to.toLowerCase()==grep)||(grep.length<40)) {
-									var blockNumber = logs[i].blockNumber;
-									if(_from.toLowerCase()==grep) {
-										peer=_to;
-										saldo=_fromHaben-_fromSoll;
-										_value="-"+_value;
-									} else {
-										peer=_from;
-										saldo=_toHaben-_toSoll;
-										_value="+"+_value;
-									}
-									var info={blockNumber:blockNumber,base:_base*1,value:_value*1};
-									inforeq.push(info);
-									
-									html+="<tr>";
-									html+="<td class='ts_"+blockNumber+"'>"+blockNumber+"</td>";
-									html+="<td id='blk_"+blockNumber+"'>TBD</td>"																		
-									html+="<td align='right'></td>";
-									html+="<td align='right'>"+(_value*1).money()+"</td>";
-									html+="<td align='right'>"+((_value*1)/(_base*1))+"</td>";
-									html+="<td align='right'>"+(saldo*1).money()+"</td>";
-									html+="</tr>";
-
-								}
-							}
-					}
-					html+="<tr><td colspan=3><a href='#' onclick='updateLogs("+(fromBlock-500)+");' class='btn btn-primary'>more</a></tr>";
-					html+="</table>";
-					$('#txLog').html(html);	
-					
-					for(var i=0;i<inforeq.length;i++) {						
-						getBlockTime(inforeq[i]);						
-					}					
-		});
-	});
 }
 $('.account').html(account);
 afterInit();
