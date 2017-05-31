@@ -1238,8 +1238,10 @@ module.exports = {
 			var rpcprovider = new ethers.providers.JsonRpcProvider(options.rpc, 42);        
 		}
         if(typeof options.external_id !="undefined") {
+			if(typeof options.privateKey !="undefined") {
+			} else {
               options.privateKey=storage.getItemSync("ext:"+options.external_id);
-              
+			}
               if((typeof options.privateKey=="undefined")||(options.privateKey==null)) {
 				  
                   this.options=options;
