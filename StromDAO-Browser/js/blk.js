@@ -182,12 +182,12 @@ function renderConnection(o) {
 			$('#con_'+o).attr('title',o);
 			dcon.from().then( function(from) {
 					if(from==document.stromkontoDelta) { $('#from_'+o).html ("This BLG");} else {
-					$('#from_'+o).html("<a href='./mpr.html?c="+from+"'>"+from+"</a>");
+					$('#from_'+o).html("<a href='./account.html?a="+from+"'>"+document.node._label(from)+"</a>");
 				}	
 			});
 			dcon.to().then(function(to) {
 				if(to==document.stromkontoDelta) { $('#to_'+o).html ("This BLG");} else {
-					$('#to_'+o).html("<a href='./mpr.html?c="+to+"'>"+to+"</a>");
+					$('#to_'+o).html("<a href='./account.html?a="+to+"'>"+document.node._label(to)+"</a>");
 				}
 			});
 			dcon.cost_per_day().then( function(cpd) {					

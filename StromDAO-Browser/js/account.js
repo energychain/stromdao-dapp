@@ -1,5 +1,5 @@
 account="0x83F8B15eb816284ddcF2ff005Db7a19196d86ae1";
-blk="0xd3bc06dd5e5D6aD87Ab37D4674be32Fa90bA4bd8";
+blk="0x3c08F0a2383C76C730844A64E45429991Fbc2bF8";
 address_stromkonto="";
 document.balancesheets=[];
 
@@ -139,7 +139,7 @@ function getBlockTime(blockNumber,bl) {
 		web3.eth.getBlock(blockNumber, function(error, result){
 			if(!error) {
 						d=new Date(result.timestamp*1000);					
-						$('.ts_'+blockNumber).html("#"+blockNumber+" "+d.toLocaleString());
+						$('.ts_'+blockNumber).html("#"+blockNumber+"<br/>"+d.toLocaleString());
 						if(typeof cb != "undefined") cb();
 			}	else {console.log(error);}		
 		});
@@ -164,6 +164,20 @@ function remain64(data) { return data.substr(64);}
 
 function afterInit() {
 	if(getParameterByName("a")) {account=getParameterByName("a");}	
+	$('.account').html(document.node._label(account));
+	$('.account').attr("data-account",account);
+	$('.account').unbind('click');
+	$('.account').click(function(a,b) {
+		
+			$('.account').unbind('click');
+			$(a.currentTarget).html("<input type='text' class='form-control adr_edit' value='"+$(a.currentTarget).html()+"' data-account='"+$(a.currentTarget).attr("data-account")+"'>");
+			$('.adr_edit').on('keyup',function(a,b) {
+				if(a.key=="Enter") {									
+					node._saveLabel($(a.currentTarget).val(),$(a.currentTarget).attr('data-account'));
+					location.reload();
+				}
+			});
+	});
 	uiRefresh();
 	setInterval(uiRefresh,5000);
 	$('#txLog').empty();
@@ -226,7 +240,7 @@ function updateLogs(fromBlock) {
 		html+="</tr>";
 		saldo+=bs[i].txSoll;
 	}
-	html+="<tr><td colspan=6><a href='#' onclick='document.tobl-=3;afterInit();' class='btn btn-primary'>more</a></tr>";
+	html+="<tr class='hidden-print'><td colspan=6><a href='#' onclick='document.tobl-=3;afterInit();' class='btn btn-primary'>more</a></tr>";
 	html+="</table>";
 	$('#txLog').html(html);	
 	for(var i=0;i<bs.length;i++) {	
@@ -234,5 +248,5 @@ function updateLogs(fromBlock) {
 	}
 
 }
-$('.account').html(account);
+
 afterInit();
