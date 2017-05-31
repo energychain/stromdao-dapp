@@ -4,13 +4,14 @@ address_stromkonto="";
 document.balancesheets=[];
 
 function uiRefresh() {
-	web3.net.getPeerCount(function(e,o) {
-		$('.peerCount').html(o);
-	});
-	web3.eth.getBlock("latest",function(e,o) {		
-		$('.lastBlock').html(o.number);	
-	});
-	
+	if(typeof web3 != "undefined") { 
+		web3.net.getPeerCount(function(e,o) {
+			$('.peerCount').html(o);
+		});
+		web3.eth.getBlock("latest",function(e,o) {		
+			$('.lastBlock').html(o.number);	
+		});
+	}
 }
 
 function loadBalancesheets(idx,cb) {

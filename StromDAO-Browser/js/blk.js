@@ -5,7 +5,7 @@ if (typeof web3 !== 'undefined') {
 }
 var mapping=[];
 $('#load_exid').click(function() {
-	document.node= new document.StromDAOBO.Node({external_id:$('#extid').val(),testMode:true,rpc:"http://localhost:8540"});
+	document.node= new document.StromDAOBO.Node({external_id:$('#extid').val(),testMode:true});
 	node = document.node;
 	var cadr=node.storage.getItemSync("myblk_"+$('#extid').val());
 	console.log("CADR",cadr);
@@ -40,6 +40,7 @@ function getParameterByName( name ){
 }
 
 function uiRefresh() {
+	if(typeof web3 == "undefined") return;
 	web3.net.getPeerCount(function(e,o) {
 		$('.peerCount').html(o);
 	});

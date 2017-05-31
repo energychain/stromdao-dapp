@@ -1,0 +1,33 @@
+{
+  "name": "stromdao-dapp",
+  "version": "0.0.1",
+  "description": "DAPP for StromDAO Energy Blockchain",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/energychain/stromdao-dapp.git"
+  },
+  "keywords": [
+    "stromdao",
+    "dapp",
+    "business",
+    "object",
+    "energy",
+    "blockchain"
+  ],
+  "author": "Thorsten Zoerner",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/energychain/stromdao-dapp/issues"
+  },
+  "homepage": "https://github.com/energychain/stromdao-dapp#readme",
+  "dependencies": {
+    "h2o2": "^5.4.0",
+    "hapi": "^16.3.0",
+    "inert": "^4.2.0"
+  }
+}

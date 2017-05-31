@@ -201,7 +201,14 @@ this.dso=function(obj_or_address) {
 
 },{}],4:[function(require,module,exports){
 this.deployment=function(options) {
-				if(typeof options.rpc == "undefined") options.rpc='http://app.stromdao.de:8081/rpc';
+				if(typeof options.rpc == "undefined") {
+					if(typeof window != "undefined") {
+						options.rpc=location.origin+"/rpc";
+						} else {
+						options.rpc='http://app.stromdao.de:8081/rpc';
+					}
+				}
+						
 				return options;
 		};
 this.loadDefaults=function(options) {
@@ -1215,7 +1222,11 @@ module.exports = {
 		var options=this._defaults(user_options);
         
 		if(typeof web3 != "undefined") {
-			var rpcprovider = new ethers.providers.JsonRpcProvider("http://127.0.0.1:8080/rpc", 42)
+			// set default provider to same host as we are comming from (if available)
+			var rpcprovider = new ethers.providers.JsonRpcProvider("http://127.0.0.1:8080/rpc", 42);
+			if(typeof window != "undefined") {
+					var rpcprovider = new ethers.providers.JsonRpcProvider(location.origin+"/rpc", 42);
+			}
 		} else { 
 			var rpcprovider = new ethers.providers.JsonRpcProvider(options.rpc, 42);        
 		}
@@ -20462,7 +20473,7 @@ if((typeof extid == "undefined")||(extid==null)||(extid.length==0)) extid="1337"
 if((typeof window.localStorage.getItem("extid") != "undefined")&&(window.localStorage.getItem("extid") != null))  {
 extid=window.localStorage.getItem("extid");
 }
-var node = new StromDAOBO.Node({external_id:extid,testMode:true,rpc:"http://localhost:8540"});
+var node = new StromDAOBO.Node({external_id:extid,testMode:true});
 document.node = node;
 
 function split64(data) { return "0x"+data.substr(0,64);}

@@ -44,7 +44,7 @@ if((typeof extid == "undefined")||(extid==null)||(extid.length==0)) extid="1337"
 if((typeof window.localStorage.getItem("extid") != "undefined")&&(window.localStorage.getItem("extid") != null))  {
 extid=window.localStorage.getItem("extid");
 }
-var node = new StromDAOBO.Node({external_id:extid,testMode:true,rpc:"http://localhost:8540"});
+var node = new StromDAOBO.Node({external_id:extid,testMode:true});
 document.node = node;
 
 function split64(data) { return "0x"+data.substr(0,64);}
