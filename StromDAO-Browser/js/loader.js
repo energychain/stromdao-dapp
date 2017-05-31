@@ -1023,7 +1023,8 @@ module.exports = {
 		 */
 		 
 		this._saveLabel=function(address_type,address) {				
-				storage.setItemSync("label_"+address.toLowerCase(),address_type+" "+address.substring(5,10));
+				if(address_type.length<2) {address_type=address_type+" "+address.substring(5,10);}
+				storage.setItemSync("label_"+address.toLowerCase(),address_type);
 		} 
 		this._label=function(address) {
 				address=address.toLowerCase();

@@ -3,6 +3,17 @@ blk="0xd3bc06dd5e5D6aD87Ab37D4674be32Fa90bA4bd8";
 address_stromkonto="";
 document.balancesheets=[];
 
+function getParameterByName( name ){
+   var regexS = "[\\?&]"+name+"=([^&#]*)", 
+  regex = new RegExp( regexS ),
+  results = regex.exec( window.location.search );
+  if( results == null ){
+    return "";
+  } else{
+    return decodeURIComponent(results[1].replace(/\+/g, " "));
+  }
+}
+
 function uiRefresh() {
 	if(typeof web3 != "undefined") { 
 		web3.net.getPeerCount(function(e,o) {
@@ -15,32 +26,41 @@ function uiRefresh() {
 }
 
 function loadBalancesheets(idx,cb) {
-	
+	console.log("Loading balance",idx,document.blcnt,document.tobl);
 	idx--;
-	if(idx<0) cb();
-	node.blg(blk).then(function(blg) {
-		blg.balancesheets(idx).then(function(a,b) {							
-			node.stromkonto(a.balanceIn).then(
-				function(stromkontoIn) {
+	tobl=document.blcnt-3;
+	if(typeof document.tobl != "undefined") {
+		tobl=document.tobl;	
+	}
+	if(idx<0) cb(); else {
+	if(idx<tobl)  { 
+		loadBalancesheets(idx,cb);
+	} else {	
+		if((document.blcnt-idx)<document.balancesheets.length+1) loadBalancesheets(idx,cb); else {
+			node.blg(blk).then(function(blg) {
+				blg.balancesheets(idx).then(function(a,b) {							
+					node.stromkonto(a.balanceIn).then(
+						function(stromkontoIn) {
 
-						node.stromkonto(a.balanceOut).then(function(stromkontoOut) {
-								stromkontoOut.balancesSoll(account).then(function(outSoll) {
-									bl = { balanceIn:a.balanceIn, balanceOut:a.balanceOut,blockNumber:(a.blockNumber.toString()*1),stromkontoIn:stromkontoOut,stromkontoOut:stromkontoOut,txSoll:outSoll };
-									document.balancesheets.push(bl);
-									loadBalancesheets(idx,cb)							
+								node.stromkonto(a.balanceOut).then(function(stromkontoOut) {
+										stromkontoOut.balancesSoll(account).then(function(outSoll) {
+											bl = { balanceIn:a.balanceIn, balanceOut:a.balanceOut,blockNumber:(a.blockNumber.toString()*1),stromkontoIn:stromkontoOut,stromkontoOut:stromkontoOut,txSoll:outSoll };
+											document.balancesheets.push(bl);
+											loadBalancesheets(idx,cb)							
+										});
 								});
-						});
-					
-			});								
-		});
-	});
-	
+							
+					});								
+				});
+			});
+		}
+	}
+	}
 }
 
 function balanceInInfo(bin,bbl,sumBase,sumTx,bl) {
 document.node.wallet.provider.getLogs({address:bin,fromBlock:bbl-10,toBlock:bbl}).then(
-	function(logs) {
-			console.log("LOGS",logs);
+	function(logs) {			
 			var html="";
 			total=0;
 			for(var i=0;i<logs.length;i++) {
@@ -92,10 +112,22 @@ document.node.wallet.provider.getLogs({address:bin,fromBlock:bbl-10,toBlock:bbl}
 					_toHaben =node._utils.bigNumberify(split64(data)).toNumber();
 					data=data.substr(64);
 					portion=_base/total;
-					html+="<tr><td class='"+_to+" bl_"+bl.blockNumber+"'>"+document.node._label(_to)+"</td><td>-"+(bl.txSoll*portion).money()+"</td><td>"+Math.round(portion*1000)/10+"%</tr>";
+					html+="<tr><td class='"+_to+" bl_"+bl.blockNumber+" account' data-account='"+_to+"'>"+document.node._label(_to)+"</td><td>-"+(bl.txSoll*portion).money()+"</td><td>"+Math.round(portion*1000)/10+"%</tr>";
 					$('#txbl_'+bbl).append(html);	
 					$('.price_'+bl.blockNumber).html((sumTx/sumBase)/100000);
 					$('.energy_'+bl.blockNumber).html((bl.txSoll/(sumTx/sumBase)));
+					$('.account').unbind('click');
+					$('.account').click(function(a,b) {
+						
+							$('.account').unbind('click');
+							$(a.currentTarget).html("<input type='text' class='form-control adr_edit' value='"+$(a.currentTarget).html()+"' data-account='"+$(a.currentTarget).attr("data-account")+"'>");
+							$('.adr_edit').on('keyup',function(a,b) {
+								if(a.key=="Enter") {									
+									node._saveLabel($(a.currentTarget).val(),$(a.currentTarget).attr('data-account'));
+									location.reload();
+								}
+							});
+					});
 				}
 			}	
 			//$('#txbl_'+bbl).append("<tr><th>Total Energy</th><th>-"+_base+"</td></tr>");
@@ -116,9 +148,9 @@ function getBlockTime(blockNumber,bl) {
 			
 	bl.stromkontoIn.sumTx().then(function(sumTx) {
 							if(sumTx==0) return;
-							console.log("sumTx",sumTx);
+						
 							bl.stromkontoIn.sumBase().then(function(sumBase) {
-								balanceInInfo(""+bl.balanceIn,bl.blockNumber,sumBase,sumTx,bl);	
+								balanceInInfo(""+bl.balanceIn,bl.blockNumber,sumBase,sumTx,bl);									
 							});
 							//setTimeout("balanceInInfo('"+bl.balanceIn+"',"+bl.blockNumber+","+sumBase+","+obj.base+");",500);											
 					});
@@ -130,9 +162,10 @@ function split64(data) { return "0x"+data.substr(0,64);}
 function remain64(data) { return data.substr(64);}
 
 function afterInit() {
+	if(getParameterByName("a")) {account=getParameterByName("a");}	
 	uiRefresh();
 	setInterval(uiRefresh,5000);
-	
+	$('#txLog').empty();
 	node = document.node;
 	
 	node.blg(blk).then(function(blk) {
@@ -153,6 +186,9 @@ function afterInit() {
 									
 									blk.balancesheets_cnt().then(function(o) {
 											document.blcnt=o*1;
+											if(typeof document.tobl=="undefined") {
+												document.tobl=document.blcnt-3;
+											}
 											loadBalancesheets(o*1,function() {
 												updateLogs();
 											 });
@@ -169,6 +205,7 @@ function afterInit() {
 
 
 function updateLogs(fromBlock) {
+
 	bs=document.balancesheets;
 	//bs=bs.reverse();
 	var html="<table class='table table-striped'>"
@@ -188,7 +225,7 @@ function updateLogs(fromBlock) {
 		html+="</tr>";
 		saldo+=bs[i].txSoll;
 	}
-	html+="<tr><td colspan=3><a href='#' onclick='updateLogs("+(fromBlock-500)+");' class='btn btn-primary'>more</a></tr>";
+	html+="<tr><td colspan=3><a href='#' onclick='document.tobl-=3;afterInit();' class='btn btn-primary'>more</a></tr>";
 	html+="</table>";
 	$('#txLog').html(html);	
 	for(var i=0;i<bs.length;i++) {	
