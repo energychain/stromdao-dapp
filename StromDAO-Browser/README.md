@@ -11,6 +11,8 @@ They are all updated in Genesis MPR Contract ( 0x0000000000000000000000000000000
 
 We are deploying to several instances. 
 
+Try on Glitch:
+
 ## Contributing
 - https://stromdao.de/
 - https://gitter.im/stromdao/Lobby
