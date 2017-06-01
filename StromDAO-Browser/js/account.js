@@ -2,7 +2,9 @@ account="0x83F8B15eb816284ddcF2ff005Db7a19196d86ae1";
 blk="0x3c08F0a2383C76C730844A64E45429991Fbc2bF8";
 address_stromkonto="";
 document.balancesheets=[];
-pageBL=7;
+document.summary=[];
+pageBL=4;
+
 
 function getParameterByName( name ){
    var regexS = "[\\?&]"+name+"=([^&#]*)", 
@@ -76,8 +78,7 @@ document.node.wallet.provider.getLogs({address:bin,fromBlock:bbl-10,toBlock:bbl}
 					data=data.substr(64);												
 					_value =node._utils.bigNumberify(split64(data)).toNumber();
 					data=data.substr(64);
-					_base =node._utils.bigNumberify(split64(data)).toNumber();
-					console.log(_base);
+					_base =node._utils.bigNumberify(split64(data)).toNumber();					
 					data=data.substr(64);
 					_fromSoll =node._utils.bigNumberify(split64(data));
 					data=data.substr(64);
@@ -116,7 +117,7 @@ document.node.wallet.provider.getLogs({address:bin,fromBlock:bbl-10,toBlock:bbl}
 					data=data.substr(64);
 					portion=_base/total;
 					benergy=Math.round(bl.txSoll/(sumTx/sumBase)*100)/100;
-					console.log("BENERGY",benergy);
+					
 					html+="<tr><td class='"+_to+" bl_"+bl.blockNumber+" account' data-account='"+_to+"'>"+document.node._label(_to)+"</td><td align='right' title='"+(portion*benergy)+"'>-"+(1*(bl.txSoll*portion).money()).mcurrency()+"</td><td align='right'>"+Math.round(portion*1000)/10+"%</tr>";
 					$('#txbl_'+bbl).append(html);	
 					$('.price_'+bl.blockNumber).html(((sumTx/sumBase)/100000).toFixed(4));
@@ -134,14 +135,15 @@ document.node.wallet.provider.getLogs({address:bin,fromBlock:bbl-10,toBlock:bbl}
 							});
 					});
 					if(typeof document.summary == "undefined") {
-						document.summary = [];
+						//document.summary = [];
 					}
 					if(typeof document.summary[""+_to]== "undefined") {
 						document.summary[""+_to]={sumBase:(benergy*portion),sumTx:portion*(bl.txSoll*portion)}
 					} else {
-						document.summary[""+_to].sumBase+=benergy*portion;
-						document.summary[""+_to].sumTx+=1*(bl.txSoll*portion);						
+						
 					}
+					document.summary[""+_to].sumBase+=benergy*portion;
+					document.summary[""+_to].sumTx+=1*(bl.txSoll*portion);						
 					renderSummary();
 				}
 			}	
@@ -172,6 +174,7 @@ $('.account').unbind('click');
 								}
 							});
 					});
+document.slock=false;					
 }
 function getBlockTime(blockNumber,bl) {		
 	if(typeof web3 != "undefined") {
@@ -183,23 +186,25 @@ function getBlockTime(blockNumber,bl) {
 			}	else {console.log(error);}		
 		});
 	}
-	
-	$("#blk_"+blockNumber).html("<table class='table table-condensed' id='txbl_"+blockNumber+"' width='100%' ><tr><th width='33%'>Source</th><th style='text-align:right' width='33%'>Value</th><th style='text-align:right'>%</tr></table>");	
-			
-	bl.stromkontoIn.sumTx().then(function(sumTx) {
-							if(sumTx==0) return;
-						
-							bl.stromkontoIn.sumBase().then(function(sumBase) {
-								balanceInInfo(""+bl.balanceIn,bl.blockNumber,sumBase,sumTx,bl);									
-							});
-							//setTimeout("balanceInInfo('"+bl.balanceIn+"',"+bl.blockNumber+","+sumBase+","+obj.base+");",500);											
-					});
+	if($("#txbl_"+blockNumber).length==0) {
+		$("#blk_"+blockNumber).html("<table class='table table-condensed' id='txbl_"+blockNumber+"' width='100%' ><tr><th width='33%'>Source</th><th style='text-align:right' width='33%'>Value</th><th style='text-align:right'>%</tr></table>");	
+				
+		bl.stromkontoIn.sumTx().then(function(sumTx) {
+								if(sumTx==0) return;
+							
+								bl.stromkontoIn.sumBase().then(function(sumBase) {
+									balanceInInfo(""+bl.balanceIn,bl.blockNumber,sumBase,sumTx,bl);									
+								});
+								//setTimeout("balanceInInfo('"+bl.balanceIn+"',"+bl.blockNumber+","+sumBase+","+obj.base+");",500);											
+						});
+	}
 };
 
 function split64(data) { return "0x"+data.substr(0,64);}
 function remain64(data) { return data.substr(64);}
 
 function afterInit() {
+	
 	if(getParameterByName("a")) {account=getParameterByName("a");}	
 	$('.account').html(document.node._label(account));
 	$('.account').attr("data-account",account);
@@ -217,7 +222,7 @@ function afterInit() {
 	});
 	uiRefresh();
 	setInterval(uiRefresh,5000);
-	$('#txLog').empty();
+	//$('#txLog').empty();
 	node = document.node;
 	
 	node.blg(blk).then(function(blk) {
@@ -225,13 +230,13 @@ function afterInit() {
 						
 						node.stromkonto(stromkontoDelta).then(function(stromkonto) {
 								stromkonto.balancesSoll(account).then( function(value) {
-									$('.soll').html((1*value.money()).mcurrency());
+									$('.soll').html((1*value.money()).toFixed(2));
 									document.soll=value;
 									document.saldo=document.haben-document.soll;
 									$('.saldo').html(($('.haben').html()-$('.soll').html()));
 								});
 								stromkonto.balancesHaben(account).then( function(value) {
-									$('.haben').html((value.money()*1).mcurrency());
+									$('.haben').html((value.money()*1).toFixed(2));
 									document.haben=value;
 									document.saldo=document.haben-document.soll;
 									$('.saldo').html($('.haben').html()-$('.soll').html());
@@ -243,6 +248,7 @@ function afterInit() {
 											}
 											loadBalancesheets(o*1,function() {
 												updateLogs();
+												$(window).scrollTop(document.ScrollOffset);
 											 });
 										});									
 									
@@ -257,33 +263,53 @@ function afterInit() {
 
 
 function updateLogs(fromBlock) {
-	document.summary = [];	
+	//document.summary = [];	
 	bs=document.balancesheets;
 	//bs=bs.reverse();
-	var html="<table class='table table-striped'>"
-	html+="<tr><th>Settlement</th><th>From/To</th><th style='text-align:right'></th><th style='text-align:right'>Energy</th><th style='text-align:right'>Price</th><th style='text-align:right'>Value</th><th style='text-align:right'>Balance</th></tr>";
 	saldo=document.saldo;
-	for(var i=0;i<bs.length;i++) {		
-		html+="<tr>";
-		html+="<td class='ts_"+bs[i].blockNumber+"'>"+bs[i].blockNumber+"</td>";
-		html+="<td id='blk_"+bs[i].blockNumber+"'>TBD</td>"																		
-		html+="<td align='right'></td>";
-		
-		// "+((_value*1)/(_base*1))+"
-		html+="<td align='right' class='energy_"+bs[i].blockNumber+"'>TBD</td>";
-		html+="<td align='right' class='price_"+bs[i].blockNumber+"'>TBD</td>";
-		html+="<td align='right'>-"+(1*(bs[i].txSoll*1).money()).mcurrency()+"</td>";
-		html+="<td align='right'>"+(1*(saldo*1).money()).mcurrency()+"</td>";		
-		html+="</tr>";
+	var html="";
+	for(var i=0;i<bs.length;i++) {	
+		if($('#blk_'+bs[i].blockNumber).length ==0) {	
+			html+="<tr>";
+			html+="<td class='ts_"+bs[i].blockNumber+"'>"+bs[i].blockNumber+"</td>";
+			html+="<td id='blk_"+bs[i].blockNumber+"'>TBD</td>"																		
+			html+="<td align='right'></td>";
+			
+			// "+((_value*1)/(_base*1))+"
+			html+="<td align='right' class='energy_"+bs[i].blockNumber+"'>TBD</td>";
+			html+="<td align='right' class='price_"+bs[i].blockNumber+"'>TBD</td>";
+			html+="<td align='right'>-"+(1*(bs[i].txSoll*1).money()).mcurrency()+"</td>";
+			html+="<td align='right'>"+(1*(saldo*1).money()).mcurrency()+"</td>";		
+			html+="</tr>";
+		}
 		saldo+=bs[i].txSoll;
 	}
-	html+="<tr class='hidden-print'><td colspan=6><a href='#' onclick='document.tobl-="+pageBL+";afterInit();' class='btn btn-primary'>more</a></tr>";
-	html+="</table>";
-	$('#txLog').html(html);	
+
+	$('#txLog').append(html);	
 	for(var i=0;i<bs.length;i++) {	
 		getBlockTime(bs[i].blockNumber,bs[i]);
 	}
-
 }
+
+function pScroll() {
+	if((typeof document.slock != "undefined")&&(document.slock)) return;
+	if(document.tobl<0) return;
+	document.slock=true;
+	if($('#progressScroll').offset().top>$(window).height()) {
+	document.ScrollOffset= Math.abs($('#progressScroll').offset().top-$(window).height());
+	}
+	console.log(document.ScrollOffset);
+	console.log("-----------------");
+	document.blcnt=document.tobl;
+	document.tobl-=pageBL;
+	
+	afterInit();
+	
+}
+$('#progressScroll').appear();
+$('#progressScroll').on('appear',function() {	
+	setTimeout("pScroll();",100);
+	//$(window).scrollTop(document.ScrollOffset);
+});
 
 afterInit();
