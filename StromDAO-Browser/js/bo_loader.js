@@ -18,6 +18,7 @@ Number.prototype.money = function() {
 	var re = '\\d(?=(\\d{' + (x || 3) + '})+' + (n > 0 ? '\\D' : '$') + ')',
     num = this.toFixed(Math.max(0, ~~n));
 	num=num/100000000;
+	num = num.toFixed(Math.max(0, ~~n));
 	num=num+"";
     return (c ? num.replace('.', c) : num).replace(new RegExp(re, 'g'), '$&' + (s || ','));
 };
@@ -34,7 +35,7 @@ Number.prototype.energy = function() {
     return (c ? num.replace('.', c) : num).replace(new RegExp(re, 'g'), '$&' + (s || ','));
 };
 Number.prototype.mcurrency = function() {
-	n=5;
+	n=2;
 	x=3;
 	s="";
 	c=".";

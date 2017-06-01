@@ -117,7 +117,7 @@ document.node.wallet.provider.getLogs({address:bin,fromBlock:bbl-10,toBlock:bbl}
 					console.log("BENERGY",benergy);
 					html+="<tr><td class='"+_to+" bl_"+bl.blockNumber+" account' data-account='"+_to+"'>"+document.node._label(_to)+"</td><td align='right' title='"+(portion*benergy)+"'>-"+(1*(bl.txSoll*portion).money()).mcurrency()+"</td><td align='right'>"+Math.round(portion*1000)/10+"%</tr>";
 					$('#txbl_'+bbl).append(html);	
-					$('.price_'+bl.blockNumber).html((sumTx/sumBase)/100000);
+					$('.price_'+bl.blockNumber).html(((sumTx/sumBase)/100000).toFixed(4));
 					$('.energy_'+bl.blockNumber).html((bl.txSoll/(sumTx/sumBase)));
 					$('.account').unbind('click');
 					$('.account').click(function(a,b) {
