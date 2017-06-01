@@ -28,7 +28,7 @@ function uiRefresh() {
 function loadBalancesheets(idx,cb) {
 	console.log("Loading balance",idx,document.blcnt,document.tobl);
 	idx--;
-	tobl=document.blcnt-3;
+	tobl=document.blcnt-7;
 	if(typeof document.tobl != "undefined") {
 		tobl=document.tobl;	
 	}
@@ -113,7 +113,9 @@ document.node.wallet.provider.getLogs({address:bin,fromBlock:bbl-10,toBlock:bbl}
 					_toHaben =node._utils.bigNumberify(split64(data)).toNumber();
 					data=data.substr(64);
 					portion=_base/total;
-					html+="<tr><td class='"+_to+" bl_"+bl.blockNumber+" account' data-account='"+_to+"'>"+document.node._label(_to)+"</td><td align='right'>-"+(1*(bl.txSoll*portion).money()).mcurrency()+"</td><td align='right'>"+Math.round(portion*1000)/10+"%</tr>";
+					benergy=Math.round(bl.txSoll/(sumTx/sumBase)*100)/100;
+					console.log("BENERGY",benergy);
+					html+="<tr><td class='"+_to+" bl_"+bl.blockNumber+" account' data-account='"+_to+"'>"+document.node._label(_to)+"</td><td align='right' title='"+(portion*benergy)+"'>-"+(1*(bl.txSoll*portion).money()).mcurrency()+"</td><td align='right'>"+Math.round(portion*1000)/10+"%</tr>";
 					$('#txbl_'+bbl).append(html);	
 					$('.price_'+bl.blockNumber).html((sumTx/sumBase)/100000);
 					$('.energy_'+bl.blockNumber).html((bl.txSoll/(sumTx/sumBase)));
@@ -129,10 +131,45 @@ document.node.wallet.provider.getLogs({address:bin,fromBlock:bbl-10,toBlock:bbl}
 								}
 							});
 					});
+					if(typeof document.summary == "undefined") {
+						document.summary = [];
+					}
+					if(typeof document.summary[""+_to]== "undefined") {
+						document.summary[""+_to]={sumBase:(benergy*portion),sumTx:portion*(bl.txSoll*portion)}
+					} else {
+						document.summary[""+_to].sumBase+=benergy*portion;
+						document.summary[""+_to].sumTx+=1*(bl.txSoll*portion);						
+					}
+					renderSummary();
 				}
 			}	
 			//$('#txbl_'+bbl).append("<tr><th>Total Energy</th><th>-"+_base+"</td></tr>");
 	});
+}
+
+function renderSummary() {
+	
+var html="";
+html+="<table class='table table-striped'><tr><th>From/To</th><th style='text-align:right'>Total Energy</th><th style='text-align:right'>Total Cost</th></tr>";
+for (var k in document.summary){
+    if (document.summary.hasOwnProperty(k)) {
+		html+="<tr><td class='account' data-account='"+k+"'>"+document.node._label(k)+"</td><td align='right'>"+(1*document.summary[k].sumBase).round()+"</td><td align='right'>"+(1*document.summary[k].sumTx.money()).mcurrency()+"</td></tr>";         
+    }
+}
+html+="</table>";	
+$('#summary').html(html);
+$('.account').unbind('click');
+					$('.account').click(function(a,b) {
+						
+							$('.account').unbind('click');
+							$(a.currentTarget).html("<input type='text' class='form-control adr_edit' value='"+$(a.currentTarget).html()+"' data-account='"+$(a.currentTarget).attr("data-account")+"'>");
+							$('.adr_edit').on('keyup',function(a,b) {
+								if(a.key=="Enter") {									
+									node._saveLabel($(a.currentTarget).val(),$(a.currentTarget).attr('data-account'));
+									location.reload();
+								}
+							});
+					});
 }
 function getBlockTime(blockNumber,bl) {		
 	if(typeof web3 != "undefined") {
@@ -155,8 +192,6 @@ function getBlockTime(blockNumber,bl) {
 							});
 							//setTimeout("balanceInInfo('"+bl.balanceIn+"',"+bl.blockNumber+","+sumBase+","+obj.base+");",500);											
 					});
-			
-
 };
 
 function split64(data) { return "0x"+data.substr(0,64);}
@@ -220,7 +255,7 @@ function afterInit() {
 
 
 function updateLogs(fromBlock) {
-
+	document.summary = [];	
 	bs=document.balancesheets;
 	//bs=bs.reverse();
 	var html="<table class='table table-striped'>"
@@ -240,7 +275,7 @@ function updateLogs(fromBlock) {
 		html+="</tr>";
 		saldo+=bs[i].txSoll;
 	}
-	html+="<tr class='hidden-print'><td colspan=6><a href='#' onclick='document.tobl-=3;afterInit();' class='btn btn-primary'>more</a></tr>";
+	html+="<tr class='hidden-print'><td colspan=6><a href='#' onclick='document.tobl-=7;afterInit();' class='btn btn-primary'>more</a></tr>";
 	html+="</table>";
 	$('#txLog').html(html);	
 	for(var i=0;i<bs.length;i++) {	
