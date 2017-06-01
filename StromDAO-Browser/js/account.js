@@ -2,6 +2,7 @@ account="0x83F8B15eb816284ddcF2ff005Db7a19196d86ae1";
 blk="0x3c08F0a2383C76C730844A64E45429991Fbc2bF8";
 address_stromkonto="";
 document.balancesheets=[];
+pageBL=7;
 
 function getParameterByName( name ){
    var regexS = "[\\?&]"+name+"=([^&#]*)", 
@@ -26,9 +27,9 @@ function uiRefresh() {
 }
 
 function loadBalancesheets(idx,cb) {
-	console.log("Loading balance",idx,document.blcnt,document.tobl);
+	
 	idx--;
-	tobl=document.blcnt-7;
+	tobl=document.blcnt-pageBL;
 	if(typeof document.tobl != "undefined") {
 		tobl=document.tobl;	
 	}
@@ -36,6 +37,7 @@ function loadBalancesheets(idx,cb) {
 	if(idx<tobl)  { 
 		loadBalancesheets(idx,cb);
 	} else {	
+		console.log("Loading balance to memory",idx,document.blcnt,document.tobl);
 		if((document.blcnt-idx)<document.balancesheets.length+1) loadBalancesheets(idx,cb); else {
 			node.blg(blk).then(function(blg) {
 				blg.balancesheets(idx).then(function(a,b) {							
@@ -237,7 +239,7 @@ function afterInit() {
 									blk.balancesheets_cnt().then(function(o) {
 											document.blcnt=o*1;
 											if(typeof document.tobl=="undefined") {
-												document.tobl=document.blcnt-3;
+												document.tobl=document.blcnt-pageBL;
 											}
 											loadBalancesheets(o*1,function() {
 												updateLogs();
@@ -275,7 +277,7 @@ function updateLogs(fromBlock) {
 		html+="</tr>";
 		saldo+=bs[i].txSoll;
 	}
-	html+="<tr class='hidden-print'><td colspan=6><a href='#' onclick='document.tobl-=7;afterInit();' class='btn btn-primary'>more</a></tr>";
+	html+="<tr class='hidden-print'><td colspan=6><a href='#' onclick='document.tobl-="+pageBL+";afterInit();' class='btn btn-primary'>more</a></tr>";
 	html+="</table>";
 	$('#txLog').html(html);	
 	for(var i=0;i<bs.length;i++) {	
