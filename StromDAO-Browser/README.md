@@ -9,6 +9,8 @@ For personal tests we are updating several Meter Point Readings every 15 Minutes
 
 They are all updated in Genesis MPR Contract ( 0x0000000000000000000000000000000000000008 )
 
+We are deploying to several instances. Please refer to demo
+
 ## Contributing
 - https://stromdao.de/
 - https://gitter.im/stromdao/Lobby
