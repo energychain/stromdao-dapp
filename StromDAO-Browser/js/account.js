@@ -154,14 +154,25 @@ document.node.wallet.provider.getLogs({address:bin,fromBlock:bbl-10,toBlock:bbl}
 function renderSummary() {
 	
 var html="";
-html+="<table class='table table-striped'><tr><th>From/To</th><th style='text-align:right'>Total Energy</th><th style='text-align:right'>Total Cost</th></tr>";
+html+="<table class='table table-striped'><tr><th>From/To</th><th style='text-align:right'>Total Energy</th><th style='text-align:right'>%</th><th style='text-align:right'>Total Cost</th><th style='text-align:right'>%</th></tr>";
+var total_energy=0;
+var total_cost=0;
 for (var k in document.summary){
-    if (document.summary.hasOwnProperty(k)) {
-		html+="<tr><td class='account' data-account='"+k+"'>"+document.node._label(k)+"</td><td align='right'>"+(1*document.summary[k].sumBase).round()+"</td><td align='right'>"+(1*document.summary[k].sumTx.money()).mcurrency()+"</td></tr>";         
+    if (document.summary.hasOwnProperty(k)) {		
+		html+="<tr><td class='account' data-account='"+k+"'>"+document.node._label(k)+"</td><td align='right'>"+(1*document.summary[k].sumBase).round()+"</td><td align='right' id='per_"+k+"'></td><td align='right'>"+(1*document.summary[k].sumTx.money()).mcurrency()+"</td><td align='right' id='pcs_"+k+"'></td></tr>";         
+		total_energy+=document.summary[k].sumBase;
+		total_cost+=1*document.summary[k].sumTx;
     }
 }
+
 html+="</table>";	
 $('#summary').html(html);
+for (var k in document.summary){
+	if (document.summary.hasOwnProperty(k)) {
+		$('#per_'+k).html((100*(1*document.summary[k].sumBase/total_energy)).toFixed(2)+"%");
+		$('#pcs_'+k).html((100*(1*document.summary[k].sumTx/total_cost)).toFixed(2)+"%");
+	}
+}
 $('.account').unbind('click');
 					$('.account').click(function(a,b) {
 						
