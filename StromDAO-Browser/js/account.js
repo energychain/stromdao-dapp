@@ -5,6 +5,8 @@ document.balancesheets=[];
 document.summary=[];
 pageBL=4;
 firstLoad=20;
+maxSettlement=0;
+minSettlement=9999999999999999;
 
 function getParameterByName( name ){
    var regexS = "[\\?&]"+name+"=([^&#]*)", 
