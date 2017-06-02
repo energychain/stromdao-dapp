@@ -167,7 +167,7 @@ for (var k in document.summary){
 		total_cost+=1*document.summary[k].sumTx;
     }
 }
-
+html+="<tr><th>&nbsp;</th><th style='text-align:right'>"+Math.round(total_energy).toFixed(2)+"</th><th style='text-align:right'>100%</th><th style='text-align:right'>"+total_cost.money()+"</th><th style='text-align:right'>100%</th></tr>";
 html+="</table>";	
 $('#summary').html(html);
 for (var k in document.summary){
