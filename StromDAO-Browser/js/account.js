@@ -127,7 +127,7 @@ document.node.wallet.provider.getLogs({address:bin,fromBlock:bbl-10,toBlock:bbl}
 					$('.energy_'+bl.blockNumber).html((bl.txSoll/(sumTx/sumBase)));
 					$('.account').unbind('click');
 					$('.account').click(function(a,b) {
-						
+							
 							$('.account').unbind('click');
 							$(a.currentTarget).html("<input type='text' class='form-control adr_edit' value='"+$(a.currentTarget).html()+"' data-account='"+$(a.currentTarget).attr("data-account")+"'>");
 							$('.adr_edit').on('keyup',function(a,b) {
@@ -136,6 +136,7 @@ document.node.wallet.provider.getLogs({address:bin,fromBlock:bbl-10,toBlock:bbl}
 									location.reload();
 								}
 							});
+							
 					});
 					if(typeof document.summary == "undefined") {
 						//document.summary = [];
@@ -162,7 +163,7 @@ var total_energy=0;
 var total_cost=0;
 for (var k in document.summary){
     if (document.summary.hasOwnProperty(k)) {		
-		html+="<tr><td class='account' data-account='"+k+"'>"+document.node._label(k)+"</td><td align='right'>"+(1*document.summary[k].sumBase).round()+"</td><td align='right' id='per_"+k+"'></td><td align='right'>"+(1*document.summary[k].sumTx.money()).mcurrency()+"</td><td align='right' id='pcs_"+k+"'></td></tr>";         
+		html+="<tr><td class='"+k+"' data-account='"+k+"'>"+document.node._label(k)+"</td><td align='right'>"+(1*document.summary[k].sumBase).round()+"</td><td align='right' id='per_"+k+"'></td><td align='right'>"+(1*document.summary[k].sumTx.money()).mcurrency()+"</td><td align='right' id='pcs_"+k+"'></td></tr>";         
 		total_energy+=document.summary[k].sumBase;
 		total_cost+=1*document.summary[k].sumTx;
     }
@@ -176,18 +177,20 @@ for (var k in document.summary){
 		$('#pcs_'+k).html((100*(1*document.summary[k].sumTx/total_cost)).toFixed(2)+"%");
 	}
 }
+
 $('.account').unbind('click');
-					$('.account').click(function(a,b) {
-						
-							$('.account').unbind('click');
-							$(a.currentTarget).html("<input type='text' class='form-control adr_edit' value='"+$(a.currentTarget).html()+"' data-account='"+$(a.currentTarget).attr("data-account")+"'>");
-							$('.adr_edit').on('keyup',function(a,b) {
-								if(a.key=="Enter") {									
-									node._saveLabel($(a.currentTarget).val(),$(a.currentTarget).attr('data-account'));
-									location.reload();
-								}
-							});
-					});
+$('.account').click(function(a,b) {
+	
+		$('.account').unbind('click');
+		$(a.currentTarget).html("<input type='text' class='form-control adr_edit' value='"+$(a.currentTarget).html()+"' data-account='"+$(a.currentTarget).attr("data-account")+"'>");
+		$('.adr_edit').on('keyup',function(a,b) {
+			if(a.key=="Enter") {									
+				node._saveLabel($(a.currentTarget).val(),$(a.currentTarget).attr('data-account'));
+				location.reload();
+			}
+		});
+});
+
 document.slock=false;					
 }
 function getBlockTime(blockNumber,bl) {		
