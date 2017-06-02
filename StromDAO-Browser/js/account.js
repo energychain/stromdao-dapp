@@ -160,7 +160,7 @@ document.node.wallet.provider.getLogs({address:bin,fromBlock:bbl-10,toBlock:bbl}
 function renderSummary() {
 	
 var html="";
-html+="<table class='table table-striped'><tr><th>From/To</th><th style='text-align:right'>Total Energy</th><th style='text-align:right'>%</th><th style='text-align:right'>Total Cost</th><th style='text-align:right'>%</th></tr>";
+html+="<table class='table table-striped'><tr><th>From/To</th><th style='text-align:right'>Total Energy</th><th style='text-align:right'>%&nbsp;</th><th style='text-align:right'>Total Cost</th><th style='text-align:right'>%&nbsp;</th></tr>";
 var total_energy=0;
 var total_cost=0;
 for (var k in document.summary){
@@ -206,7 +206,7 @@ function getBlockTime(blockNumber,bl) {
 		});
 	}
 	if($("#txbl_"+blockNumber).length==0) {
-		$("#blk_"+blockNumber).html("<table class='table table-condensed' id='txbl_"+blockNumber+"' width='100%' ><tr><th width='33%'>Source</th><th style='text-align:right' width='33%'>Value</th><th style='text-align:right'>%</tr></table>");	
+		$("#blk_"+blockNumber).html("<table class='table table-condensed' id='txbl_"+blockNumber+"' width='100%' ><tr><th width='33%'>Source</th><th style='text-align:right' width='33%'>Value</th><th style='text-align:right'>%&nbsp;</th></tr></table>");	
 				
 		bl.stromkontoIn.sumTx().then(function(sumTx) {
 								if(sumTx==0) return;
@@ -252,13 +252,13 @@ function afterInit() {
 									$('.soll').html((1*value.money()).toFixed(2));
 									document.soll=value;
 									document.saldo=document.haben-document.soll;
-									$('.saldo').html(($('.haben').html()-$('.soll').html()));
+									$('.saldo').html((($('.haben').html()-$('.soll').html()*1)).toFixed(2));
 								});
 								stromkonto.balancesHaben(account).then( function(value) {
 									$('.haben').html((value.money()*1).toFixed(2));
 									document.haben=value;
 									document.saldo=document.haben-document.soll;
-									$('.saldo').html($('.haben').html()-$('.soll').html());
+									$('.saldo').html((($('.haben').html()-$('.soll').html()*1)).toFixed(2));
 									
 									blk.balancesheets_cnt().then(function(o) {
 											document.blcnt=o*1;
