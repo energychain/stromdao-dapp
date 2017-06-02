@@ -4,7 +4,7 @@ address_stromkonto="";
 document.balancesheets=[];
 document.summary=[];
 pageBL=4;
-
+firstLoad=20;
 
 function getParameterByName( name ){
    var regexS = "[\\?&]"+name+"=([^&#]*)", 
@@ -31,7 +31,10 @@ function uiRefresh() {
 function loadBalancesheets(idx,cb) {
 	
 	idx--;
-	tobl=document.blcnt-pageBL;
+	firstLoad--;
+	if(firstLoad<0) firstLoad=0;
+	tobl=document.blcnt-(firstLoad+pageBL);
+
 	if(typeof document.tobl != "undefined") {
 		tobl=document.tobl;	
 	}
@@ -255,7 +258,7 @@ function afterInit() {
 									blk.balancesheets_cnt().then(function(o) {
 											document.blcnt=o*1;
 											if(typeof document.tobl=="undefined") {
-												document.tobl=document.blcnt-pageBL;
+												document.tobl=document.blcnt-(firstLoad+pageBL);
 											}
 											loadBalancesheets(o*1,function() {
 												updateLogs();
