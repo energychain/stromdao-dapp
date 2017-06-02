@@ -160,17 +160,17 @@ document.node.wallet.provider.getLogs({address:bin,fromBlock:bbl-10,toBlock:bbl}
 function renderSummary() {
 	
 var html="";
-html+="<table class='table table-striped'><tr><th>From/To</th><th style='text-align:right'>Total Energy</th><th style='text-align:right'>%&nbsp;</th><th style='text-align:right'>Total Cost</th><th style='text-align:right'>%&nbsp;</th></tr>";
+html+="<table class='table table-striped'><tr><th>From/To</th><th style='text-align:right'>Total Energy</th><th style='text-align:right'>%&nbsp;</th><th style='text-align:right'>Price</th><th style='text-align:right'>Total Cost</th><th style='text-align:right'>%&nbsp;</th></tr>";
 var total_energy=0;
 var total_cost=0;
 for (var k in document.summary){
     if (document.summary.hasOwnProperty(k)) {		
-		html+="<tr><td class='"+k+"' data-account='"+k+"'>"+document.node._label(k)+"</td><td align='right'>"+(1*document.summary[k].sumBase).round()+"</td><td align='right' id='per_"+k+"'></td><td align='right'>"+(1*document.summary[k].sumTx.money()).mcurrency()+"</td><td align='right' id='pcs_"+k+"'></td></tr>";         
+		html+="<tr><td class='"+k+"' data-account='"+k+"'>"+document.node._label(k)+"</td><td align='right'>"+(1*document.summary[k].sumBase).round()+"</td><td align='right' id='per_"+k+"'></td><td align='right'>&nbsp;</td><td align='right'>"+(1*document.summary[k].sumTx.money()).mcurrency()+"</td><td align='right' id='pcs_"+k+"'></td></tr>";         
 		total_energy+=document.summary[k].sumBase;
 		total_cost+=1*document.summary[k].sumTx;
     }
 }
-html+="<tr><th>&nbsp;</th><th style='text-align:right'>"+Math.round(total_energy).toFixed(2)+"</th><th style='text-align:right'>100%</th><th style='text-align:right'>"+total_cost.money()+"</th><th style='text-align:right'>100%</th></tr>";
+html+="<tr><th>&nbsp;</th><th style='text-align:right'>"+Math.round(total_energy).toFixed(2)+"</th><th style='text-align:right'>100%</th><th style='text-align:right'>"+((total_cost/total_energy)/100000).toFixed(4)+"</th><th style='text-align:right'>"+total_cost.money()+"</th><th style='text-align:right'>100%</th></tr>";
 html+="</table>";	
 $('#summary').html(html);
 for (var k in document.summary){

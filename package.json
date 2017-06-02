@@ -1,6 +1,6 @@
 {
   "name": "stromdao-dapp",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "DAPP for StromDAO Energy Blockchain",
   "main": "server.js",
   "scripts": {
