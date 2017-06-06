@@ -50,9 +50,8 @@ function loadBalancesheets(idx,cb) {
 				blg.balancesheets(idx).then(function(a,b) {							
 					node.stromkonto(a.balanceIn).then(
 						function(stromkontoIn) {
-
 								node.stromkonto(a.balanceOut).then(function(stromkontoOut) {
-										stromkontoOut.balancesSoll(account).then(function(outSoll) {
+										stromkontoOut.balancesCachedSoll(account).then(function(outSoll) {
 											bl = { balanceIn:a.balanceIn, balanceOut:a.balanceOut,blockNumber:(a.blockNumber.toString()*1),stromkontoIn:stromkontoOut,stromkontoOut:stromkontoOut,txSoll:outSoll };
 											document.balancesheets.push(bl);
 											loadBalancesheets(idx,cb)							
