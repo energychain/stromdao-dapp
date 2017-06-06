@@ -67,7 +67,8 @@ function loadBalancesheets(idx,cb) {
 }
 
 function balanceInInfo(bin,bbl,sumBase,sumTx,bl) {
-document.node.wallet.provider.getLogs({address:bin,fromBlock:bbl-10,toBlock:bbl}).then(
+	
+document.node._txlog(bin,bbl).then(
 	function(logs) {			
 			var html="";
 			total=0;

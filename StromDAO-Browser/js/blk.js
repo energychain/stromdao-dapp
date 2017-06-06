@@ -237,11 +237,11 @@ function withContract() {
 				node.stromkonto(o).then(function(stromkonto) {
 					stromkonto.balancesSoll(o).then( function(value) {
 									$('.soll').html(value.money());
-									$('.saldo').html(($('.haben').html()-$('.soll').html()));
+									$('.saldo').html(($('.haben').html()-$('.soll').html()).toFixed(2));
 					});
 					stromkonto.balancesHaben(o).then( function(value) {
 									$('.haben').html(value.money());
-									$('.saldo').html($('.haben').html()-$('.soll').html());
+									$('.saldo').html(($('.haben').html()-$('.soll').html()).toFixed(2));
 					});
 				});
 
