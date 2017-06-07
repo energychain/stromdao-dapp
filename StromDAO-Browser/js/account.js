@@ -331,4 +331,16 @@ $('#progressScroll').on('appear',function() {
 	//$(window).scrollTop(document.ScrollOffset);
 });
 
+document.node.metaset(0).then(function(ms) {
+		ms.get("0x29cff15A1D715c0184F4a76c8921d56954380455").then(function(data) {
+			var o= JSON.parse(data);
+			var html="";
+			html+=o.name+"\n";
+			html+=o.street+"\n";
+			html+=o.zip+" "+o.city+"\n";
+			$('#recipient').html(html);
+		});
+	
+});
+
 afterInit();
