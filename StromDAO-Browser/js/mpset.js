@@ -101,7 +101,7 @@ $('#load_contract').click(function() {
 });
 $('#new_contract').click(function() {
 	$('#new_contract').attr('disabled','disabled');
-	document.node.mprsetfactory().then(function(mpsetf) {
+	document.node.mpsetfactory().then(function(mpsetf) {
 			mpsetf.build().then(function(mpset) {
 					$('#contract_address').val(mpset);
 					document.mpset=mpset;
