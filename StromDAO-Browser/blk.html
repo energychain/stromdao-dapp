@@ -65,14 +65,12 @@
 			<table class="table table-striped" id="connections">
 				<tr><th>ID</th><th>Pay From (Engery To)</th><th>Pay To (Energy From)</th><th>Cost per Day</th><th>Cost Per Energy</th></tr>
 			</table>
+			<button id="empty_connections" class="btn btn-danger">Remove All Connections</button>
 			<h2>Add Connection</h2>
 			
 			<form class="form" onsubmit="return false;"  style="margin-top:10px;">
-				<div class="form-group">
-					<label for="selmp">via Smart Name - Meter Points</label>
-					<select class="form-control" name="selmp" id="selmp">
-					</select>
-					<label for="via_address">via Address</label>
+				<div class="form-group">					
+					<label for="via_address">Address (Meter Point/Reading)</label>
 					<input type="text" class="form-control" id="via_address" name="via_address" placeholder="" size="42" value="">
 					
 					<label for="in_cpe">Cost Per Energy</label>
@@ -80,7 +78,15 @@
 					
 					<label for="in_cpd">Cost Per Day</label>
 					<input type="number" class="form-control" id="in_cpd" name="in_cpd" placeholder="" size="42" value="0">
-					
+					<h3>Infoset</h3>
+					<label for="pname">Name</label>
+					<input type="text" class="form-control" id="pname" name="pname" placeholder="">
+					<label for="pstreet">Street</label>
+					<input type="text" class="form-control" id="pstreet" name="pstreet" placeholder="">
+					<label for="pzip">ZIP Code</label>
+					<input type="text" class="form-control" id="pzip" name="pzip" placeholder="">
+					<label for="pcity">City</label>
+					<input type="text" class="form-control" id="pcity" name="pcity" placeholder="">
 					<button id="add_feedin" class="btn btn-danger">Add FeedIn</button>
 					<button id="add_feedout" class="btn btn-danger">Add FeedOut</button>
 				</div>

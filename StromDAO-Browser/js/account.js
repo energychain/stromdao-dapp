@@ -1,5 +1,5 @@
 account="0x83F8B15eb816284ddcF2ff005Db7a19196d86ae1";
-blk="0x3c08F0a2383C76C730844A64E45429991Fbc2bF8";
+blk="0xD8Fab6551D662710A5150976032aE8329887f129";
 address_stromkonto="";
 document.balancesheets=[];
 document.summary=[];
@@ -332,7 +332,7 @@ $('#progressScroll').on('appear',function() {
 });
 
 document.node.metaset(0).then(function(ms) {
-		ms.get("0x29cff15A1D715c0184F4a76c8921d56954380455").then(function(data) {
+		ms.get(account).then(function(data) {
 			var o= JSON.parse(data);
 			var html="";
 			html+=o.name+"\n";

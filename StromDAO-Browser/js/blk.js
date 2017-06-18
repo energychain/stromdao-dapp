@@ -86,10 +86,21 @@ function addFeedin() {
 	$('#add_feedin').attr('disabled','disabled');
 	node.blg($('#contract_address').val()).then(function(blg) {
 		blg.addFeedIn(mp,mp,$('#in_cpe').val(),$('#in_cpd').val()).then(function(o) {
-			$('#add_feedin').removeAttr('disabled');
-			withContract();
+			
+			var obj = {};
+			obj.name = $('#pname').val();
+			obj.city = $('#pcity').val();
+			obj.street = $('#pstreet').val();
+			obj.zip = $('#pzip').val();
+			blg.setAccountInfo(mp,obj).then(function(d) {
+					$('#add_feedin').removeAttr('disabled');
+					console.log("AcountInfoSet",d);
+					withContract();
+			});
+			
 		});
-	});
+
+	});	
 }
 $('#add_feedin').click( function() {
 	addFeedin();
@@ -104,9 +115,20 @@ function addFeedout() {
 	$('#add_feedout').attr('disabled','disabled');
 	node.blg($('#contract_address').val()).then(function(blg) {
 		blg.addFeedOut(mp,mp,$('#in_cpe').val(),$('#in_cpd').val()).then(function(o) {
-			 $('#add_feedout').removeAttr('disabled');
-			 withContract();
+			
+			 var obj = {};
+				obj.name = $('#pname').val();
+				obj.city = $('#pcity').val();
+				obj.street = $('#pstreet').val();
+				obj.zip = $('#pzip').val();
+				blg.setAccountInfo(mp,obj).then(function(d) {
+						$('#add_feedout').removeAttr('disabled');
+						withContract();
+						console.log("AcountInfoSet",d);
+				});
+			 
 		});
+		
 	});
 }
 $('#add_feedout').click( function() {
@@ -168,7 +190,7 @@ function fillBalances(cnt) {
 function renderConnection(o) {
 	blg=document.blg;	
 	node=document.node;
-	$('#connections').append("<tr><td id='con_"+o+"'></td><td id='from_"+o+"'></td><td id='to_"+o+"'></td><td id='cpd_"+o+"'></td><td><input type='number' id='cpe_"+o+"' value='0' class='cpe_update'></td></tr>");
+	$('#connections').append("<tr><td id='con_"+o+"'></td><td id='from_"+o+"'></td><td id='to_"+o+"'></td><td id='cpd_"+o+"'></td><td><input type='number' id='cpe_"+o+"' value='0' class='cpe_update'>&nbsp;</td></tr>");
 	$('#cpe_'+o).on('change',function(t) {
 			console.log($(this).val(),o);
 			$(this).attr("disabled","disabled");
@@ -176,6 +198,7 @@ function renderConnection(o) {
 					$(this).removeAttr("disabled");
 			});
 	});
+
 	node.directconnection(o).then(function(dcon) {	
 			console.log(dcon);
 			$('#con_'+o).html(document.node._label(o));
@@ -198,27 +221,39 @@ function renderConnection(o) {
 			});			
 	});			
 }
-function getFeedIns(idx) {
-	if(typeof idx =="undefined") idx=0;
+$('#empty_connections').click(function() {
+	blg=document.blg;	
+	node=document.node;
+	
+	blg.emptyConnections().then(function(o) {
+			location.reload();
+	});
+});
+function getFeedIns(idx,cnt) {
+	
+	if(typeof idx =="undefined") idx=0;		
+	if(cnt<=idx) return;
+
 	blg=document.blg;	
 	node=document.node;
 	try {
 	blg.feedIn(idx).then(function(o) {	
 			renderConnection(o);	
 			idx++;
-			getFeedIns(idx);
+			getFeedIns(idx,cnt);
 	});	
 	} catch(e) {}
 }
-function getFeedOuts(idx) {
+function getFeedOuts(idx,cnt) {
 	if(typeof idx =="undefined") idx=0;
+	if(cnt<=idx) return;
 	blg=document.blg;	
 	node=document.node;
 	try {
 	blg.feedOut(idx).then(function(o) {	
 			renderConnection(o);	
 			idx++;
-			getFeedOuts(idx);
+			getFeedOuts(idx,cnt);
 	});	
 	} catch(e) {}
 }
@@ -278,8 +313,13 @@ function withContract() {
 			}			
 			$("#selmp").html(html);
 		});
-		getFeedIns();
-		getFeedOuts();
+		blg.cnt_feedin().then(function(o) {				
+					getFeedIns(0,o);				
+		});
+		blg.cnt_feedout().then(function(o) {
+					getFeedOuts(0,o);			
+		});
+		
 	});
 }
 getMeterPointList=function() {
