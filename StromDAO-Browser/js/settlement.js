@@ -65,8 +65,8 @@ function renderTx(idx) {
 				var html="<tr>";
 				html+="<td>"+document.node._label(o.from)+"</td>";
 				html+="<td>"+document.node._label(o.to)+"</td>";
-				html+="<td align='right'>"+o.base.toString()+"</td>";
 				html+="<td align='right'>"+o.value.toString()+"</td>";
+				html+="<td align='right'>"+o.base.toString()+"</td>";
 				html+="</tr>";
 				$('#txtable').append(html);
 				idx++;
@@ -112,10 +112,42 @@ $('#addfixCost').click(function() {
 		});
 	});
 });
-$('#clearing').click(function() {
-	alert("Not Implemented!");
 
-});
+function createStromkontoProxy() {
+	
+		document.node.stromkontoproxyfactory().then(function(skof) {
+			
+				skof.build().then(function(sko) {
+						document.node.storage.setItemSync("stromkonto",sko);
+						console.log("SKO",sko);
+				});
+		});
+}
+function directClearing(settlement) {
+	document.node.directclearingfactory().then(function(dcf) {
+		dcf.build(document.node.storage.getItemSync("stromkonto"),document.node.options.contracts["StromDAO-BO.sol_SettlementFactory"]).then(function(dc) {
+			document.node.stromkontoproxy(document.node.storage.getItemSync("stromkonto")).then(function(skop) {
+					skop.modifySender(dc,true).then(function(o) {
+						document.node.directclearing(dc).then(function(dc) {	
+													
+							dc.preSettle(document.node.storage.getItemSync("mpset")).then(function(o) {
+								dc.setSettlement(settlement).then(function(p) {
+									dc.clear().then(function(q) {
+									console.log("DONE!");	
+									});
+								});
+							});
+						});
+						
+					});
+				
+			});
+			
+		});
+		
+	});	
+}
+
 function renderMeterPoints() {
 	var html="";
 	html+="<table id='mptable' class='table table-striped'>";
@@ -146,6 +178,10 @@ $('#create_settlement_to').click(function() {
 				document.node.settlement(settlement).then(function(s) {
 					s.settle($('#contract_address').val()).then(function(i) {
 							renderTXCache();
+							$('#clearing').on('click', function() {
+								$('#clearing').attr('disabled','disabled');
+								directClearing(document.node.storage.getItemSync("settlement"));
+							});
 					});
 				});
 			});

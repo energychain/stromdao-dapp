@@ -4,6 +4,8 @@ if (typeof web3 !== 'undefined') {
 
 }
 var mapping=[];
+function split64(data) { return "0x"+data.substr(0,64);}
+function remain64(data) { return data.substr(64);}
 
 function getParameterByName( name ){
    var regexS = "[\\?&]"+name+"=([^&#]*)", 
@@ -26,6 +28,71 @@ function uiRefresh() {
 	});
 	
 }
+
+function renderSnapshot(_address,_block,prev) {
+	var html="";
+	html+="<tr>";
+	html+="<td class='ts_"+_block+"'>#"+_block+"</td>";
+	html+="<td title='"+_address+"'>"+document.node._label(_address)+"</td>";
+	if(prev.length==42) {
+	html+="<td><button class='btn btn-primary preSettle' id='set_"+_address+"' data-previous='"+prev+"' data-address='"+_address+"'>Settle with "+document.node._label(prev)+"</button></td>";
+	} else {
+		html+="<td>&nbsp;</td>";
+	}
+	html+="</tr>";
+	$('#snapshots').append(html);
+	
+	$('#set_'+_address).on('click',function(a,b) {
+		$(a.currentTarget).attr('disabled','disabled');
+		settlement($(a.currentTarget).attr('data-previous'),$(a.currentTarget).attr('data-address')); 		
+	});
+	getBlockTime(_block);
+	
+}
+function getMySnapshots() {
+	document.node.mprsetfactory().then(function(mprsf) {
+		document.node._txlogfull(mprsf.obj.address).then(function(logs) {
+				logs=logs.reverse();
+				
+				var previous="";
+				for(var i=0;i<logs.length;i++) {
+						console.log(logs[i]);
+						var data = logs[i].data;
+						if(data.length>64) {	
+							html="";										
+							data=data.substr(2);
+							_from ="0x"+ split64(data).substr(26);
+							data=data.substr(64);
+							_to ="0x"+split64(data).substr(26);
+							console.log(_from,_to);
+							if(_to.toLowerCase()==document.node.wallet.address.toLowerCase()) {
+									renderSnapshot(_from,logs[i].blockNumber,previous);
+									previous=_from;
+							}
+							if(i==0) {
+								document.node.storage.setItemSync("mprset",_from);
+								renderMeterPoints();
+							}
+						}
+					}	
+			
+		});
+	});
+		
+	
+}
+
+function getBlockTime(blockNumber) {		
+	if(typeof web3 != "undefined") {
+		web3.eth.getBlock(blockNumber, function(error, result){
+			if(!error) {
+						d=new Date(result.timestamp*1000);					
+						$('.ts_'+blockNumber).html("#"+blockNumber+"<br/>"+d.toLocaleString());
+						if(typeof cb != "undefined") cb();
+			}	else {console.log(error);}		
+		});
+	}	
+};
 
 function renderMeterPoint(idx) {	
 document.mpset.meterpoints(idx).then(function(mp) {
@@ -54,20 +121,18 @@ document.mpset.meterpoints(idx).then(function(mp) {
 				});
 				// TODO: Add MPRSet to BO
 			}		
-		});
-		
-		$('.account').click(function(a,b) {
-							
+		});		
 		$('.account').unbind('click');
-		$(a.currentTarget).html("<input type='text' class='form-control adr_edit' value='"+$(a.currentTarget).html()+"' data-account='"+$(a.currentTarget).attr("data-account")+"'>");
-		$('.adr_edit').on('keyup',function(a,b) {
-			if(a.key=="Enter") {									
-				document.node._saveLabel($(a.currentTarget).val(),$(a.currentTarget).attr('data-account'));
-				//location.reload();
-			}
-			});		
+		$('.account').click(function(a,b) {				
+			$('.account').unbind('click');
+			$(a.currentTarget).html("<input type='text' class='form-control adr_edit' value='"+$(a.currentTarget).html()+"' data-account='"+$(a.currentTarget).attr("data-account")+"'>");
+			$('.adr_edit').on('keyup',function(a,b) {
+				if(a.key=="Enter") {									
+					document.node._saveLabel($(a.currentTarget).val(),$(a.currentTarget).attr('data-account'));					
+						renderMeterPoints();
+				}
+				});		
 		});
-		
 		idx++;
 		renderMeterPoint(idx);	
 });
@@ -97,6 +162,7 @@ $('#load_contract').click(function() {
 	document.node.mpset($('#contract_address').val()).then(function(mpset) {
 			document.mpset=mpset;
 			renderMeterPoints();
+			getMySnapshots();
 	});		
 });
 $('#new_contract').click(function() {
@@ -110,25 +176,28 @@ $('#new_contract').click(function() {
 	});
 		
 })
-$('#settle').click(function() {	
-	var previous=document.node.storage.getItemSync("mprset");
-	document.node.mprdecoratefactory().then(function(decf) {
-			decf.build($('#contract_address').val(),previous,$('#settle').attr('data-address')).then(function(deco) {
+
+function settlement(_to,_from) {
+	document.node.mprdecoratefactory().then(function(decf) {		
+			decf.build($('#contract_address').val(),_from,_to).then(function(deco) {				
 				document.node.storage.setItemSync("decorator",deco);
 				document.node.storage.setItemSync("mprset",$('#settle').attr('data-address'));	
 				location.href="./settlement.html?a="+$('#settle').attr('data-address')+"&b="+deco;
 			});
 	});
-	
-});
+}
+
 $('#create_snapshot').click(function() {
 		$('#create_snapshot').attr("disabled","disabled");
 		document.node.mprsetfactory().then(function(mprsf) {
 				mprsf.build($('#contract_address').val(),document.node.options.defaultReading).then(function(o) {	
 						if(document.node.storage.getItemSync("mprset")) {
-							$('#settle').attr('data-address',o);
-							$('#settle').show();
-						}												
+							//$('#settle').attr('data-address',o);
+							//$('#settle').show();
+						}								
+						document.node.storage.setItemSync("mprset",o);
+						getMySnapshots();
+																
 				});			
 		});
 });
@@ -140,4 +209,5 @@ if(getParameterByName("a")) {
 		}
 }
 setInterval("uiRefresh();",5000);
+setInterval("getMySnapshots();renderMeterPoints();",60000);
 uiRefresh();

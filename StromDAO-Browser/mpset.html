@@ -41,11 +41,17 @@
 					<hr/>
 					<div id="appcontent"></div>
 						<form class="form-group" onsubmit="return false;"  style="margin-top:10px;">				
-						<div class="form-group">
-							<button id="create_snapshot" class="btn btn-primary">New Reading Snapshot</button><br/>
-							<button id="settle" class="btn btn-danger" style="display:none">Settlement and Clearing</button><br/>
-						</div>
+							<div class="form-group">
+								<button id="create_snapshot" class="btn btn-primary">New Reading Snapshot</button><br/>
+								<button id="settle" class="btn btn-danger" style="display:none">Settlement and Clearing</button><br/>
+							</div>
 						</form>
+					<div>
+					<h3>Existing Snapshots</h3>
+					<table class="table table-striped" id="snapshots">
+					<tr><th>Blocknumber</th><th>ID</th><th>&nbsp;</th></tr>
+					</table>
+					</div>
 					<hr/>	
 			</div>
 
