@@ -41,7 +41,7 @@ function renderMeterPoint(idx) {
 		document.mprdecorate.mpr_base(mp).then(function(reading) {
 			$('#base_'+mp).html(reading.toString());		
 		});
-		$('.account').click(function(a,b) {
+		$('.account').on('click',function(a,b) {
 							
 		$('.account').unbind('click');
 		$(a.currentTarget).html("<input type='text' class='form-control adr_edit' value='"+$(a.currentTarget).html()+"' data-account='"+$(a.currentTarget).attr("data-account")+"'>");
