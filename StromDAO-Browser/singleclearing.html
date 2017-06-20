@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	 <script src="/parity-utils/inject.js"></script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">    
+    <title>StromDAO/Business Object - Blockchain Browser</title>
+	<link href="css/jquery-ui.min.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+	
+  </head>
+  <body >
+	<div class="container" style="margin-top:30px;">
+		    <div class="row">
+				<div class="col-md-12" style="text-align:right"> 
+					<a href='https://stromdao.de/'><img src='./stromdao_logo.png'/></a><br/>
+					<em style='color:#999999'>digital energy infrastructure for tomorrow.</em>
+			    </div>
+			</div>
+		<h1>Single Clearing</h1>
+		<hr/>			
+			<form class="form-group" onsubmit="return false;"  style="margin-top:10px;">				
+				<div class="form-group">
+						<label for="contract_address">Blockchain Address</label><br/>
+						<input type="text" class="form-control" id="contract_address" placeholder="" size="42" value="" style="margin-bottom:5px;">
+						<button id="load_contract" class="btn btn-warning">use</button>&nbsp;
+						
+				</div>
+				<div class="form-group">
+					<label for="stromkonto_address">Balance (Stromkonto)</label><br/>
+					<input type="text" class="form-control" id="stromkonto_address" placeholder="" size="42" value="0xfcBfE1e0D5B62b4E281609B150423b0F15082319" style="margin-bottom:5px;">
+					<label for="mp_address">MeterPoint</label><br/>
+					<input type="text" class="form-control" id="mp_address" placeholder="" size="42" value="0x83F8B15eb816284ddcF2ff005Db7a19196d86ae1" style="margin-bottom:5px;">	
+					<label for="energyCost">Cost per Energy</label><br/>
+					<input type="number" class="form-control" id="energyCost" placeholder="" size="42" value="" style="margin-bottom:5px;">	
+					<label for="becomeTo">Become To (receiving money)</label>
+					<input type="checkbox" id="becomeTo"  style="margin-bottom:5px;" checked disabled="disabled"><br/>
+					<button id="new_contract" class="btn btn-danger">new</button>&nbsp;<button id="update_contract" class="btn btn-warning">update</button><br/>
+				</div>
+			</form>
+
+			<div id="withContract" style="display:none">
+			<hr/>
+					<h2>Manage Single Meter Clearing</h2>
+					<h3>Uncleared energy: <span id="uncleared" style="color:#909090">TBD</span></h3>
+					<h3>Add Account</h3>
+					<form class="form-group" onsubmit="return false;"  style="margin-top:10px;">				
+						<div class="form-group">
+								<label for="a_address">Account Address</label><br/>
+								<input type="text" class="form-control" id="a_address" placeholder="" size="42" value="" style="margin-bottom:5px;">
+								<label for="mp_share">Account Share</label><br/>
+								<input type="number" class="form-control" id="mp_share" placeholder="" size="42" value="" style="margin-bottom:5px;">
+								<button id="add_mp" class="btn btn-danger">Add</button><br/>
+						</div>
+					</form>
+					<hr/>
+					<h3>Accounts</h3>
+					<div id="appcontent"></div>
+						<form class="form-group" onsubmit="return false;"  style="margin-top:10px;">				
+							<div class="form-group">
+								<button id="create_snapshot" class="btn btn-primary">Clearing</button><br/>
+							</div>
+						</form>
+					<div>
+					<h3>Existing Snapshots</h3>
+					<table class="table table-striped" id="snapshots">
+					<tr><th>Blocknumber</th><th>ID</th><th>&nbsp;</th></tr>
+					</table>
+					</div>
+					<hr/>	
+			</div>
+
+			
+		<footer style="margin-top:60px;">&copy; 2017 <a href="https://stromdao.de/">StromDAO Ltd.</a> | Block #<span class="lastBlock"></span> | Peers <span class="peerCount"></span> </footer>
+	</div>
+	<!-- <script src="https://cdn.ethers.io/scripts/ethers-v2.0.min.js" type="text/javascript">
+	</script>-->
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="js/jquery-3.2.1.min.js"></script>        
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/loader.js"></script>
+	<script src="js/singleclearing.js"></script>
+	
+  </body>
+</html>
