@@ -27,7 +27,10 @@
 						<button id="load_contract" class="btn btn-warning">use</button>&nbsp;
 						
 				</div>
+				</form>
 				<div class="form-group">
+					<h3><span id="smca"></span></h3>
+					<form class="form-group" onsubmit="return false;"  style="margin-top:10px;">
 					<label for="stromkonto_address">Balance (Stromkonto)</label><br/>
 					<input type="text" class="form-control" id="stromkonto_address" placeholder="" size="42" value="0xfcBfE1e0D5B62b4E281609B150423b0F15082319" style="margin-bottom:5px;">
 					<label for="mp_address">MeterPoint</label><br/>
@@ -37,8 +40,9 @@
 					<label for="becomeTo">Become To (receiving money)</label>
 					<input type="checkbox" id="becomeTo"  style="margin-bottom:5px;" checked disabled="disabled"><br/>
 					<button id="new_contract" class="btn btn-danger">new</button>&nbsp;<button id="update_contract" class="btn btn-warning">update</button><br/>
+						</form>
 				</div>
-			</form>
+		
 
 			<div id="withContract" style="display:none">
 			<hr/>
@@ -63,7 +67,7 @@
 							</div>
 						</form>
 					<div>
-					<h3>Existing Snapshots</h3>
+					<h3>History</h3>
 					<table class="table table-striped" id="snapshots">
 					<tr><th>Blocknumber</th><th>ID</th><th>&nbsp;</th></tr>
 					</table>

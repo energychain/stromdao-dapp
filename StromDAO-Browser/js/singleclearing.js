@@ -48,13 +48,14 @@ function getMySnapshots() {
 				
 				var previous="";
 				for(var i=0;i<logs.length;i++) {
-						console.log(logs[i]);
+						
 						var data = logs[i].data;
-						if(data.length>32) {	
+						
+						if(data.length==130) {	
 							html="";										
-							data=data.substr(2);
-							_from ="0x"+ split64(data).substr(26);							
-							
+							data=data.substr(2);							
+							//data=data.substr(64);
+							_from =node._utils.bigNumberify(split64(data)).toNumber();
 							renderSnapshot(_from,logs[i].blockNumber);							
 						}
 					}	
@@ -83,6 +84,9 @@ document.node.singleclearing($('#contract_address').val()).then(function(sco) {
 		html+="<tr>";
 		html+="<td class='account' data-account='"+mp+"'>"+document.node._label(mp)+"</td>";
 		html+="<td id='share_"+mp+"' align='right'></td>";
+		html+="<td id='soll_"+mp+"' align='right'></td>";
+		html+="<td id='haben_"+mp+"' align='right'></td>";
+		html+="<td id='saldo_"+mp+"' align='right'></td>";
 		html+="</tr>";
 		$('#mptable').append(html);
 		console.log("MP",mp);
@@ -100,6 +104,19 @@ document.node.singleclearing($('#contract_address').val()).then(function(sco) {
 				}
 				});		
 		});
+		document.node.stromkonto($('#stromkonto_address').val()).then(function(sko) {
+				sko.balancesSoll(mp).then(function(x) { 
+						$('#soll_'+mp).html(x);
+						$('#saldo_'+mp).html($('#haben_'+mp).html()-$('#soll_'+mp).html());
+				});
+				
+		});
+		document.node.stromkonto($('#stromkonto_address').val()).then(function(sko) {
+				sko.balancesHaben(mp).then(function(x) { 
+						$('#haben_'+mp).html(x);
+						$('#saldo_'+mp).html($('#haben_'+mp).html()-$('#soll_'+mp).html());
+				});
+		});
 		idx++;
 		renderAccount(idx);			
 	});
@@ -111,7 +128,7 @@ document.node.singleclearing($('#contract_address').val()).then(function(sco) {
 function renderAccounts() {
 	var html="";
 	html+="<table id='mptable' class='table table-striped'>";
-	html+="<tr><th>Address</th><th style='text-align:right'>Share</th></tr>";
+	html+="<tr><th>Address</th><th style='text-align:right'>Share</th><th style='text-align:right'>Liability</th><th style='text-align:right'>Equity</th><th style='text-align:right'>Balance</th></tr>";
 	html+="</table>";
 	$('#appcontent').html(html);
 
@@ -138,8 +155,24 @@ function renderAccounts() {
 		sco.energyCost().then(function(ec) {
 			$('#energyCost').val(ec);				
 		});
+	$('#smca').attr('data-account',$('#contract_address').val());
+	$('#smca').html(document.node._label($('#contract_address').val()));
+	$('#smca').unbind('click');
+		$('#smca').on('click',function(a,b) {				
+			$('#smca').unbind('click');
+			$(a.currentTarget).html("<input type='text' id='smc_editor' class='form-control smc_edit' value='"+$(a.currentTarget).html()+"' data-account='"+$(a.currentTarget).attr("data-account")+"'>");
+			$('#smc_editor').on('keyup',function(a,b) {			
+				if(a.key=="Enter") {		
+					console.log(a);			
+					console.log("YYYYYYYYYYYYYY",$(a.currentTarget).attr('data-account'));
+					document.node._saveLabel($(a.currentTarget).val(),$(a.currentTarget).attr('data-account'));					
+				
+					renderAccounts();
+				}
+				});		
+		});
 	});
-	
+
 
 }
 $('#add_mp').on('click',function() {
