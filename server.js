@@ -19,7 +19,7 @@ server.register({
 		path: '/rpc',
 		handler: {
 			proxy: {
-				host: 'l3.stromdao.de',
+				host: 'demo.stromdao.de',
 				port: '443',
 				protocol: 'https',
 				passThrough: true,
