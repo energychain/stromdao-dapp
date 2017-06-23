@@ -1,3 +1,5 @@
+ var startStopDaemon = require('start-stop-daemon');
+startStopDaemon(function() {
 const Hapi = require('hapi');
 
 const server = new Hapi.Server();
@@ -52,4 +54,5 @@ server.start((err) => {
         throw err;
     }
     console.log(`Server running at: ${server.info.uri}`);
+});
 });
