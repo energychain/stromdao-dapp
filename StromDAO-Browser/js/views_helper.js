@@ -1,4 +1,8 @@
-document.node= new document.StromDAOBO.Node({external_id:$('#extid').val(),testMode:true});
+var account=window.localStorage.getItem("account");
+
+if(account==null) account="1337";
+ 
+document.node= new document.StromDAOBO.Node({external_id:account,testMode:true});
 node = document.node;
 
 args = f => f.toString ().replace (/[\r\n\s]+/g, ' ').
@@ -49,7 +53,9 @@ $('.execution').on('click',function(a,b) {
 	console.log(fname,fcnt);
 	args = [];
 	for(var i=0;i<fcnt;i++) {
-		args.push($("#"+fname+"_"+i).val());		
+		var val=$("#"+fname+"_"+i).val();
+		if(val=="_self") val=node.wallet.address;
+		args.push(val);		
 	}	
 	var context=document.getElementById("ret_"+fname);
 	console.log(args);
@@ -95,7 +101,21 @@ function populateObject() {
 			});
 		
 	});
-	$('#account').html(document.node.wallet.address);
+	$('#account').html(account);
+	$('#address').html(node.wallet.address);
+	$('#account').attr('title',document.node.wallet.address);
+	$('#account').on('click',function(a,b) {
+	
+	$('#account').unbind('click');
+		$(a.currentTarget).html("<input type='text' class='form-control adr_edit' value='"+$(a.currentTarget).html()+"' data-account='"+$(a.currentTarget).attr("data-account")+"'>");
+		$('.adr_edit').on('keyup',function(a,b) {
+			if(a.key=="Enter") {									
+				window.localStorage.setItem("account",$(a.currentTarget).val());				
+				location.reload();
+			}
+			});		
+			
+	});	
 
 }
 populateObject();

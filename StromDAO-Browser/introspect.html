@@ -9,8 +9,11 @@
 	<link href="css/jquery-ui.min.css" rel="stylesheet">
     <link href="css/bootstrap.min.css" rel="stylesheet">
 	  <style>
-    h3 {
+    #account {
 			color:#909090;
+	}
+	#address {
+		color:#909090;
 	}
     </style>
   </head>
@@ -25,7 +28,9 @@
 		<h1>Introspect</h1>	
 		<p>
 		<h3>Account: <span id="account"></span></h3>
+		<h4>Address: <span id="address"></span></h4>
 		</p>
+		<hr/>
 		<div class="form-group">
 						<label for="entity_contract">BC Address</label>
 						<input type="text" class="form-control" id="entity_contract" placeholder="0x..." >
@@ -39,6 +44,7 @@
 	  <ul class="dropdown-menu" id="classSelector">
 	  </ul>
 	</div>
+	<hr/>
 		  <h2 id="cname"></h2>
 		<hr/>
 
