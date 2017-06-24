@@ -43,7 +43,7 @@ document.renderX=function() {
 
 $('#intro').html(html);
 $('.execution').on('click',function(a,b) {
-	$(a.currentTarget).attr('disabled','disabled')
+	$(a.currentTarget).attr('disabled','disabled');
 	var fname=$(a.currentTarget).attr('data-fn');	
 	var fcnt=$(a.currentTarget).attr('data-arg-cnt');
 	console.log(fname,fcnt);
@@ -55,6 +55,7 @@ $('.execution').on('click',function(a,b) {
 	console.log(args);
 	document.introspected[fname].apply(window,args).then(function (x) {
 			$('#pnl_'+fname).show();
+			$(a.currentTarget).removeAttr('disabled');
 			var html="<ul>";
 			if(typeof x == "object") {
 			for (var property in x) {
@@ -97,3 +98,4 @@ function populateObject() {
 
 }
 populateObject();
+$('#account').html(node.wallet.address);
