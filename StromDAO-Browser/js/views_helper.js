@@ -95,7 +95,8 @@ function populateObject() {
 			});
 		
 	});
+	$('#account').html(document.node.wallet.address);
 
 }
 populateObject();
-$('#account').html(node.wallet.address);
+
