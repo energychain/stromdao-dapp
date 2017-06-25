@@ -5,17 +5,15 @@
 PROJECT = "My Fancy Node.js project"
 
 
-all: browserify lc4 production origin
+all: browserify commit lc4 production origin
 
-browserify:
-   cd StromDAO-Browser \
+browserify: ;cd StromDAO-Browser && \
    browserify js/bo_loader.js > js/loader.js ;
    
-lc4:
-   git push lc4;
+commit: ;git commit -a -m "Updated BO Loader";
+   
+lc4: ;git push lc4;
  
-origin:
-   git push origin;
+origin: ;git push origin;
 
-production:
-   git push production;
+production: ;git push production;
