@@ -24,9 +24,15 @@ for(var i=0;i<names.length;i++) {
 		html+='<div class="form-group">';
 		a=args(x.value);
 		for(var j=0;j<a.length;j++) {
-			html+='<label for="'+names[i]+'_'+j+'">'+a[j]+"</label>";
-			html+='<input type="text" class="form-control" id="'+names[i]+'_'+j+'" >';
-			html+="<br/>&nbsp;";
+			if(a[j].length>0) {
+				html+='<label for="'+names[i]+'_'+j+'">'+a[j]+"</label>";
+				var placeholder="";
+				var type="text";
+				if(a[j].indexOf("address_")==0) placeholder="placeholder='0x...'";  
+				if(a[j].indexOf("uint256_")==0) type="number";  
+				html+='<input type="'+type+'" class="form-control" id="'+names[i]+'_'+j+'" '+placeholder+'>';
+				html+="<br/>&nbsp;";
+			}
 		}
 		html+='<div class="panel panel-default" id="pnl_'+names[i]+'" style="display:none">';
 		html+='<div class="panel-body"><div id="ret_'+names[i]+'"></div>';    
@@ -90,6 +96,8 @@ function populateObject() {
 	}
 	$('#classSelector').html(html);
 	$('.csel').on('click',function(a,b) {
+			$('#classSelector').attr('disabled','disabled');
+			$('.csel').attr('disabled','disabled');
 			c=$(a.currentTarget).attr("data-class");
 			$('#cname').html(c);
 			cargs=[];

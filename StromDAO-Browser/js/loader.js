@@ -319,18 +319,18 @@ this.dso=function(obj_or_address) {
 			
 				var instance=parent._objInstance(obj_or_address,'StromDAO-BO.sol_DSO');	
 									
-				instance.approveConnection=function(_address,_power_limit)  {		
+				instance.approveConnection=function(address_meterpoint,uint256_powerlimit)  {		
 		
 					var p2 = new Promise(function(resolve2, reject2) { 
-							instance.obj.approveConnection(_address,_power_limit).then(function(o) {									
+							instance.obj.approveConnection(address_meterpoint,uint256_powerlimit).then(function(o) {									
 								parent._waitForTransactionKeepRef(o,resolve2);												
 							});									
 					});
 					return p2;
 				};
-				instance.approvedConnections=function(_address) {
+				instance.approvedConnections=function(address_meterpoint) {
 					var p2 = new Promise(function(resolve2, reject2) { 
-							instance.obj.approvedConnections(_address).then(function(o) {									
+							instance.obj.approvedConnections(address_meterpoint).then(function(o) {									
 								 resolve2(o);												
 							});									
 					});
@@ -571,10 +571,10 @@ this.directcharging=function(obj_or_address) {
 			
 				var instance=parent._objInstance(obj_or_address,'StromDAO-BO.sol_DirectCharging');	
 									
-				instance.addConnection=function(_address)  {		
+				instance.addConnection=function(address_meterpoint)  {		
 		
 					var p2 = new Promise(function(resolve2, reject2) { 
-							instance.obj.addConnection(_address).then(function(o) {									
+							instance.obj.addConnection(address_meterpoint).then(function(o) {									
 								parent._waitForTransactionKeepRef(o,resolve2);												
 							});									
 					});
@@ -672,10 +672,10 @@ this.directclearing=function(obj_or_address) {
 			
 				var instance=parent._objInstance(obj_or_address,'StromDAO-BO.sol_DirectClearing');	
 									
-				instance.preSettle=function(mpset)  {		
+				instance.preSettle=function(address_meterpointset)  {		
 		
 					var p2 = new Promise(function(resolve2, reject2) { 
-							instance.obj.preSettle(mpset).then(function(o) {									
+							instance.obj.preSettle(address_meterpointset).then(function(o) {									
 								parent._waitForTransactionKeepRef(o,resolve2);												
 							});									
 					});
@@ -689,19 +689,19 @@ this.directclearing=function(obj_or_address) {
 					});
 					return p2;
 				};
-				instance.settle=function(_readings)  {		
+				instance.settle=function(address_mprset)  {		
 		
 					var p2 = new Promise(function(resolve2, reject2) { 
-							instance.obj.settle(_readings).then(function(o) {									
+							instance.obj.settle(address_mprset).then(function(o) {									
 								parent._waitForTransactionKeepRef(o,resolve2);												
 							});									
 					});
 					return p2;
 				};
-				instance.setSettlement=function(settlement)  {		
+				instance.setSettlement=function(address_settlement)  {		
 		
 					var p2 = new Promise(function(resolve2, reject2) { 
-							instance.obj.setSettlement(settlement).then(function(o) {									
+							instance.obj.setSettlement(address_settlement).then(function(o) {									
 								parent._waitForTransactionKeepRef(o,resolve2);												
 							});									
 					});
@@ -734,13 +734,13 @@ this.factory = function(obj_or_address) {
 				 * Stores a reading to this contract instance. Requires sender to be approved Meter-Point 
 				 * @see approveMP()
 				 */
-				instance.build= function(_stromkonto,_sf) {	
+				instance.build= function(address_stromkonto,address_settlementfactory) {	
 							
 					var p2 = new Promise(function(resolve2, reject2) { 
 							instance.obj.onbuilt=function(cb) {						
 									resolve2(cb);						
 							};		
-							instance.obj.build(_stromkonto,_sf).then(function(o) {	
+							instance.obj.build(address_stromkonto,address_settlementfactory).then(function(o) {	
 										
 							});									
 					});
@@ -841,13 +841,13 @@ this.directconnectionfactory = function(obj_or_address) {
 				 * Stores a reading to this contract instance. Requires sender to be approved Meter-Point 
 				 * @see approveMP()
 				 */
-				instance.buildConnection= function(_from,_to,_meter_point,_cost_per_energy,_cost_per_day) {	
+				instance.buildConnection= function(address_from,address_to,address_meterpoint,uint256_costperenergy,uint256_costperday) {	
 							
 					var p2 = new Promise(function(resolve2, reject2) { 
 							instance.obj.onbuilt=function(cb) {						
 									resolve2(cb);						
 							};		
-							instance.obj.buildConnection(_from,_to,_meter_point,_cost_per_energy,_cost_per_day).then(function(o) {	
+							instance.obj.buildConnection(address_from,address_to,address_meterpoint,uint256_costperenergy,uint256_costperday).then(function(o) {	
 										
 							});									
 					});
@@ -883,9 +883,9 @@ this.mpo = function(obj_or_address) {
 				 * @param _meter address
 				 * @param _role Eq. to 4= Consumer or 5= Producer
 				 */
-				instance.approveMP=function(_meter,_role) {								
+				instance.approveMP=function(address_meterpoint,uint256_role) {								
 					var p2 = new Promise(function(resolve2, reject2) { 						
-							instance.obj.approveMP(_meter,_role).then(function(o) {
+							instance.obj.approveMP(address_meterpoint,uint256_role).then(function(o) {
 								parent._waitForTransactionKeepRef(o,resolve2);											
 							});									
 					});
@@ -896,10 +896,10 @@ this.mpo = function(obj_or_address) {
 				 * Stores a reading to this contract instance. Requires sender to be approved Meter-Point 
 				 * @see approveMP()
 				 */
-				instance.storeReading=function(_reading) {
+				instance.storeReading=function(uint256_reading) {
 					_reading=Math.round(_reading);
 					var p2 = new Promise(function(resolve2, reject2) { 
-							instance.obj.storeReading(_reading).then(function(o) {	
+							instance.obj.storeReading(uint256_reading).then(function(o) {	
 								parent._waitForTransactionKeepRef(o,resolve2);			
 							});									
 					});
@@ -909,10 +909,10 @@ this.mpo = function(obj_or_address) {
 				/**
 				 * Allows a test commit to check if it fails. Promise that might be used to validate a Meter-Point is fully connected.
 				 */
-				instance.test.storeReading=function(_reading) {
+				instance.test.storeReading=function(uint256_reading) {
 					_reading=Math.round(_reading);
 					var p2 = new Promise(function(resolve2, reject2) { 
-							instance.obj.estimate.storeReading(_reading).then(function(cost) {									
+							instance.obj.estimate.storeReading(uint256_reading).then(function(cost) {									
 								resolve2(cost.toString());								
 							}).catch(function() { reject2(-1); });
 					});
@@ -922,9 +922,9 @@ this.mpo = function(obj_or_address) {
 				/**
 				 * Returns last delivery issued for a Meter-Point 
 				 */
-				instance.lastDelivery=function(_meterpoint) {					
+				instance.lastDelivery=function(address_meterpoint) {					
 					var p2 = new Promise(function(resolve2, reject2) { 							
-							instance.obj.lastDelivery(_meterpoint).then(function(o) {									
+							instance.obj.lastDelivery(address_meterpoint).then(function(o) {									
 								 resolve2(o);									
 							});									
 					});
@@ -934,54 +934,15 @@ this.mpo = function(obj_or_address) {
 				/**
 				 * Returns last reading for a Meter-Point 
 				 */
-				instance.readings=function(_meterpoint) {					
+				instance.readings=function(address_meterpoint) {					
 					var p2 = new Promise(function(resolve2, reject2) { 							
-							instance.obj.readings(_meterpoint).then(function(o) {									
+							instance.obj.readings(address_meterpoint).then(function(o) {									
 								 resolve2(o);									
 							});									
 					});
 					return p2;
 				};
-				/*		
-				if(parent.options.testMode) {
-							// In Testmode we do a full "Self-Register" if not registered.
-							if(typeof parent.options.mpo_dir_role=="undefined") parent.options.mpo_dir_role=4;
-							parent.roleLookup().then( function(roleLookup) {
-								roleLookup.relations(parent.wallet.address,parent.options.roles[1]).then( function(tx_result) {						
-									if(tx_result=="0x0000000000000000000000000000000000000000") {
-										roleLookup.setRelation(parent.options.roles[1],parent.options.contracts["StromDAO-BO.sol:MPO"]).then( 
-										        function() {
-													return new Promise(function(resolve2, reject2) { resolve2(instance.approveMP(parent.wallet.address,parent.options.mpo_dir_role));	});
-												}
-										 )
-										 .then( function() {
-											  return new Promise(function(resolve2, reject2) { 
-													resolve2(parent.dso(parent.options.contracts["StromDAO-BO.sol:DSO"]));
-													})})
-										 .then(function(dso) {
-											   return new Promise(function(resolve2, reject2) { 
-													resolve2(dso.approveConnection(parent.wallet.address,100000000));
-													})})
-										 .then(function() {
-											  return new Promise(function(resolve2, reject2) { 
-													resolve2(roleLookup.setRelation(parent.options.roles[2],parent.options.contracts["StromDAO-BO.sol:DSO"]));
-												})})
-										 .then(function() {
-											  return new Promise(function(resolve2, reject2) { 
-												  resolve2(roleLookup.setRelation(parent.options.roles[2],parent.options.contracts["StromDAO-BO.sol:DSO"])); 
-											  })})										  	 
-										 .then(function() {
-											 resolve(instance);
-									     });
-									} else {
-										resolve(instance);
-									}
-								});
-							});
-				} else {	
-					resolve(instance);
-				}
-				*/
+			
 				resolve(instance);
 			});
 			return p1;
@@ -1010,10 +971,10 @@ this.mpr = function(obj_or_address) {
 				 * Stores a reading to this contract instance. Requires sender to be approved Meter-Point 
 				 * @see approveMP()
 				 */
-				instance.storeReading=function(_reading) {
+				instance.storeReading=function(uint256_reading) {
 					//_reading=Math.round(_reading);
 					var p2 = new Promise(function(resolve2, reject2) { 
-							instance.obj.storeReading(_reading).then(function(o) {	
+							instance.obj.storeReading(uint256_reading).then(function(o) {	
 								parent._waitForTransactionKeepRef(o,resolve2);			
 							});									
 					});
@@ -1021,12 +982,12 @@ this.mpr = function(obj_or_address) {
 				};
 				
 				/**
-				 * Allows a test commit to check if it fails. Promise that might be used to validate a Meter-Point is fully connected.
+				 * Allows a test commit to check if it fails. Prominse that might be used to validate a Meter-Point is fully connected.
 				 */
-				instance.test.storeReading=function(_reading) {
-					_reading=Math.round(_reading);
+				instance.test.storeReading=function(uint256_reading) {
+					_reading=Math.round(uint256_reading);
 					var p2 = new Promise(function(resolve2, reject2) { 
-							instance.obj.estimate.storeReading(_reading).then(function(cost) {									
+							instance.obj.estimate.storeReading(uint256_reading).then(function(cost) {									
 								resolve2(cost.toString());		
 								// We now know  that this is a meter point ... remember it (localy)
 														
@@ -1039,9 +1000,9 @@ this.mpr = function(obj_or_address) {
 				/**
 				 * Returns last reading for a Meter-Point 
 				 */
-				instance.readings=function(_meterpoint) {					
+				instance.readings=function(address_meterpoint) {					
 					var p2 = new Promise(function(resolve2, reject2) { 							
-							instance.obj.readings(_meterpoint).then(function(o) {		
+							instance.obj.readings(address_meterpoint).then(function(o) {		
 													
 								 resolve2(o);									
 							});									
@@ -1069,71 +1030,71 @@ this.mprdecorate=function(obj_or_address) {
 			
 				var instance=parent._objInstance(obj_or_address,'StromDAO-BO.sol_MPRDecorate');	
 						
-				instance.meterpoints=function(idx) {
+				instance.meterpoints=function(uint256_idx) {
 					var p2 = new Promise(function(resolve2, reject2) { 
-							instance.obj.meterpoints(idx).then(function(o) {									
+							instance.obj.meterpoints(uint256_idx).then(function(o) {									
 								resolve2(o[0]);											
 							});									
 					});
 					return p2;
 				};
-				instance.mpr=function(address) {
+				instance.mpr=function(address_mpr) {
 					var p2 = new Promise(function(resolve2, reject2) { 
-							instance.obj.mpr(address).then(function(o) {									
-								resolve2(o[0]);											
-							});									
-					});
-					return p2;
-				};	
-				instance.mpr_base=function(address) {
-					var p2 = new Promise(function(resolve2, reject2) { 
-							instance.obj.mpr_base(address).then(function(o) {									
+							instance.obj.mpr(address_mpr).then(function(o) {									
 								resolve2(o[0]);											
 							});									
 					});
 					return p2;
 				};	
-				instance.ChargeFix=function(_amount)  {		
+				instance.mpr_base=function(address_mpr) {
+					var p2 = new Promise(function(resolve2, reject2) { 
+							instance.obj.mpr_base(address_mpr).then(function(o) {									
+								resolve2(o[0]);											
+							});									
+					});
+					return p2;
+				};	
+				instance.ChargeFix=function(uint256_amount)  {		
 		
 					var p2 = new Promise(function(resolve2, reject2) { 
-							instance.obj.ChargeFix(_amount).then(function(o) {									
+							instance.obj.ChargeFix(uint256_amount).then(function(o) {									
 								parent._waitForTransactionKeepRef(o,resolve2);												
 							});									
 					});
 					return p2;
 				};
-				instance.ChargeEnergy=function(_amount)  {		
+				instance.ChargeEnergy=function(uint256_amount)  {		
 		
 					var p2 = new Promise(function(resolve2, reject2) { 
-							instance.obj.ChargeEnergy(_amount).then(function(o) {									
+							instance.obj.ChargeEnergy(uint256_amount).then(function(o) {									
 								parent._waitForTransactionKeepRef(o,resolve2);												
 							});									
 					});
 					return p2;
 				};
 		
-				instance.SplitWeighted=function(_amount)  {		
+				instance.SplitWeighted=function(uint256_amount)  {		
 		
 					var p2 = new Promise(function(resolve2, reject2) { 
-							instance.obj.SplitWeighted(_amount).then(function(o) {									
+							instance.obj.SplitWeighted(uint256_amount).then(function(o) {									
 								parent._waitForTransactionKeepRef(o,resolve2);												
 							});									
 					});
 					return p2;
 				};
 		
-				instance.SplitEqual=function(_amount)  {		
+				instance.SplitEqual=function(uint256_amount)  {		
 		
 					var p2 = new Promise(function(resolve2, reject2) { 
-							instance.obj.SplitEqual(_amount).then(function(o) {									
+							instance.obj.SplitEqual(uint256_amount).then(function(o) {									
 								parent._waitForTransactionKeepRef(o,resolve2);												
 							});									
 					});
 					return p2;
 				};
-				instance.mpr=function(_meterpoint) {					
+				instance.mpr=function(address_meterpoint) {					
 					var p2 = new Promise(function(resolve2, reject2) { 							
-							instance.obj.mpr(_meterpoint).then(function(o) {		
+							instance.obj.mpr(address_meterpoint).then(function(o) {		
 								 resolve2(o[0].toString());									
 							});									
 					});
@@ -1166,7 +1127,7 @@ this.factory = function(obj_or_address) {
 				 * Stores a reading to this contract instance. Requires sender to be approved Meter-Point 
 				 * @see approveMP()
 				 */
-				instance.build= function(_mpset,_set_start,_set_end) {	
+				instance.build= function(address_mpset,address_mprset_start,address_mprset_end) {	
 							
 					var p2 = new Promise(function(resolve2, reject2) { 
 							var bdx="";
@@ -1180,7 +1141,7 @@ this.factory = function(obj_or_address) {
 											resolve2(cb);
 									});							
 							};		
-							instance.obj.build(_mpset,_set_start,_set_end,{value:"0x0",gasPrice:"0x0",gasLimit:3903918}).then(function(o) {									
+							instance.obj.build(address_mpset,address_mprset_start,address_mprset_end,{value:"0x0",gasPrice:"0x0",gasLimit:3903918}).then(function(o) {									
 									bdx=o;	
 									//{value:"0x0",gasPrice:"0x0",gasLimit:3803918}
 									
@@ -1209,18 +1170,18 @@ this.mprset=function(obj_or_address) {
 			
 				var instance=parent._objInstance(obj_or_address,'StromDAO-BO.sol_MPRset');	
 											
-				instance.meterpoints=function(idx) {
+				instance.meterpoints=function(uint256_idx) {
 					var p2 = new Promise(function(resolve2, reject2) { 
-							instance.obj.meterpoints(idx).then(function(o) {									
+							instance.obj.meterpoints(uint256_idx).then(function(o) {									
 								resolve2(o[0]);											
 							});									
 					});
 					return p2;
 				};
 				
-				instance.mpr=function(address) {
+				instance.mpr=function(address_meterpoint) {
 					var p2 = new Promise(function(resolve2, reject2) { 
-							instance.obj.mpr(address).then(function(o) {									
+							instance.obj.mpr(address_meterpoint).then(function(o) {									
 								resolve2(o[0]);											
 							});									
 					});
@@ -1253,7 +1214,7 @@ this.factory = function(obj_or_address) {
 				 * Stores a reading to this contract instance. Requires sender to be approved Meter-Point 
 				 * @see approveMP()
 				 */
-				instance.build= function(_mpset,_reading) {	
+				instance.build= function(address_mpset,address_mpr) {	
 							
 					var p2 = new Promise(function(resolve2, reject2) { 
 							var bdx="";
@@ -1266,7 +1227,7 @@ this.factory = function(obj_or_address) {
 											resolve2(cb);
 									});								
 							};		
-							instance.obj.build(_mpset,_reading,{value:"0x0",gasPrice:"0x0",gasLimit:3795290}).then(function(o) {										
+							instance.obj.build(address_mpset,address_mpr,{value:"0x0",gasPrice:"0x0",gasLimit:3795290}).then(function(o) {										
 									bdx=o;											
 							});									
 					});
@@ -1293,10 +1254,10 @@ this.mpset=function(obj_or_address) {
 			
 				var instance=parent._objInstance(obj_or_address,'StromDAO-BO.sol_MPset');	
 									
-				instance.addMeterPoint=function(_address)  {		
+				instance.addMeterPoint=function(address_meterpoint)  {		
 		
 					var p2 = new Promise(function(resolve2, reject2) { 
-							instance.obj.addMeterPoint(_address).then(function(o) {	
+							instance.obj.addMeterPoint(address_meterpoint).then(function(o) {	
 								parent._waitForTransactionKeepRef(o,function() {console.log("MP Added"); });		
 								resolve2(o);							
 																			
@@ -1305,9 +1266,9 @@ this.mpset=function(obj_or_address) {
 					return p2;
 				};
 		
-				instance.meterpoints=function(idx) {
+				instance.meterpoints=function(uint256_idx) {
 					var p2 = new Promise(function(resolve2, reject2) { 
-							instance.obj.meterpoints(idx).then(function(o) {									
+							instance.obj.meterpoints(uint256_idx).then(function(o) {									
 								resolve2(o[0]);											
 							});									
 					});
@@ -1395,7 +1356,7 @@ this.metaset=function(role_id) {
 					obj.put=function(data_obj) {
 						var p2 = new Promise(function(resolve2, reject2) { 
 							// First Publish Data and get MultiHash			
-							request.post("http://l2.stromdao.de:8001/put", {form:data_obj}).on('data', function(data) { 
+							request.post("https://demo.stromdao.de/put", {form:data_obj}).on('data', function(data) { 
 								
 								var multihash=data.toString();
 								
@@ -1411,7 +1372,7 @@ this.metaset=function(role_id) {
 							});
 						});
 						return p2;
-						// Second set in Roles and return Promise											
+						// Second set in Role	s and return Promise											
 					}
 					
 					obj.get=function(address) {
@@ -1420,7 +1381,7 @@ this.metaset=function(role_id) {
 								rl.relations(address,role_id).then(function(roler) {
 											parent.stringstorage(roler).then(function(ss) {
 												ss.str().then(function(multihash) {
-													request.post("http://l2.stromdao.de:8001/get",{form:{key:multihash}}).on('data',	function(d) {
+													request.post("https://demo.stromdao.de/get",{form:{key:multihash}}).on('data',	function(d) {
 		
 														string = d.toString();
 														//console.log(roler,multihash,string);
@@ -1529,9 +1490,9 @@ this.rolelookup=function(obj_or_address) {
 				
 					return p2;
 				};
-				instance.setRelation=function(_role,_target) {					
+				instance.setRelation=function(uint256_role,address_target) {					
 					var p2 = new Promise(function(resolve2, reject2) { 
-							instance.obj.setRelation(_role,_target).then(function(o) {
+							instance.obj.setRelation(uint256_role,address_target).then(function(o) {
 								parent._waitForTransaction(o.hash).then(function() {										
 												 resolve2(parent._keepHashRef(o));						
 												});																														
@@ -1539,9 +1500,9 @@ this.rolelookup=function(obj_or_address) {
 							});													
 					return p2;
 				};
-				instance.setRelationFrom=function(_role,_target) {					
+				instance.setRelationFrom=function(uint256_role,address_target) {					
 					var p2 = new Promise(function(resolve2, reject2) { 
-							instance.obj.setRelationFrom(_role,_target).then(function(o) {
+							instance.obj.setRelationFrom(uint256_role,address_target).then(function(o) {
 								parent._waitForTransaction(o.hash).then(function() {										
 												 resolve2(parent._keepHashRef(o));						
 												});																														
@@ -1549,17 +1510,17 @@ this.rolelookup=function(obj_or_address) {
 							});													
 					return p2;
 				};
-				instance.relations=function(_account,_role) {
+				instance.relations=function(address_target,uint256_role) {
 						var p2 = new Promise(function(resolve2, reject2) { 
-							instance.obj.relations(_account,_role).then(function(o) {
+							instance.obj.relations(address_target,uint256_role).then(function(o) {
 								resolve2(o[0]);																	
 							});
 						});													
 						return p2;
 				};
-				instance.defaults=function(_role) {
+				instance.defaults=function(uint256_role) {
 						var p2 = new Promise(function(resolve2, reject2) { 
-							instance.obj.defaults(_role).then(function(o) {
+							instance.obj.defaults(uint256_role).then(function(o) {
 								resolve2(o[0]);																	
 							});
 						});													
@@ -1586,17 +1547,17 @@ this.settlement = function(obj_or_address) {
 				var instance=parent._objInstance(obj_or_address,'StromDAO-BO.sol_Settlement');			
 				instance.test = {};				
 				
-				instance.settle= function(_tx) {		
+				instance.settle= function(address_txcache) {		
 					var p2 = new Promise(function(resolve2, reject2) { 
-							instance.obj.settle(_tx,{value:"0x0",gasPrice:"0x0",gasLimit:4195290}).then(function(o) {										
+							instance.obj.settle(address_txcache,{value:"0x0",gasPrice:"0x0",gasLimit:4195290}).then(function(o) {										
 									parent._waitForTransactionKeepRef(o,resolve2);	
 							});									
 					});
 					return p2;
 				};
-				instance.mpr=function(_meterpoint) {					
+				instance.mpr=function(address_mprset) {					
 					var p2 = new Promise(function(resolve2, reject2) { 							
-							instance.obj.mpr(_meterpoint).then(function(o) {		
+							instance.obj.mpr(address_mprset).then(function(o) {		
 								 resolve2(o[0].toString());									
 							});									
 					});
@@ -1637,7 +1598,7 @@ this.factory = function(obj_or_address) {
 				 * Stores a reading to this contract instance. Requires sender to be approved Meter-Point 
 				 * @see approveMP()
 				 */
-				instance.build= function(_mpset,_toOwner) {	
+				instance.build= function(address_mpset,bool_toowner) {	
 							
 					var p2 = new Promise(function(resolve2, reject2) { 
 							var bdx="";
@@ -1650,7 +1611,7 @@ this.factory = function(obj_or_address) {
 											resolve2(cb);
 									});								
 							};								
-							instance.obj.build(_mpset,_toOwner,{value:"0x0",gasPrice:"0x0",gasLimit:3795290}).then(function(o) {	
+							instance.obj.build(address_mpset,bool_toowner,{value:"0x0",gasPrice:"0x0",gasLimit:3795290}).then(function(o) {	
 								bdx=0;		
 							});									
 					});
@@ -1685,10 +1646,10 @@ this.singleclearing=function(obj_or_address) {
 			
 				var instance=parent._objInstance(obj_or_address,'StromDAO-BO.sol_SingleClearing');	
 									
-				instance.setAccount=function(_account,_shares)  {		
+				instance.setAccount=function(address_account,uint256_shares)  {		
 		
 					var p2 = new Promise(function(resolve2, reject2) { 
-							instance.obj.setAccount(_account,_shares).then(function(o) {									
+							instance.obj.setAccount(address_account,uint256_shares).then(function(o) {									
 								parent._waitForTransactionKeepRef(o,resolve2);												
 							});									
 					});
@@ -1702,27 +1663,27 @@ this.singleclearing=function(obj_or_address) {
 					});
 					return p2;
 				};
-				instance.setEnergyCost=function(_cost)  {		
+				instance.setEnergyCost=function(uint256_cost)  {		
 		
 					var p2 = new Promise(function(resolve2, reject2) { 
-							instance.obj.setEnergyCost(_cost).then(function(o) {									
+							instance.obj.setEnergyCost(uint256_cost).then(function(o) {									
 								parent._waitForTransactionKeepRef(o,resolve2);												
 							});									
 					});
 					return p2;
 				};
-				instance.addTx=function(_from,_to,value,base)  {		
+				instance.addTx=function(address_from,address_to,uint256_value,uint256_base)  {		
 		
 					var p2 = new Promise(function(resolve2, reject2) { 
-							instance.obj.addTx(_from,_to,value,base).then(function(o) {									
+							instance.obj.addTx(address_from,address_to,uint256_value,uint256_base).then(function(o) {									
 								parent._waitForTransactionKeepRef(o,resolve2);												
 							});									
 					});
 					return p2;
 				};
-				instance.accounts=function(idx) {
+				instance.accounts=function(uint256_idx) {
 					var p2 = new Promise(function(resolve2, reject2) { 
-							instance.obj.accounts(idx).then(function(o) {									
+							instance.obj.accounts(uint256_idx).then(function(o) {									
 								resolve2(o[0]);											
 							});									
 					});
@@ -1760,9 +1721,9 @@ this.singleclearing=function(obj_or_address) {
 					});
 					return p2;
 				};
-				instance.share=function(address) {
+				instance.share=function(address_account) {
 					var p2 = new Promise(function(resolve2, reject2) { 
-							instance.obj.share(address).then(function(o) {									
+							instance.obj.share(address_account).then(function(o) {									
 								resolve2(o[0].toString());											
 							});									
 					});
@@ -1796,13 +1757,13 @@ this.factory = function(obj_or_address) {
 				 * Stores a reading to this contract instance. Requires sender to be approved Meter-Point 
 				 * @see approveMP()
 				 */
-				instance.build= function(_stromkonto,_meterpoint,_cost,_becomeTo) {	
+				instance.build= function(address_stromkonto,address_meterpoint,uint256_cost,bool_becometo) {	
 							
 					var p2 = new Promise(function(resolve2, reject2) { 
 							instance.obj.onbuilt=function(cb) {						
 									resolve2(cb);						
 							};		
-							instance.obj.build(_stromkonto,_meterpoint,_cost,_becomeTo).then(function(o) {	
+							instance.obj.build(address_stromkonto,address_meterpoint,uint256_cost,bool_becometo).then(function(o) {	
 										
 							});									
 					});
@@ -1864,14 +1825,14 @@ this.stringstorage = function(obj_or_address) {
 				 * Stores a reading to this contract instance. Requires sender to be approved Meter-Point 
 				 * @see approveMP()
 				 */
-				instance.build= function(str) {
+				instance.build= function(string_str) {
 					
 					var p2 = new Promise(function(resolve2, reject2) { 
 							instance.obj.onbuilt=function(cb) {						
 									resolve2(cb);						
 							};	
 							
-							instance.obj.build(str,{value:"0x0",gasPrice:"0x0"}).then(function(o) {	
+							instance.obj.build(string_str,{value:"0x0",gasPrice:"0x0"}).then(function(o) {	
 								
 								//{value:"0x0",gasPrice:"0x0",gas:"2974441329"}
 								//parent._waitForTransactionKeepRef(o,resolve2);			
@@ -2315,39 +2276,39 @@ module.exports = {
 this.stromkonto = function(obj_or_address) {
 			var p1 = new Promise(function(resolve, reject) { 					
 						var instance=parent._objInstance(obj_or_address,'StromDAO-BO.sol:Stromkonto');
-						instance.addTx=function(_from,_to,_value,_base) {
+						instance.addTx=function(address_from,address_to,uint256_value,uint256_base) {
 								var p2 = new Promise(function(resolve2, reject2) { 
-											instance.obj.addTx(_from,_to,_value,_base).then(function(o) {
+											instance.obj.addTx(address_from,address_to,uint256_value,uint256_base).then(function(o) {
 													parent._waitForTransactionKeepRef(o,resolve2);	
 											});
 								});
 								return p2;
 						};
-						instance.balancesSoll=function(_address) {
+						instance.balancesSoll=function(address_account) {
 								var p2 = new Promise(function(resolve2, reject2) { 
 											//console.log(instance.obj);
-											instance.obj.balanceSoll(_address).then(function(o) {
+											instance.obj.balanceSoll(address_account).then(function(o) {
 													resolve2(o[0].toString()*1);
 											});
 								});
 								return p2;
 						};	
-						instance.balancesHaben=function(_address) {
+						instance.balancesHaben=function(address_account) {
 								var p2 = new Promise(function(resolve2, reject2) { 
 											//console.log(instance.obj);
-											instance.obj.balanceHaben(_address).then(function(o) {
+											instance.obj.balanceHaben(address_account).then(function(o) {
 													resolve2(o[0].toString()*1);
 											});
 								});
 								return p2;
 						};		
-						instance.balancesCachedSoll=function(_address) {
+						instance.balancesCachedSoll=function(address_account) {
 								var p2 = new Promise(function(resolve2, reject2) { 
 											//console.log(instance.obj);
-											var stored = parent.storage.getItemSync(obj_or_address+"_"+_address+"_soll");
+											var stored = parent.storage.getItemSync(obj_or_address+"_"+address_account+"_soll");
 											if((typeof stored == "undefined")||(stored==null)) {
-												instance.obj.balanceSoll(_address).then(function(o) {
-														parent.storage.setItemSync(obj_or_address+"_"+_address+"_soll",o[0].toString()*1);
+												instance.obj.balanceSoll(address_account).then(function(o) {
+														parent.storage.setItemSync(obj_or_address+"_"+address_account+"_soll",o[0].toString()*1);
 														resolve2(o[0].toString()*1);
 												});
 											} else {
@@ -2357,13 +2318,13 @@ this.stromkonto = function(obj_or_address) {
 								});
 								return p2;
 						};	
-						instance.balancesCachedHaben=function(_address) {
+						instance.balancesCachedHaben=function(address_account) {
 								var p2 = new Promise(function(resolve2, reject2) { 
 											//console.log(instance.obj);
-											var stored = parent.storage.getItemSync(obj_or_address+"_"+_address+"_haben");
+											var stored = parent.storage.getItemSync(obj_or_address+"_"+address_account+"_haben");
 											if((typeof stored == "undefined")||(stored==null)) {
-												instance.obj.balanceHaben(_address).then(function(o) {
-														parent.storage.setItemSync(obj_or_address+"_"+_address+"_haben",o[0].toString()*1);
+												instance.obj.balanceHaben(address_account).then(function(o) {
+														parent.storage.setItemSync(obj_or_address+"_"+address_account+"_haben",o[0].toString()*1);
 														resolve2(o[0].toString()*1);
 												});
 											} else {
@@ -2410,47 +2371,47 @@ this.stromkonto = function(obj_or_address) {
 this.stromkontoproxy = function(obj_or_address) {
 			var p1 = new Promise(function(resolve, reject) { 					
 						var instance=parent._objInstance(obj_or_address,'StromDAO-BO.sol:StromkontoProxy');
-						instance.addTx=function(_from,_to,_value,_base) {
+						instance.addTx=function(address_from,address_to,uint256_value,uint256_base) {
 								var p2 = new Promise(function(resolve2, reject2) { 
-											instance.obj.addTx(_from,_to,_value,_base).then(function(o) {
+											instance.obj.addTx(address_from,address_to,uint256_value,uint256_base).then(function(o) {
 													parent._waitForTransactionKeepRef(o,resolve2);	
 											});
 								});
 								return p2;
 						};
-						instance.modifySender=function(_account,_allow) {
+						instance.modifySender=function(address_account,bool_allow) {
 								var p2 = new Promise(function(resolve2, reject2) { 
-											instance.obj.modifySender(_account,_allow).then(function(o) {
+											instance.obj.modifySender(address_account,bool_allow).then(function(o) {
 													parent._waitForTransactionKeepRef(o,resolve2);	
 											});
 								});
 								return p2;
 						};
-						instance.balancesSoll=function(_address) {
+						instance.balancesSoll=function(address_acount) {
 								var p2 = new Promise(function(resolve2, reject2) { 
 											//console.log(instance.obj);
-											instance.obj.balanceSoll(_address).then(function(o) {
+											instance.obj.balanceSoll(address_acount).then(function(o) {
 													resolve2(o[0].toString()*1);
 											});
 								});
 								return p2;
 						};	
-						instance.balancesHaben=function(_address) {
+						instance.balancesHaben=function(address_acount) {
 								var p2 = new Promise(function(resolve2, reject2) { 
 											//console.log(instance.obj);
-											instance.obj.balanceHaben(_address).then(function(o) {
+											instance.obj.balanceHaben(address_acount).then(function(o) {
 													resolve2(o[0].toString()*1);
 											});
 								});
 								return p2;
 						};		
-						instance.balancesCachedSoll=function(_address) {
+						instance.balancesCachedSoll=function(address_acount) {
 								var p2 = new Promise(function(resolve2, reject2) { 
 											//console.log(instance.obj);
-											var stored = parent.storage.getItemSync(obj_or_address+"_"+_address+"_soll");
+											var stored = parent.storage.getItemSync(obj_or_address+"_"+address_acount+"_soll");
 											if((typeof stored == "undefined")||(stored==null)) {
-												instance.obj.balanceSoll(_address).then(function(o) {
-														parent.storage.setItemSync(obj_or_address+"_"+_address+"_soll",o[0].toString()*1);
+												instance.obj.balanceSoll(address_acount).then(function(o) {
+														parent.storage.setItemSync(obj_or_address+"_"+address_acount+"_soll",o[0].toString()*1);
 														resolve2(o[0].toString()*1);
 												});
 											} else {
@@ -2460,13 +2421,13 @@ this.stromkontoproxy = function(obj_or_address) {
 								});
 								return p2;
 						};	
-						instance.balancesCachedHaben=function(_address) {
+						instance.balancesCachedHaben=function(address_acount) {
 								var p2 = new Promise(function(resolve2, reject2) { 
 											//console.log(instance.obj);
-											var stored = parent.storage.getItemSync(obj_or_address+"_"+_address+"_haben");
+											var stored = parent.storage.getItemSync(obj_or_address+"_"+address_acount+"_haben");
 											if((typeof stored == "undefined")||(stored==null)) {
-												instance.obj.balanceHaben(_address).then(function(o) {
-														parent.storage.setItemSync(obj_or_address+"_"+_address+"_haben",o[0].toString()*1);
+												instance.obj.balanceHaben(address_acount).then(function(o) {
+														parent.storage.setItemSync(obj_or_address+"_"+address_acount+"_haben",o[0].toString()*1);
 														resolve2(o[0].toString()*1);
 												});
 											} else {
@@ -2563,42 +2524,42 @@ this.txcache = function(obj_or_address) {
 					});
 					return p2;
 				};
-				instance.txs=function(idx) {					
+				instance.txs=function(uint256_idx) {					
 					var p2 = new Promise(function(resolve2, reject2) { 							
-							instance.obj.txs(idx).then(function(o) {									
+							instance.obj.txs(uint256_idx).then(function(o) {									
 								 resolve2(o);									
 							});									
 					});
 					return p2;
 				};
-				instance.from=function(idx) {					
+				instance.from=function(uint256_idx) {					
 					var p2 = new Promise(function(resolve2, reject2) { 							
-							instance.obj.from(idx).then(function(o) {	
+							instance.obj.from(uint256_idx).then(function(o) {	
 								console.log("FROM",o);	
 								 resolve2(o[0].toString());									
 							});									
 					});
 					return p2;
 				};
-				instance.to=function(idx) {					
+				instance.to=function(uint256_idx) {					
 					var p2 = new Promise(function(resolve2, reject2) { 							
-							instance.obj.to(idx).then(function(o) {		
+							instance.obj.to(uint256_idx).then(function(o) {		
 								 resolve2(o[0].toString());									
 							});									
 					});
 					return p2;
 				};
-				instance.base=function(idx) {					
+				instance.base=function(uint256_idx) {					
 					var p2 = new Promise(function(resolve2, reject2) { 							
-							instance.obj.base(idx).then(function(o) {		
+							instance.obj.base(uint256_idx).then(function(o) {		
 								 resolve2(o[0].toString());									
 							});									
 					});
 					return p2;
 				};
-				instance.value=function(idx) {					
+				instance.value=function(uint256_idx) {					
 					var p2 = new Promise(function(resolve2, reject2) { 							
-							instance.obj.value(idx).then(function(o) {		
+							instance.obj.value(uint256_idx).then(function(o) {		
 								 resolve2(o[0].toString());									
 							});									
 					});
