@@ -1,5 +1,6 @@
 #
-# My Fancy Node.js project
+# StromDAO Business Object - Decentralized Apps
+# Deployment via Makefile to automate general Quick Forward 
 #
 
 PROJECT = "My Fancy Node.js project"
