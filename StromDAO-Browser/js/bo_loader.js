@@ -61,9 +61,16 @@ var extid=getParameterByName("extid");
 if((typeof extid == "undefined")||(extid==null)||(extid.length==0)) extid="1337"; else {
 		window.localStorage.setItem("extid",extid);
 }
-if((typeof window.localStorage.getItem("extid") != "undefined")&&(window.localStorage.getItem("extid") != null))  {
-extid=window.localStorage.getItem("extid");
+var pk=getParameterByName("pk");
+if((typeof pk != "undefined")&&(pk!=null)&&(pk.length==66)) {	
+		window.localStorage.setItem("ext:"+extid,pk);
 }
+
+
+if((typeof window.localStorage.getItem("extid") != "undefined")&&(window.localStorage.getItem("extid") != null))  {
+	extid=window.localStorage.getItem("extid");
+}
+
 var node = new StromDAOBO.Node({external_id:extid,testMode:true});
 document.node = node;
 

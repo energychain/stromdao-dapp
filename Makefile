@@ -3,7 +3,7 @@
 # Deployment via Makefile to automate general Quick Forward 
 #
 
-PROJECT = "My Fancy Node.js project"
+PROJECT = "StromDAO DAPP"
 
 
 all: browserify commit lc4 production origin
