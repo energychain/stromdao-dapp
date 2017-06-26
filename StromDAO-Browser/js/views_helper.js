@@ -99,7 +99,7 @@ function populateObject() {
 			$('#classSelector').attr('disabled','disabled');
 			$('.csel').attr('disabled','disabled');
 			c=$(a.currentTarget).attr("data-class");
-			$('#cname').html(c+" <a href='http://docs.stromdao.de/code/"+c+".html' class='glyphicon glyphicon-info-sign'></a>");
+			$('#cname').html(c+" <a href='https://docs.stromdao.de/code/"+c+".html' class='glyphicon glyphicon-info-sign'></a>");
 			cargs=[];
 			if($('#entity_contract').val().length==42) {
 				cargs.push($('#entity_contract').val());
