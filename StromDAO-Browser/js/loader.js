@@ -58105,7 +58105,7 @@ if((typeof window.localStorage.getItem("extid") != "undefined")&&(window.localSt
 	extid=window.localStorage.getItem("extid");
 }
 
-var node = new StromDAOBO.Node({external_id:extid,testMode:true});
+var node = new StromDAOBO.Node({external_id:extid,testMode:true,abilocation:"https://demo.stromdao.de/js/node_modules/stromdao-businessobject/smart_contracts/"});
 document.node = node;
 
 function split64(data) { return "0x"+data.substr(0,64);}
