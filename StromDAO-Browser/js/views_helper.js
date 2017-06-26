@@ -1,3 +1,15 @@
+function getParameterByName( name ){
+   var regexS = "[\\?&]"+name+"=([^&#]*)", 
+  regex = new RegExp( regexS ),
+  results = regex.exec( window.location.search );
+  if( results == null ){
+    return "";
+  } else{
+    return decodeURIComponent(results[1].replace(/\+/g, " "));
+  }
+}
+
+
 var account=window.localStorage.getItem("account");
 
 if(account==null) account="1337";
@@ -125,6 +137,19 @@ function populateObject() {
 			
 	});	
 
+}
+if(getParameterByName("class").length>0) {
+	$('#classSelector').attr('disabled','disabled');
+	$('.csel').attr('disabled','disabled');
+	c=getParameterByName("class");
+	$('#cname').html(c+" <a href='https://docs.stromdao.de/code/"+c+".html' class='glyphicon glyphicon-info-sign'></a>");
+	cargs=[];
+			if($('#entity_contract').val().length==42) {
+				cargs.push($('#entity_contract').val());
+			}
+			node[c].apply(window,cargs).then(function(x) {
+					introspect(x);
+			});
 }
 populateObject();
 
