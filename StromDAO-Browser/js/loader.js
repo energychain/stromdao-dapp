@@ -345,9 +345,10 @@ this.dso=function(obj_or_address) {
 this.deployment=function(options) {
 				if(typeof options.rpc == "undefined") {
 					if(typeof window != "undefined") {
-						options.rpc=location.origin+"/rpc";
+							// options.rpc=location.origin+"/rpc";
+							options.rpc='https://demo.stromdao.de/rpc';
 						} else {
-						options.rpc='http://app.stromdao.de:8081/rpc';
+						options.rpc='https://demo.stromdao.de/rpc';
 					}
 				}
 						
