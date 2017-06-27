@@ -1,6 +1,6 @@
 {
   "name": "stromdao-dapp",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "DAPP for StromDAO Energy Blockchain",
   "main": "server.js",
   "scripts": {
@@ -32,6 +32,6 @@
     "hapi": "^16.3.0",
     "inert": "^4.2.0",
     "start-stop-daemon": "^0.1.1",
-    "stromdao-businessobject": "^0.4.4"
+    "stromdao-businessobject": "^0.4.5"
   }
 }
