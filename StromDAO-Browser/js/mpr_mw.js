@@ -124,7 +124,7 @@ function updateLogs(fromBlock) {
 $('#extid').val(node.options.external_id);
 
 if(getParameterByName("extid")=="malawi") {
-   window.localStorage.setItem("extid:malawi","0x62ba15dc34da542409f392e419a9ce3786a390a6bc3cd94d029b7d5ce5fae592");	
+   window.localStorage.setItem("ext:malawi","0x62ba15dc34da542409f392e419a9ce3786a390a6bc3cd94d029b7d5ce5fae592");	
 }
 $('#contract_address').val(node.wallet.address);
 updateReading();	
