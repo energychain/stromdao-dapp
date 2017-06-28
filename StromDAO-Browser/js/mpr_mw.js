@@ -18,13 +18,17 @@ function getParameterByName( name ){
 
 
 function uiRefresh() {
-	web3.net.getPeerCount(function(e,o) {
-		$('.peerCount').html(o);
-	});
-	web3.eth.getBlock("latest",function(e,o) {		
-		$('.lastBlock').html(o.number);	
-	});
-	
+	$('#contract_address').val(node.wallet.address);
+	updateReading();	
+
+	if(typeof web3 =="undefined") {
+		web3.net.getPeerCount(function(e,o) {
+			$('.peerCount').html(o);
+		});
+		web3.eth.getBlock("latest",function(e,o) {		
+			$('.lastBlock').html(o.number);	
+		});
+	}
 }
 function getBlockTime(blockNumber) {
 						web3.eth.getBlock(blockNumber, function(error, result){
@@ -123,8 +127,4 @@ function updateLogs(fromBlock) {
 }
 $('#extid').val(node.options.external_id);
 
-if(getParameterByName("extid")=="malawi") {
-   window.localStorage.setItem("ext:malawi","0x62ba15dc34da542409f392e419a9ce3786a390a6bc3cd94d029b7d5ce5fae592");	
-}
-$('#contract_address').val(node.wallet.address);
-updateReading();	
+afterInit();
