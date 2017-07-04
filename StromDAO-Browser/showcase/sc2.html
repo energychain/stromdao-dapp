@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>	 
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">    
+    <title>StromDAO/Business Object - Blockchain Browser</title>	
+    <link href="../css/bootstrap.min.css" rel="stylesheet">     
+  </head>
+  <body >
+	<div class="container" >		 				
+		<h3>Get Meter Reading</h3>
+		<input type="text" id="meterpointaddress" class="form-control" length="42" value="0x6e23cCf78dD844cf6bb07022D8B95fa8E3994844" placeholder="0x...">		
+		<button id="go" class="btn btn-danger">Go</button>
+		
+			<div id="result" style="display:none">
+					<h3>Last Reading</h3>
+					<table class="table table-condensed">
+						<tr><td>Time</td><td id="ts"></td></tr>
+						<tr><td>Power</td><td id="power"></td></tr>
+					</table>
+			</div>
+	</div>
+	
+	</script>    
+    <script src="../js/jquery-3.2.1.min.js"></script>        
+    <script src="../js/bootstrap.min.js"></script>
+	<script src="https://cdn.rawgit.com/energychain/StromDAO-BusinessObject/master/dist/loader.js"></script>
+	
+  </body>
+</html>

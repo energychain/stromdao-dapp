@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	 <script src="/parity-utils/inject.js"></script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">    
+    <title>StromDAO/Business Object - Energy Blockchain</title>
+	<link href="../css/jquery-ui.min.css" rel="stylesheet">
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="jotted/jotted.min.css">    
+    <style>
+    h3 {
+			color:#909090;
+	}
+    </style>
+  </head>
+  <body >
+	<div class="container" style="margin-top:30px;">
+		    <div class="row">
+				<div class="col-md-12" style="text-align:right"> 
+					<a href='https://stromdao.de/'><img src='../stromdao_logo.png'/></a><br/>
+					<em style='color:#999999'>digital energy infrastructure for tomorrow.</em>
+			    </div>
+			</div>
+		<h1>Showcase: Working with Business Domains</h1>
+		<p>
+		Using <strong>STROM</strong>DAO Energy Blockchain you have several business domains covered in one place. The business object handles this by introducing two different ways to <em>address</em> a use case.				
+		</p>
+		<h3>Default Instance of domain</h3>
+		<h4>Javascript</h4>
+		<code>	
+		
+		<pre>
+		var node = new document.StromDAOBO.Node(
+		    {
+				external_id:&quot;1234&quot;,
+				testMode:true,
+				rpc:&quot;https://demo.stromdao.de/rpc&quot;,
+				abilocation:&quot;https://cdn.rawgit.com/energychain/StromDAO-BusinessObject/6dc9e073/smart_contracts/&quot;
+			});
+				
+		node.mpr().then(
+		   function(mpr) {
+			    mpr.storeReading(1234).then(function(o) {console.log("TX Hash",o);});
+			}
+		 );
+		</pre>
+		</code><br/>	
+		<p>
+		<code>node.mpr()</code> is equal to <code>node.mpr(&quot;0x0000000000000000000000000000000000000008&quot;)</code>.</p>
+		<p>
+		In case of a Meter Point Reading (MPR) as a business domain. There is a smart contract already deployed, which handles all of the required stuff expected by the business object. This Smart Contract has
+		an Energy Blockchain address of <code>0x0...8</code>. For all domains like Meter Reading, Factories, StromkontoProxy,... with an existing Default contract, you do not need to specify a contract address.				
+		</p>
+		<p>
+		For a list of predefined contract addresses see <a href="https://github.com/energychain/StromDAO-BusinessObject/blob/master/Defaults.js" target="_blank">Defaults.js</a>.
+		</p>		
+		<br/>
+		<h4>Test it</h4>
+		<div id="editor_1" style="height:400px;"></div>
+		<hr/>		
+		<footer style="margin-top:60px;">&copy; 2017 <a href="https://stromdao.de/">StromDAO Ltd.</a></footer>
+	</div>
+	<!-- <script src="https://cdn.ethers.io/scripts/ethers-v2.0.min.js" type="text/javascript">
+	</script>-->
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="../js/jquery-3.2.1.min.js"></script>        
+    <script src="../js/bootstrap.min.js"></script>
+	<script src="../js/loader.js"></script>
+	<script src="jotted/jotted.min.js"></script>
+	<script>
+	  new Jotted(document.querySelector('#editor_1'), {
+		files: [{
+		  type: 'html',
+		  url: 'sc2.html'
+		},
+		{
+		  type: 'js',
+		  url: 'sc2.js'
+		}	
+		]
+	  })
+	  	</script>
+  </body>
+</html>
