@@ -51,6 +51,20 @@
 		<h4>Test it</h4>
 		<div id="editor_2" style="height:450px;"></div>
 		<hr/>
+		<h3>Inject Private Key</h3>
+		<p>
+		If you create a private key on a different browser and would like to reuse it with the same external id, you have to relink it once. 
+		</p>	
+		<p>
+		Relinking is done as a parameter during instance creation.
+		</p>
+		<code>
+		// Create Instance with external ID 1234 and relink private key.<br/>
+		var node = new document.StromDAOBO.Node({<br/>&nbsp;external_id:&quot;1234&quot;,<br/><strong>&nbsp;privateKey;&quot;0x15b66c582665b97da4d8bc0e7864edde54378a4eb9c5809843e44ce0fc80e3fe&quot;</strong>,<br/>&nbsp;testMode:true,<br/>&nbsp;,<br/>&nbsp;rpc:&quot;https://demo.stromdao.de/rpc=&quot;,<br/>&nbsp;abilocation:&quot;https://cdn.rawgit.com/energychain/StromDAO-BusinessObject/6dc9e073/smart_contracts/&quot;<br/>});
+		</code>	
+		<h4>Test it</h4>
+		<div id="editor_3" style="height:450px;"></div>
+		<hr/>		
 		<footer style="margin-top:60px;">&copy; 2017 <a href="https://stromdao.de/">StromDAO Ltd.</a></footer>
 	</div>
 	<!-- <script src="https://cdn.ethers.io/scripts/ethers-v2.0.min.js" type="text/javascript">
@@ -81,6 +95,17 @@
 		{
 		  type: 'js',
 		  url: 'sc1_2.js'
+		}	
+		]
+	  })
+	  new Jotted(document.querySelector('#editor_3'), {
+		files: [{
+		  type: 'html',
+		  url: 'sc1_3.html'
+		},
+		{
+		  type: 'js',
+		  url: 'sc1_3.js'
 		}	
 		]
 	  })
