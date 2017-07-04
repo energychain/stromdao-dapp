@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	 <script src="/parity-utils/inject.js"></script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">    
+    <title>StromDAO/Business Object - Energy Blockchain</title>
+	<link href="../css/jquery-ui.min.css" rel="stylesheet">
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="node_modules/jotted/jotted.min.css">    
+    <style>
+    h3 {
+			color:#909090;
+	}
+    </style>
+  </head>
+  <body >
+	<div class="container" style="margin-top:30px;">
+		    <div class="row">
+				<div class="col-md-12" style="text-align:right"> 
+					<a href='https://stromdao.de/'><img src='../stromdao_logo.png'/></a><br/>
+					<em style='color:#999999'>digital energy infrastructure for tomorrow.</em>
+			    </div>
+			</div>
+		<h1>Showcase: Instance of Business Object</h1>
+		<p>
+		Using <strong>STROM</strong>DAO Energy Blockchain is as easy as creating a instance of an object. This showcase shows you how to do this and allows you to test it directly in your browser.		
+		</p>
+		<h3>Basic Usage in Browser</h3>
+		<h4>HTML</h4>
+		<code>
+		&lt;script src=&quot;https://cdn.rawgit.com/energychain/StromDAO-BusinessObject/master/dist/loader.js&quot;&gt;&lt;/script&gt;
+		</code>	
+		<h4>Javascript</h4>
+		<code>
+		// Create Instance with external ID 1234<br/>
+		var node = new document.StromDAOBO.Node({<br/>&nbsp;external_id:&quot;1234&quot;,<br/>&nbsp;testMode:true,<br/>&nbsp;rpc:&quot;https://demo.stromdao.de/rpc=&quot;,<br/>&nbsp;abilocation:&quot;https://cdn.rawgit.com/energychain/StromDAO-BusinessObject/6dc9e073/smart_contracts/&quot;<br/>});
+		</code>	
+		<br/>
+		<h4>Test it</h4>
+		<div id="editor_1" style="height:400px;"></div>
+		<hr/>
+		<h3>Using External IDs (extid)</h3>
+		<p>
+		In previous example we have a hardcoded external id <code>1234</code>. The logic of the business object ensures creation of a public key (address) and a private key. Both will be linked to this external id and persisted. If you use this outside your browser keys are stored in your file system. If you use this within your browser keys are stored as cookies. 
+		</p>	
+		<p>
+		Using the following example you could create multiple key pairs. <em>Note:</em> if you use the same external id on a different browser - you will have different key pairs.
+		</p>
+		<h4>Test it</h4>
+		<div id="editor_2" style="height:450px;"></div>
+		<hr/>
+		<footer style="margin-top:60px;">&copy; 2017 <a href="https://stromdao.de/">StromDAO Ltd.</a></footer>
+	</div>
+	<!-- <script src="https://cdn.ethers.io/scripts/ethers-v2.0.min.js" type="text/javascript">
+	</script>-->
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="../js/jquery-3.2.1.min.js"></script>        
+    <script src="../js/bootstrap.min.js"></script>
+	<script src="../js/loader.js"></script>
+	<script src="node_modules/jotted/jotted.min.js"></script>
+	<script>
+	  new Jotted(document.querySelector('#editor_1'), {
+		files: [{
+		  type: 'html',
+		  url: 'sc1.html'
+		},
+		{
+		  type: 'js',
+		  url: 'sc1.js'
+		}	
+		]
+	  })
+	  new Jotted(document.querySelector('#editor_2'), {
+		files: [{
+		  type: 'html',
+		  url: 'sc1_2.html'
+		},
+		{
+		  type: 'js',
+		  url: 'sc1_2.js'
+		}	
+		]
+	  })
+	</script>
+  </body>
+</html>

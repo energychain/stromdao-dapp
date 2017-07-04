@@ -92,7 +92,7 @@ function updateLogs(fromBlock) {
 			lastblock=o.number
 			toBlock=lastblock;
 			if((typeof fromBlock=="undefined")||(fromBlock<1)) {
-					fromBlock=lastblock-500;
+					fromBlock=lastblock-5000;
 			}			
 			if(fromBlock<0) fromBlock=0;
 			document.node.wallet.provider.getLogs({address:"0x0000000000000000000000000000000000000008",fromBlock:fromBlock,toBlock:toBlock}).then(

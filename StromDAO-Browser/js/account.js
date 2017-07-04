@@ -246,7 +246,7 @@ function afterInit() {
 	
 	node.blg(blk).then(function(blk) {
 				blk.stromkontoDelta().then(function(stromkontoDelta) {
-						
+	console.log("XXXXXXXXXXXXXXX");					
 						node.stromkonto(stromkontoDelta).then(function(stromkonto) {
 								stromkonto.balancesSoll(account).then( function(value) {
 									$('.soll').html((1*value.money()).toFixed(2));
