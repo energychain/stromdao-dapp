@@ -43,7 +43,7 @@
 		<hr/>
 		<h3>Using External IDs (extid)</h3>
 		<p>
-		In previous example we have a hardcoded external id <code>1234</code>. The logic of the business object ensures creation of a public key (address) and a private key. Both will be linked to this external id and persisted. If you use this outside your browser keys are stored in your file system. If you use this within your browser keys are stored as cookies. 
+		In previous example we have a hardcoded external id <code>1234</code>. The logic of the business object ensures creation of a public key (address) and a private key. Both will be linked to this external id and persisted. If you use this outside your browser keys are stored in your file system. If you use this within your browser keys are stored as window.localStorage. 
 		</p>	
 		<p>
 		Using the following example you could create multiple key pairs. <em>Note:</em> if you use the same external id on a different browser - you will have different key pairs.
