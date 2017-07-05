@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	 <script src="/parity-utils/inject.js"></script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">    
+    <title>StromDAO/Business Object - Energy Blockchain</title>
+	<link href="../css/jquery-ui.min.css" rel="stylesheet">
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="jotted/jotted.min.css">    
+    <style>
+    h3 {
+			color:#909090;
+	}
+    </style>
+  </head>
+  <body >
+	<div class="container" style="margin-top:30px;">
+		    <div class="row">
+				<div class="col-md-12" style="text-align:right"> 
+					<a href='https://stromdao.de/'><img src='../stromdao_logo.png'/></a><br/>
+					<em style='color:#999999'>digital energy infrastructure for tomorrow.</em>
+			    </div>
+			</div>
+		<h1>Showcase: Retrieving a Meter Point Reading</h1>
+		<p>
+		The <strong>STROM</strong>DAO Energy Blockchain provides a generic smart contract to cover meter point operations as business domain. This context and its smart contract is called <em>MeterPointReading (MPR)</em>. 
+		</p>
+		<p>
+		Retrieving a reading is as easy as running a query with the targeted meter point address.</p>
+		<p>Storing a reading is done by simply providing a reading value. However as storing a reading is done with a signed transaction, only holders of the private key might update a reading for a blockchain address.		
+		</p>	
+		<br/>
+		<h4>Test it</h4>
+		<div id="editor_1" style="height:400px;"></div>
+		<p>
+		As you see in your browser console you get an object returned, if you query the blockchain. This object provides last reading and timestamp.
+		</p>
+		<hr/>		
+		<h4>Test it</h4>
+		<div id="editor_2" style="height:400px;"></div>
+		<p>Your reading will be stored on your browser id. You might refer to <a href="./sc1_frm.html">Instance of Business Object</a> and how keys get generated and linked to an external ID. In this showcase we are using a special smart contract deployed at <code>0x0..8</code> - the rules of this contract allow both directions for subsequent readings.</p>
+		<hr/>
+		<p>
+		A blockchain is a consensus system and not a database. In context of meter readings you could not easily get back all archived readings. 
+		Instead you are checking backwards (for example the last 1000 blocks) if an event occured and use the block number as indicator of which consistency was at that time.
+			</p>
+		<h4>Test it</h4>
+		<div id="editor_3" style="height:400px;"></div>		
+		<hr/>
+		<footer style="margin-top:60px;">&copy; 2017 <a href="https://stromdao.de/">StromDAO Ltd.</a></footer>
+	</div>
+	<!-- <script src="https://cdn.ethers.io/scripts/ethers-v2.0.min.js" type="text/javascript">
+	</script>-->
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="../js/jquery-3.2.1.min.js"></script>        
+    <script src="../js/bootstrap.min.js"></script>
+	<script src="../js/loader.js"></script>
+	<script src="jotted/jotted.min.js"></script>
+	<script>
+	  new Jotted(document.querySelector('#editor_1'), {
+		files: [{
+		  type: 'html',
+		  url: 'sc3.html'
+		},
+		{
+		  type: 'js',
+		  url: 'sc3.js'
+		}	
+		]
+	  })
+	    new Jotted(document.querySelector('#editor_2'), {
+		files: [{
+		  type: 'html',
+		  url: 'sc3_1.html'
+		},
+		{
+		  type: 'js',
+		  url: 'sc3_1.js'
+		}	
+		]
+	  })
+	  new Jotted(document.querySelector('#editor_3'), {
+		files: [{
+		  type: 'html',
+		  url: 'sc3_2.html'
+		},
+		{
+		  type: 'js',
+		  url: 'sc3_2.js'
+		}	
+		]
+	  })
+	</script>
+  </body>
+</html>
