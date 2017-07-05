@@ -96,8 +96,7 @@ function updateLogs(fromBlock) {
 			}			
 			if(fromBlock<0) fromBlock=0;
 			document.node.wallet.provider.getLogs({address:"0x0000000000000000000000000000000000000008",fromBlock:fromBlock,toBlock:toBlock}).then(
-			function(logs) {
-					
+			function(logs) {					
 					logs=logs.reverse();
 					var html="<table class='table table-striped'>"
 					html+="<tr><th>Time</th><th>Reading</th></tr>";
