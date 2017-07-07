@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	 <script src="/parity-utils/inject.js"></script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">    
+    <title>StromDAO/Business Object - Energy Blockchain</title>
+	<link href="../css/jquery-ui.min.css" rel="stylesheet">
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="jotted/jotted.min.css">    
+    <style>
+    h3 {
+			color:#909090;
+	}
+    </style>
+  </head>
+  <body >
+	<div class="container" style="margin-top:30px;">
+		    <div class="row">
+				<div class="col-md-12" style="text-align:right"> 
+					<a href='https://stromdao.de/'><img src='../stromdao_logo.png'/></a><br/>
+					<em style='color:#999999'>digital energy infrastructure for tomorrow.</em>
+			    </div>
+			</div>
+		<h1>Showcase: Accounting using &bdquo;Stromkonto&quot;</h1>
+		<p>
+		Accounting principals within <strong>STROM</strong>DAO Energy Blockchain is mainly handled by a concept called <em>Stromkonto</em> (Power Account Statement). 
+		Within this experience accounting rules of a smart contract at <code>0x19BF166624F485f191d82900a5B7bc22Be569895</code> will be used. 
+		</p>
+		
+		<br/>
+		<h4>Test it</h4>
+		<div id="editor_1" style="height:400px;"></div>
+		<p>
+		As long as there are no transactions recorded liability and equity will be zero. 
+		</p>
+		<p>
+		If you are owner of the smart contract, you are allowed to add transactions manually. This will change the balance accordingly.
+		</p>
+		<h4>Test it</h4>
+		<div id="editor_2" style="height:400px;"></div>
+		<p>A Blockchain is not a database. In order to retrieve past transactions you need to query events from older blocks. The <strong>STROM</strong>DAO Business Object provides a history function
+		to get last transactions</p>
+		<h4>Test it</h4>
+		<div id="editor_3" style="height:400px;"></div>
+		<hr/>
+		<footer style="margin-top:60px;">&copy; 2017 <a href="https://stromdao.de/">StromDAO Ltd.</a></footer>
+	</div>
+	<!-- <script src="https://cdn.ethers.io/scripts/ethers-v2.0.min.js" type="text/javascript">
+	</script>-->
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="../js/jquery-3.2.1.min.js"></script>        
+    <script src="../js/bootstrap.min.js"></script>
+	<script src="../js/loader.js"></script>
+	<script src="jotted/jotted.min.js"></script>
+	<script>
+	  new Jotted(document.querySelector('#editor_1'), {
+		files: [{
+		  type: 'html',
+		  url: 'sc4.html'
+		},
+		{
+		  type: 'js',
+		  url: 'sc4.js'
+		}	
+		]
+	  })
+	  new Jotted(document.querySelector('#editor_2'), {
+		files: [{
+		  type: 'html',
+		  url: 'sc4_1.html'
+		},
+		{
+		  type: 'js',
+		  url: 'sc4_1.js'
+		}	
+		]
+	  })  
+	  new Jotted(document.querySelector('#editor_3'), {
+		files: [{
+		  type: 'html',
+		  url: 'sc4_2.html'
+		},
+		{
+		  type: 'js',
+		  url: 'sc4_2.js'
+		}	
+		]
+	  })  	  
+	</script>
+  </body>
+</html>
