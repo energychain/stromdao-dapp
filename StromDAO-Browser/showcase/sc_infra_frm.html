@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	 <script src="/parity-utils/inject.js"></script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">    
+    <title>StromDAO/Business Object - Energy Blockchain</title>
+	<link href="../css/jquery-ui.min.css" rel="stylesheet">
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="jotted/jotted.min.css">    
+    <style>
+    h3 {
+			color:#909090;
+	}
+    </style>
+  </head>
+  <body >
+	<div class="container" style="margin-top:30px;">
+		    <div class="row">
+				<div class="col-md-12" style="text-align:right"> 
+					<a href='https://stromdao.de/'><img src='../stromdao_logo.png'/></a><br/>
+					<em style='color:#999999'>digital energy infrastructure for tomorrow.</em>
+			    </div>
+			</div>
+		<h3>Showcase</h3><h1>Umlage von Infrastrukturkosten nach Nutzung</h1>
+		<h2>Gemeinschaftsanlagen Photovoltaik</h2>
+		<div class="panel panel-default">
+  <div class="panel-heading">Szenario</div>
+  <div class="panel-body">
+   In einem Dreifamilienhaus wird eine Photovoltaikanlage errichtet, deren Kosten auf die Eigentümergemeinschaft verbrauchsbasiert umgelegt werden soll. Die Investionskosten in Höhe von 10.000€ sind auf eine Laufzeit von 10 Jahren nach Nutzungsgrad umzulegen. Nicht durch die Eigentümer verbrauchte Strommengen, werden zu einem festen Vergütungssatz (0,04€/KWh) eingespeist.  
+  </div>
+</div>
+	<p>Zur Realisierung wird das <a href="https://www.npmjs.com/package/stromdao-businessobject" target="_blank">Business Object</a> der <strong>STROM</strong>DAO Energy Blockchain verwendet. Die Eigentümer erhalten stundengenau einen Einblick über ihre Kosten im Abrechnungszeitrum (1 Jahr). Alle Eigentümer besitzen einen Stromzähler mit automatischer Fernauslesung (<a href="https://en.wikipedia.org/wiki/Automatic_meter_reading" target="_blank">AMR</a>), welche via Orakel an die Energy Blockchain angebunden sind.</p>
+	<p>Benötigte Reststrommengen werden von den Eigentümern direkt mit ihren individuellen Stromversorgern verrechnet und sind nicht Bestandteil der Infrastrukturumlage. 
+	Es erfolgt eine vollständige Umlage der Kosten im Abrechnungszeitraum, unabhängig von der erzeugten Strommenge (KWh).</p>
+	<hr/>
+	<h3>Verwendete Smart Contracts</h3>
+	<ul>
+		<li>MPR (MeterPoint Reading) </li>
+		<li>MPToken (MeterPoint Token)</li>
+		<li>CUToken (Capacity Utilization Token)</li>
+		<li>ERC20Token (EIP20 based Token)</li>
+	</ul>
+	<hr/>
+		<h3>Live Ansicht</h3>
+		<div id="editor_1" style="height:350px;"></div>	
+	<hr/>
+	<h3>Technische Umsetzung</h3>
+	<p>Stündlich werden die Stromzähler der Eigentümer, Erzeugung und Einspeisung ausgelesen. Diese werden zunächst asynchron in die Energy Blockchain geschrieben und via Smart Contract Nutzungstokens emitiert. Die Anzahl der stündlich zu emitierenden Tokens wird durch Summenbildung des Gesamtverbrauchs multipliziert mit dem Individualverbrauch, gewonnen. </p>
+		<hr/>
+		<footer style="margin-top:60px;">&copy; 2017 <a href="https://stromdao.de/">StromDAO Ltd.</a></footer>
+	</div>
+	
+	<!-- <script src="https://cdn.ethers.io/scripts/ethers-v2.0.min.js" type="text/javascript">
+	</script>-->
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="../js/jquery-3.2.1.min.js"></script>        
+    <script src="../js/bootstrap.min.js"></script>
+	<script src="jotted/jotted.min.js"></script>
+	<script>
+	  new Jotted(document.querySelector('#editor_1'), {
+		files: [{
+		  type: 'html',
+		  url: 'sc_infra.html'
+		},
+		{
+		  type: 'js',
+		  url: 'sc_infra.js'
+		}	
+		]
+	  }) 
+	</script>
+  </body>
+</html>
