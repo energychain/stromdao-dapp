@@ -45,7 +45,7 @@
 	<hr/>
 		<h3>Live Ansicht - PV Anlage</h3>
 		<p>Sie sehen die Kostenverteilung zum aktuellen Zeitpunkt, für den Gesamtzeitraum (1.1.-31.21.2017)</p>
-		<div id="editor_1" style="height:350px;"></div>	
+		<div id="editor_1" style="height:300px;"></div>	
 	<hr/>
 	<h3>Technische Umsetzung</h3>
 	<p>Stündlich werden die Stromzähler der Eigentümer, Erzeugung und Einspeisung ausgelesen. Diese werden zunächst asynchron in die Energy Blockchain geschrieben und via Smart Contract Nutzungstokens emitiert. Die Anzahl der stündlich zu emitierenden Tokens wird durch Summenbildung des Gesamtverbrauchs multipliziert mit dem Individualverbrauch, gewonnen. </p>
@@ -62,8 +62,24 @@
 	<hr/>
 		<h3>Live Ansicht - Strom-Speicher</h3>
 		<p>Sie sehen die Kostenverteilung zum aktuellen Zeitpunkt, für den Abrechnugnszeitraum (1.1.-31.21.2017)</p>
-		<div id="editor_2" style="height:350px;"></div>	
+		<div id="editor_2" style="height:300px;"></div>	
 	<hr/>
+	<h2>Gemeinschaftlicher Strombezug</h2>
+	<div class="panel panel-default">
+	<div class="panel-heading">Szenario</div>
+		<div class="panel-body">
+			In einem Dreifamilienhaus einigen sich die Eigentümer auf einen gemeinschaftlichen Stromliefervertrag mit einem Energieversorger. Durch die höhere Bezugsmenge können bessere Konditionen ausgehandelt werden. Kosten für die mehrfache 
+			Rechnungsstellung entfallen. Die Gesamtkosten werden anteilig Nutzung von der Rechnungssumme des EVU aufgeteilt. 
+		</div>
+	</div>
+	<p>Realisiert wurde dieses Szenario in Fortführung des voran bezeichneten Szenarios.</p>
+	<hr/>
+		<h3>Live Ansicht - Netzbezug</h3>
+		<p>Sie sehen die Kostenverteilung zum aktuellen Zeitpunkt, für den Abrechnugnszeitraum (1.1.-31.21.2017)</p>
+		<div id="editor_3" style="height:300px;"></div>	
+	<hr/>
+	
+	
 		<footer style="margin-top:60px;">&copy; 2017 <a href="https://stromdao.de/">StromDAO Ltd.</a></footer>
 	</div>
 	
@@ -94,6 +110,17 @@
 		{
 		  type: 'js',
 		  url: 'sc_infra_2.js'
+		}	
+		]
+	  }) 
+	 new Jotted(document.querySelector('#editor_3'), {
+		files: [{
+		  type: 'html',
+		  url: 'sc_infra_3.html'
+		},
+		{
+		  type: 'js',
+		  url: 'sc_infra_3.js'
 		}	
 		]
 	  }) 
