@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>	 
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">    
+    <title>StromDAO/Business Object - Capacity Utilization</title>	
+    <link href="../css/bootstrap.min.css" rel="stylesheet">     
+  </head>
+  <body >
+
+	<div class="container">		
+			<h2>Abrechnung Infrastrukturumlage 2017 (vorläufig)</h2>
+			<h3>Eigentümer A</h3>
+			<p>Hinweis: Die angezeigten Werte basieren auf die aktuellen Zählerstände und verändern sich bis zum Ende des Abrechnungszeitraums (31.12.).</p>
+			<table class="table table-striped">
+				<tr><th colspan="4">
+				<h3>Infrastrukturnutzung</h3>		    
+				</th></tr>
+						
+				<tr><th>Komponente</th><th style="text-align:right">Gesamtkosten</th><th style="text-align:right">Ihr Anteil</th><th style="text-align:right">Ihre Kosten</th></tr>				
+				<tr>
+						<td>Photovoltaik Anlage</td>
+						<td align="right"><span id="totalPV"></span>&nbsp;€</td>
+						<td align="right"><span id="sharePV"></span>&nbsp;%</td>
+						<td align="right"><span id="costPV"></span>&nbsp;€</td>
+				</tr>
+				<tr>
+						<td>Speicher</td>
+						<td align="right"><span id="totalStorage"></span>&nbsp;€</td>
+						<td align="right"><span id="shareStorage"></span>&nbsp;%</td>
+						<td align="right"><span id="costStorage"></span>&nbsp;€</td>
+				</tr>
+				<tr>
+						<td>Netzbezug</td>
+						<td align="right"><span id="totalNet"></span>&nbsp;€</td>
+						<td align="right"><span id="shareNet"></span>&nbsp;%</td>
+						<td align="right"><span id="costNet"></span>&nbsp;€</td>
+				</tr>
+				<tr><th>Summe</th><th  align="right" style="text-align:right"><span id="totalI" style="text-align:right"></span>&nbsp;€</th><th align="right" style="text-align:right">&nbsp;</th><th style="text-align:right"><span id="costT"></span>&nbsp;€</th></tr>
+			<tr><th colspan="4">
+			<h3>Kennzeichnung</h3>
+			</th></tr>
+					<tr><th>Herkunft</th><th style="text-align:right">Gesamt Strommenge</th><th style="text-align:right">Ihr Anteil</th><th style="text-align:right">Ihre Strommenge</th></tr>				
+				<tr>
+					<td>Lokalstrom</td>
+					<td align="right"><span id="totalLokal"></span>&nbsp;KWh</td>
+					<td align="right"><span id="shareLokal"></span>&nbsp;%</td>
+					<td align="right"><span id="costLokal"></span>&nbsp;KWh</td>
+				</tr>
+				<tr>
+					<td>Regionalstrom</td>
+					<td align="right"><span id="totalRegio">0</span>&nbsp;KWh</td>
+					<td align="right"><span id="shareRegio">0</span>&nbsp;%</td>
+					<td align="right"><span id="costRegio">0</span>&nbsp;KWh</td>
+				</tr>
+				<tr>
+					<td>Fernstrom</td>
+					<td align="right"><span id="totalFern"></span>&nbsp;KWh</td>
+					<td align="right"><span id="shareFern"></span>&nbsp;%</td>
+					<td align="right"><span id="costFern"></span>&nbsp;KWh</td>
+				</tr>
+				<tr><th>Summe</th>
+						<th  align="right" style="text-align:right"><span id="totalH" style="text-align:right"></span>&nbsp;KWh</th>
+						<th align="right" style="text-align:right">&nbsp;</th>
+						<th style="text-align:right"><span id="costH"></span>&nbsp;KWh</th>
+				</tr>
+			<tr><th colspan="4">
+			<h3>Kapitalwert</h3>
+			</th></tr>
+			<tr>
+				<td colspan="3">Kosten (ohne Investition in Infrastruktur)</td>
+				<td align="right"><span id="costNone"></span>&nbsp;€</td>
+			</tr>
+			<tr>
+				<td colspan="3">- Infrastrukturkosten</td>
+				<td align="right"><span id="costInfra"></span>&nbsp;€</td>
+			</tr>			
+			<tr>
+				<th colspan="3">= Ersparnis</th>
+				<th align="right"  style="text-align:right"><span id="costSave"></span>&nbsp;€</th>
+			</tr>	
+			<tr>
+				<td colspan="3">Zinsfaktor</td>
+				<td align="right"><span id="costZins"></span>&nbsp;%</td>
+			</tr>								
+			</table>
+	</div>
+	
+	</script>    
+    <script src="../js/jquery-3.2.1.min.js"></script>        
+    <script src="../js/bootstrap.min.js"></script>
+	<script src="https://rawgit.com/energychain/StromDAO-BusinessObject/master/dist/loader.js"></script>	
+	<script src="./sc_infra_4.js"></script>
+  </body>
+</html>
