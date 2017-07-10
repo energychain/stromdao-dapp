@@ -19,7 +19,7 @@ function updateTotals() {
 node.mpr().then(function(mpr) {
 		mpr.readings("0x8eF4a8464df18D025115AdfA811a28eb723deeA6").then(function(r) {
 				// Zählerstand - Anfangszählerstand * 0.0025 Variable Stromkosten (0,00025 Ct/Wh)
-				var feedIn=(parseInt(r.power,16)-99077057)*0.000025;				
+				var feedIn=(parseInt(r.power,16)-99977057)*0.000025;				
 				var now = new Date();
 				var start = new Date(now.getFullYear(), 0, 0);
 				var diff = now - start;
