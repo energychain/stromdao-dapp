@@ -80,7 +80,15 @@ node.mpr().then(function(mpr) {
 		});		
 });
 
-
+node.mpr().then(function(mpr) {
+		mpr.readings(mpa).then(function(r) {
+				
+				$('#readingTime').html(new Date(r.time*1000).toLocaleString());
+				$('#reading').html(parseInt(r.power,16));
+				whStorage=(parseInt(r.power,16)-32575807)*1;				
+				updateTotals();		
+		});		
+});
 node.mpr().then(function(mpr) {
 		mpr.readings("0x8eF4a8464df18D025115AdfA811a28eb723deeA6").then(function(r) {
 				// Zählerstand - Anfangszählerstand * 0.0025 Variable Stromkosten (0,00025 Ct/Wh)
