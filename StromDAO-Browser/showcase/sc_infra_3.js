@@ -24,7 +24,7 @@ node.mpr().then(function(mpr) {
 				var start = new Date(now.getFullYear(), 0, 0);
 				var diff = now - start;
 				var poy = 86400000*365;	
-				feedIn=feedIn/(diff/poy);
+				feedIn=(feedIn/(diff/poy))*poy;
 				$('#feedIn').html(feedIn.toFixed(2));
 				$('#feedIn').attr('data',feedIn)				
 				updateTotals();
