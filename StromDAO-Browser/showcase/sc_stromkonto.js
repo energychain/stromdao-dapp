@@ -46,7 +46,7 @@ function updateLables() {
 
 function updateTotals() {
 	if($('#costPower').attr('data')!=0) {
-		var energy=(($('#soll').attr('data2')/$('#costPower').attr('data'))/10000000);
+		var energy=(($('#soll').attr('data2')/$('#costPower').attr('data'))/100000000);
 		$('#energy').html(energy.toFixed(3));
 		$.each($('.subtotal'),function(key,value) {
 					$(value).html((energy*$(value).attr('data')).toFixed(6));			
@@ -71,7 +71,7 @@ function updateBalance() {
 		});
 		settlement.total_shares().then(function(cost) {
 			$('#costPower').attr('data',cost);
-			$('#costPower').html((cost/100000).toFixed(6));	
+			$('#costPower').html((cost/1000000).toFixed(6));	
 			updateTotals();		
 		});
 		
@@ -84,7 +84,7 @@ function updateBalance() {
 	node.stromkonto("0x19BF166624F485f191d82900a5B7bc22Be569895").then(function(sko) {
 			sko.balancesSoll(smpc).then(function(haben) {
 				
-				haben=haben/1000000000000;
+				haben=haben/10000000000000;
 				$('#haben').html((haben).toFixed(6));
 				$('#haben').attr('data',haben);			
 				$('#saldo').html((( $('#haben').attr('data')- $('#soll').attr('data') )).toFixed(6));				
@@ -92,7 +92,7 @@ function updateBalance() {
 			});
 			sko.balancesHaben(smpc).then(function(soll) {				
 				$('#soll').attr('data2',soll);
-				soll=soll/1000000000000;
+				soll=soll/10000000000000;
 				$('#soll').attr('data',soll);
 				$('#soll').html((soll).toFixed(6));
 				
@@ -103,14 +103,18 @@ function updateBalance() {
 				o=o.reverse();	
 				var blk="";
 				var blk_label="";
-				for(var i=0;i<o.length;i++) {
+				var l=0;
+				for(var i=0;(i<o.length)&&(l<5);i++) {
 						if(o[i].blockNumber!=blk) {
 							blk=o[i].blockNumber;
 							blk_label="#"+blk;
+							l++;
 						} else {
 							blk_label="";
 						}
-						$('#history').append("<tr><td>"+blk_label+"</td><td title='"+o[i].to+"' class='lbl_"+o[i].to.toLowerCase()+"'>"+o[i].to.substr(0,10)+"...</td><td title='"+o[i].from+"' class='lbl_"+o[i].from.toLowerCase()+"'>"+o[i].from.substr(0,10)+"...</td><td align='right'>"+(parseInt(o[i].value,16)/1000000000000).toFixed(6)+" € </td></tr>");						
+						if(l<5) {
+						$('#history').append("<tr><td>"+blk_label+"</td><td title='"+o[i].to+"' class='lbl_"+o[i].to.toLowerCase()+"'>"+o[i].to.substr(0,10)+"...</td><td title='"+o[i].from+"' class='lbl_"+o[i].from.toLowerCase()+"'>"+o[i].from.substr(0,10)+"...</td><td align='right'>"+(parseInt(o[i].value,16)/10000000000000).toFixed(6)+" € </td></tr>");						
+					}
 				}
 				updateLables();
 			});
