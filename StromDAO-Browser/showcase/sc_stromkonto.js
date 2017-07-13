@@ -71,7 +71,7 @@ function updateBalance() {
 		});
 		settlement.total_shares().then(function(cost) {
 			$('#costPower').attr('data',cost);
-			$('#costPower').html((cost/1000000).toFixed(6));	
+			$('#costPower').html((cost/100000).toFixed(6));	
 			updateTotals();		
 		});
 		
