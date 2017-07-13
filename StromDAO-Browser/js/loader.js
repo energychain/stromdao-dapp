@@ -1949,7 +1949,15 @@ this.singleclearing=function(obj_or_address) {
 							});									
 					});
 					return p2;
-				};				
+				};	
+				instance.last_time=function() {
+					var p2 = new Promise(function(resolve2, reject2) { 
+							instance.obj.last_time().then(function(o) {									
+								resolve2(o[0]);											
+							});									
+					});
+					return p2;
+				};								
 				instance.energyCost=function() {
 					var p2 = new Promise(function(resolve2, reject2) { 
 							instance.obj.energyCost().then(function(o) {									
@@ -1958,6 +1966,14 @@ this.singleclearing=function(obj_or_address) {
 					});
 					return p2;
 				};
+				instance.total_shares=function() {
+					var p2 = new Promise(function(resolve2, reject2) { 
+							instance.obj.total_shares().then(function(o) {									
+								resolve2(o[0]);											
+							});									
+					});
+					return p2;
+				};				
 				instance.share=function(address_account) {
 					var p2 = new Promise(function(resolve2, reject2) { 
 							instance.obj.share(address_account).then(function(o) {									
@@ -2562,7 +2578,25 @@ this.stromkonto = function(obj_or_address) {
 											});
 								});
 								return p2;
-						};		
+						};	
+						instance.baseSoll=function(address_account) {
+								var p2 = new Promise(function(resolve2, reject2) { 
+											//console.log(instance.obj);
+											instance.obj.baseSoll(address_account).then(function(o) {
+													resolve2(o[0].toString()*1);
+											});
+								});
+								return p2;
+						};	
+						instance.baseHaben=function(address_account) {
+								var p2 = new Promise(function(resolve2, reject2) { 
+											//console.log(instance.obj);
+											instance.obj.baseHaben(address_account).then(function(o) {
+													resolve2(o[0].toString()*1);
+											});
+								});
+								return p2;
+						};								
 						instance.balancesCachedSoll=function(address_account) {
 								var p2 = new Promise(function(resolve2, reject2) { 
 											//console.log(instance.obj);
@@ -2642,6 +2676,57 @@ this.stromkonto = function(obj_or_address) {
 														_toHaben =(split64(data));
 														data=data.substr(64);
 														if((_from.toLowerCase()==address_meterpoint.toLowerCase())||(_to.toLowerCase()==address_meterpoint.toLowerCase())) {
+															var entry={};
+															entry.from=_from;
+															entry.to=_to;
+															entry.base=_base;
+															entry.value=_value;
+															entry.toSoll=_toSoll;
+															entry.toHaben=_toHaben;
+															entry.fromSoll=_fromSoll;
+															entry.fromHaben=_fromHaben;
+															entry.blockNumber=logs[i].blockNumber;
+															entries.push(entry);
+														}
+													}
+											}
+											resolve2(entries);
+									});
+								});
+							});
+							return p2;
+						};
+						instance.historyPeer=function(address_meterpoint,address_account,length) {							
+							var p2 = new Promise(function(resolve2, reject2) { 
+								
+								parent.rpcprovider.getBlockNumber().then(function(latest_block) {
+									if(length==0) length=latest_block;
+									
+									parent.wallet.provider.getLogs({address:obj_or_address,fromBlock:latest_block-length,toBlock:latest_block}).then(							
+									function(logs) {															
+											entries=[];
+											for(var i=0;i<logs.length;i++) {
+													var data = logs[i].data;
+													if(data.length>256) {
+														data=data.substr(2);
+														_from ="0x"+ split64(data).substr(26);
+														data=data.substr(64);
+														_to ="0x"+split64(data).substr(26);
+														data=data.substr(64);
+															
+														_value =(split64(data));
+														data=data.substr(64);
+														_base =(split64(data));
+														data=data.substr(64);
+														_fromSoll =(split64(data));
+														data=data.substr(64);
+														_fromHaben =(split64(data));
+														data=data.substr(64);
+														_toSoll =(split64(data));
+														data=data.substr(64);
+														_toHaben =(split64(data));
+														data=data.substr(64);
+														if(((_from.toLowerCase()==address_meterpoint.toLowerCase())||(_to.toLowerCase()==address_meterpoint.toLowerCase()))&&(((_from.toLowerCase()==address_account.toLowerCase())||(_to.toLowerCase()==address_account.toLowerCase())))) {
 															var entry={};
 															entry.from=_from;
 															entry.to=_to;
