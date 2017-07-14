@@ -98,7 +98,7 @@ function updateBalance() {
 				$('#soll').html((soll).toFixed(6));
 				
 				$('#saldo').html((( $('#haben').attr('data')- $('#soll').attr('data') )).toFixed(6));	
-				$('#toPay').html((( $('#haben').attr('data')- $('#soll').attr('data') )).toFixed(6));
+				$('#toPay').html((( $('#haben').attr('data')- $('#soll').attr('data') )).toFixed(2));
 			});						
 			sko.history(smpc,1000).then(function(o) {	
 				$('#history').html("<tr><th>Buchungslauf</th><th>Von</th><th>An</th><th>Betrag</th>");
