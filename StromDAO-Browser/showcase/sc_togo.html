@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	 <script src="/parity-utils/inject.js"></script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">    
+    <title>StromDAO/Business Object - Energy Blockchain</title>
+	<link href="../css/jquery-ui.min.css" rel="stylesheet">
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="jotted/jotted.min.css">    
+    <style>
+    h3 {
+			color:#909090;
+	}
+    </style>
+  </head>
+  <body >
+	<div class="container" style="margin-top:30px;">
+		    <div class="row">
+				<div class="col-md-12" style="text-align:right"> 
+					<a href='https://stromdao.de/'><img src='../stromdao_logo.png'/></a><br/>
+					<em style='color:#999999'>digital energy infrastructure for tomorrow.</em>
+			    </div>
+			</div>
+		<h1>Showcase: Strom ToGo</h1>
+		<hr/>
+		<div class="row">
+			<div class="col-md-6">
+				<h3>Ablesung</h3>
+				<table class="table table-striped table-bordered">
+					<tr><td><strong>Zeitpunkt</strong></td><td><span id="settlementTime"></span></td></tr>
+					<tr><td><strong>Zählerstand</strong></td><td><span id="lastPower"></span> kWh</td></tr>										
+					<tr><td><strong>Gelieferte Energiemenge</strong></td><td><span id="energy"></span> kWh</td></tr>
+				</table>					
+				
+			</div>
+			<div class="col-md-6">
+				<h3>Abrechnung</h3>
+				<table class="table table-striped table-bordered">
+					<tr><td><strong>Kosten</strong></td><td><span id="soll"></span> €</td></tr>
+					<tr><td><strong>Gutschriften</strong></td><td><span id="haben"></span> €</td></tr>										
+					<tr><td><strong>Saldo</strong></td><td><span id="saldo"></span> €</td></tr>
+				</table>			
+			</div>
+		</div>
+		<h2>Kostenverteilung</h2>
+		<table class="table table-striped table-bordered" id="breakdownTotal">
+		</table>
+		<div id="macom" style="display:none">
+		<div class="alert alert-info" role="alert"><strong>Zuständigkeitsgrenze:</strong> Messtellenbetrieb &gt; Energiedienstleistung</div>
+		<h3>Konsens Marktkommunikation</h3>
+		<div class="row">
+			<div class="col-md-4">
+				<strong>Zählpunkt</strong>
+			</div>
+			<div class="col-md-8">
+				<span id="mp"></span>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-4">
+				<strong>Zeitpunkt</strong>
+			</div>
+			<div class="col-md-8">
+				<span id="lastTime"></span>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-4">
+				<strong>Zählerstand</strong>
+			</div>
+			<div class="col-md-8">
+				
+			</div>
+		</div>
+		<h3>Settlement/Clearing</h3>
+		<div class="row">
+			<div class="col-md-4">
+				<strong>Smart Contract</strong>
+			</div>
+			<div class="col-md-8">
+				<span id="smpc"></span>
+			</div>
+		</div>
+		<div class="row">				
+			<div class="col-md-4">
+				<strong>Zeitpunkt</strong>
+			</div>
+			<div class="col-md-8">
+				<span id="settlementTime"></span>
+			</div>
+		</div>
+		<div class="row">				
+			<div class="col-md-4">
+				<strong>Zählerstand</strong>
+			</div>
+			<div class="col-md-8">
+			</div>
+		</div>
+		<div class="row">				
+			<div class="col-md-4">
+				<strong>Brutto Kosten</strong>
+			</div>
+			<div class="col-md-8">
+				<span id="costPower"></span> €/kWh
+			</div>
+		</div>	
+		<div class="row">				
+			<div class="col-md-4">
+				<strong>Kostenschlüssel</strong>
+			</div>
+			<div class="col-md-8">
+				<table class="table table-striped table-bordered" id="breakdown">
+				</table>
+			</div>
+		</div>	
+		<div class="alert alert-info" role="alert"><strong>Zuständigkeitsgrenze:</strong> Energiedienstleistung &gt; Buchführung</div>
+		<h3>Kundenkonto</h3>
+		<div class="row">				
+			<div class="col-md-4">
+				<strong>Energiemenge</strong>
+			</div>
+			<div class="col-md-8">
+				<span id="energy"></span> kWh
+			</div>
+		</div>	
+		<div class="row">				
+			<div class="col-md-4">
+				<strong>Soll</strong>
+			</div>
+			<div class="col-md-8">
+				<span id="soll"></span> €
+			</div>
+		</div>		
+		<div class="row">				
+			<div class="col-md-4">
+				<strong>Haben</strong>
+			</div>
+			<div class="col-md-8">
+				<span id="haben"></span> €
+			</div>
+		</div>	
+		<div class="row">				
+			<div class="col-md-4">
+				<strong>Saldo</strong>
+			</div>
+			<div class="col-md-8">
+				<span id="saldo"></span> €
+			</div>
+		</div>			
+		<div class="row">				
+			<div class="col-md-4">
+				<strong>Verteilung</strong>
+			</div>
+			<div class="col-md-8">
+			
+			</div>
+		</div>	
+		<div class="row">				
+			<div class="col-md-4">
+				<strong>Letzte Buchungen</strong>
+			</div>
+			<div class="col-md-8">
+			<table class="table table-striped table-bordered" id="history"></table>	
+			</div>
+		</div>	
+		<div class="alert alert-success" role="alert"><strong>Zuständigkeitsgrenze:</strong> Buchführung &gt; Kunde</div>
+		<h3>Zahlbetrag: <span class="label label-danger"><span id="toPay"></span> €</span></h3>
+		</div>
+		<hr/>		
+		<footer style="margin-top:60px;">&copy; 2017 <a href="https://stromdao.de/">StromDAO Ltd.</a></footer>
+	</div>
+	<!-- <script src="https://cdn.ethers.io/scripts/ethers-v2.0.min.js" type="text/javascript">
+	</script>-->
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="../js/jquery-3.2.1.min.js"></script>        
+    <script src="../js/bootstrap.min.js"></script>
+	<script src="https://rawgit.com/energychain/StromDAO-BusinessObject/master/dist/loader.js"></script>	
+	<script src="./sc_togo.js"></script>
+  </body>
+</html>
