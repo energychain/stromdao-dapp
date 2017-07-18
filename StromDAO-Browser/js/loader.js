@@ -1900,6 +1900,30 @@ this.singleclearing=function(obj_or_address) {
 					});
 					return p2;
 				};
+				instance.becomeProvider=function() {
+					var p2 = new Promise(function(resolve2, reject2) { 
+							instance.obj.becomeProvider().then(function(o) {									
+								parent._waitForTransactionKeepRef(o,resolve2);												
+							});									
+					});
+					return p2;
+				};
+				instance.activate=function() {
+					var p2 = new Promise(function(resolve2, reject2) { 
+							instance.obj.activate().then(function(o) {									
+								parent._waitForTransactionKeepRef(o,resolve2);												
+							});									
+					});
+					return p2;
+				};	
+				instance.deactivate=function() {
+					var p2 = new Promise(function(resolve2, reject2) { 
+							instance.obj.deactivate().then(function(o) {									
+								parent._waitForTransactionKeepRef(o,resolve2);												
+							});									
+					});
+					return p2;
+				};								
 				instance.setEnergyCost=function(uint256_cost)  {		
 		
 					var p2 = new Promise(function(resolve2, reject2) { 
@@ -1961,7 +1985,23 @@ this.singleclearing=function(obj_or_address) {
 				instance.energyCost=function() {
 					var p2 = new Promise(function(resolve2, reject2) { 
 							instance.obj.energyCost().then(function(o) {									
-								resolve2(o[0]);											
+								resolve2(o[0].toString());											
+							});									
+					});
+					return p2;
+				};
+				instance.state=function() {
+					var p2 = new Promise(function(resolve2, reject2) { 
+							instance.obj.state().then(function(o) {									
+								resolve2(o[0].toString());											
+							});									
+					});
+					return p2;
+				};
+				instance.provider=function() {
+					var p2 = new Promise(function(resolve2, reject2) { 
+							instance.obj.provider().then(function(o) {									
+								resolve2(o[0].toString());											
 							});									
 					});
 					return p2;
@@ -1982,8 +2022,15 @@ this.singleclearing=function(obj_or_address) {
 					});
 					return p2;
 				};
-				
-
+				instance.balanceOf=function(address_account) {
+								var p2 = new Promise(function(resolve2, reject2) { 
+											//console.log(instance.obj);
+											instance.obj.balanceOf(address_account).then(function(o) {
+													resolve2(o[0].toString()*1);
+											});
+								});
+								return p2;
+				};														
 				resolve(instance);
 			});
 			return p1;
@@ -2010,13 +2057,13 @@ this.factory = function(obj_or_address) {
 				 * Stores a reading to this contract instance. Requires sender to be approved Meter-Point 
 				 * @see approveMP()
 				 */
-				instance.build= function(address_stromkonto,address_meterpoint,uint256_cost,bool_becometo) {	
+				instance.build= function(address_stromkonto,address_meterpoint,uint256_cost,address_account,bool_becometo) {	
 							
 					var p2 = new Promise(function(resolve2, reject2) { 
 							instance.obj.onbuilt=function(cb) {						
 									resolve2(cb);						
 							};		
-							instance.obj.build(address_stromkonto,address_meterpoint,uint256_cost,bool_becometo).then(function(o) {	
+							instance.obj.build(address_stromkonto,address_meterpoint,uint256_cost,address_account,bool_becometo).then(function(o) {	
 										
 							});									
 					});
