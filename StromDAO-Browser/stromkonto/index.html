@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">    
+    <title>Stromkonto der StromDAO</title>
+	<link href="css/jquery-ui.min.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+        <style>
+    h3 {
+			color:#909090;
+	}
+    </style>
+  </head>
+  <body >
+	<div class="container" style="margin-top:30px;">
+		<div class="row">				
+			<div class="col-md-12" style="text-align:right"> 
+				<a href='https://stromdao.de/'><img src='./stromdao_logo.png'/></a><br/>
+				<em style='color:#999999'>digital energy infrastructure for tomorrow.</em>
+			</div>
+				
+
+		</div>
+		<hr/>
+		<div id="loginFrm">
+			<h3><span id="anmelden">Anmelden/</span>Registrieren</h3>
+			<div class="alert alert-warning" role="alert" style="display:none" id="loginAlert"></div>
+			<div class="form-group">
+					<label for="email">Email</label>
+					<input type="email" class="form-control" id="email">
+			</div>
+			<div class="form-group">
+				<label for="pwd">Passwort</label>
+				<input type="password" class="form-control" id="pwd">
+			</div>
+			<div id="registrieren" style="display:none">
+				<div class="form-group">
+					<label for="pwd2">Passwort (bestätigen)</label>
+					<input type="password" class="form-control" id="pwd2">
+				</div>			
+			</div>	
+			<button type="submit" class="btn btn-warning" id="demo" style="display:none">Demo-Modus &raquo;&raquo;</button>				
+			<button type="submit" class="btn btn-danger" id="login">weiter &raquo;&raquo;</button>		
+		</div>	
+				
+		<div id="app" style="display:none">
+			<div class="alert alert-warning" role="alert" style="display:none" id="appAlert"></div>
+			<div class="row">
+					<div class="col-md-3"><h4><span class="glyphicon glyphicon-book" aria-hidden="true"></span> Konto</h4><h3><span class="account"></span></h3></div>
+					<div class="col-md-3" style="text-align:right"><h4>Soll</h4><h3><span class="soll"></span> €</h3></div>
+					<div class="col-md-3" style="text-align:right"><h4>Haben</h4><h3><span class="haben"></span> €</h3></div>
+					<div class="col-md-3" style="text-align:right"><h4>Saldo</h4><h3><span class="saldo"></span> €</h3></div>
+			</div>
+			<div class="row" style="display:none" id="tarifInfo">
+					<hr/>
+					<div class="col-md-3"><h4><span class="glyphicon glyphicon-euro" aria-hidden="true"></span> Stromtarif</h4><h3><span class="tarif"></span></h3></div>
+					<div class="col-md-3" style="text-align:right"><h4>Anbieter</h4><h3><span class="provider"></span></h3><span class="state"></span></div>
+					<div class="col-md-3" style="text-align:right"><h4>Arbeitspreis</h4><h3><span class="ap"></span> €</h3>pro kWh</div>
+					<div class="col-md-3" style="text-align:right"><h4>Grundpreis</h4><h3><span class="gp"></span> €</h3>pro Jahr</div>								
+			</div>	
+			<div class="row" style="display:none" id="meterInfo">
+					<hr/>
+					<div class="col-md-6"><h4><span class="glyphicon glyphicon-scale" aria-hidden="true"></span> Stromzähler</h4><h3><span class="tarif"></span></h3></div>
+					<div class="col-md-3" style="text-align:right"><h4>Letzte Ablesung</h4><h3><input type="text" class="form-control" id="readingtime"></h3></div>
+					<div class="col-md-3" style="text-align:right"><h4>Zählerstand</h4><h3><input type="number" class="form-control" id="readingpower"></h3></div>					
+			</div>	
+			
+					
+			<div id="divHistory">
+				<hr/>
+				<h3>Letzte Buchungen</h3>
+				<table class="table" id="history"></table>
+			</div>
+			<div id="tarifInput" style="display:none">
+				<h3>Stammdaten für Tarif</h3>
+				<div class="form-group">
+						<label for="plz">Postleitzahl</label>
+						<input type="text" class="form-control" id="plz">
+				</div>
+				<div class="form-group">
+						<label for="ja">Jahresverbrauch</label>
+						<input type="number" class="form-control" id="ja" value="2500">
+				</div>
+				<button type="submit" class="btn btn-danger" id="confTarif">weiter &raquo;&raquo;</button>	
+			</div>
+			<div id="tarifConf" style="display:none">
+				<h3>Stammdaten für Tarif</h3>
+					<div class="row">
+						<div class="col-md-3"><h4>Stadt/Gemeinde</h4><h3 id="cityname"></h3></div>
+						<div class="col-md-3" style="text-align:right"><h4>Arbeitspreis</h4><h3><span id="ap"></span> €</h3><h4>pro kWh</h4></div>
+						<div class="col-md-3" style="text-align:right"><h4>Grundpreis</h4><h3><span id="gp"></span> €</h3><h4>pro Jahr</h4></div>
+						<div class="col-md-3" style="text-align:right"><h4><strong>Kosten</strong></h4><h3><strong><span id="jp"></span> €</strong></h3><h4>pro Jahr</h4></div>
+					</div>
+					<button type="submit" class="btn btn-danger" id="selTarif">Tarif übernehmen &raquo;&raquo;</button>	
+			</div>
+			<div id="consoleLog" style="display:none">
+				<h3>Laufende Verarbeitung...</h3>
+				<ul id="log"></ul>
+			</div>
+		</div>
+		<footer><hr/>&copy; 2017 <a href="https://stromdao.de/">StromDAO Ltd.</a></footer>
+	</div>
+	<script src="https://cdn.ethers.io/scripts/ethers-v2.0.min.js" type="text/javascript"></script>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/jquery-ui.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+	<script src="js/app.js"></script>
+	
+  </body>
+</html>
