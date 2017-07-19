@@ -5,9 +5,11 @@ var auth="";
 var account="";
 var tarif="";
 var meterpoint="";
+var smpcf="0xeCb1E8799155A15f62F098603ef79Fc45990f8B4";
+var stromkontoproxy="0x19BF166624F485f191d82900a5B7bc22Be569895";
 
 function valueDiv(num) {
-		return num/10000;
+		return num/10000000000;
 }
 function valueDisplay(num) {	
 		return valueDiv(num).toLocaleString(undefined,{minimumFractionDigits: 2,  maximumFractionDigits: 2})
@@ -32,12 +34,12 @@ function confirmTarif() {
 		$('#log').empty();
 		$('#consoleLog').show();
 		$('#log').append("<li>Erstelle Clearing Verträge in der Blockchain...</li>");
-		$.post(api+"singleclearingfactory/0xeCb1E8799155A15f62F098603ef79Fc45990f8B4/build/0x19BF166624F485f191d82900a5B7bc22Be569895/"+account+"/"+$('#gp').attr("data")+"/"+account+"/false/?token="+token,{},function(data) {
+		$.post(api+"singleclearingfactory/"+smpcf+"/build/"+stromkontoproxy+"/"+account+"/"+Math.round($('#gp').attr("data")/8760)+"/"+account+"/false/?token="+token,{},function(data) {
 				$('#log').append("<li>Grundgebühr "+$('#gp').html()+" registriert unter: "+data+"</li>");	
 				var sc_gp=JSON.parse(data);		
 				$.post(api+"roleLookup/0x0000000000000000000000000000000000000006/setRelation/100/"+sc_gp+"?token="+token,{},function(data) {
 						$('#log').append("<li>Relation Grundgebühr zu Stromkonto "+data+"</li>");
-						$.post(api+"singleclearingfactory/0xedafe9cea3566Ab0ad6BC78E569f2E4AdDB353Ac/build/0x19BF166624F485f191d82900a5B7bc22Be569895/"+account+"/"+$('#ap').attr("data")+"/"+account+"/false/?token="+token,{},function(data) {
+						$.post(api+"singleclearingfactory/"+smpcf+"/build/"+stromkontoproxy+"/"+account+"/"+$('#ap').attr("data")+"/"+account+"/false/?token="+token,{},function(data) {
 							var sc_ap=JSON.parse(data);
 							$('#log').append("<li>Arbeitspreis "+$('#ap').html()+" registriert unter: "+data+"</li>");	
 							$.post(api+"roleLookup/0x0000000000000000000000000000000000000006/setRelation/101/"+sc_ap+"?token="+token,{},function(data) {
@@ -54,13 +56,16 @@ function confTarifs() {
 	$('#tarifConf').show();
 	$.get(priceAPI+$('#plz').val()+"/"+$('#ja').val()+"?token="+token,function(data) {
 			data=JSON.parse(data);			
+			console.log("Tarif Info",data);
 			$.each(data.Price,function(a,b) {
+				console.log(a,b);
+				console.log(b.UpGross);
 				$('#cityname').html(b.City);
-				$('#ap').html(valueDisplay(b.UpGross*10000));
+				$('#ap').html((b.UpGross/100).toLocaleString());
 				$('#ap').attr('data',b.UpGross*100000);
-				$('#gp').html(valueDisplay(b.BpGross*10000));
+				$('#gp').html((b.BpGross*1).toLocaleString());
 				$('#gp').attr('data',b.BpGross*100000);
-				$('#jp').html(valueDisplay(b.Total*10000));
+				$('#jp').html((b.Total*1).toLocaleString());
 			});
 			$('#selTarif').click(confirmTarif);
 	});		
@@ -78,7 +83,7 @@ function getConnection() {
 						tarif_gp=data;
 						
 						$.post(api+"singleclearing/"+tarif_gp+"/energyCost/?token="+token,{},function(data) {
-								$('.gp').html(valueDisplay(JSON.parse(data)/10));
+								$('.gp').html(valueDisplay(JSON.parse(data)*100000*8760));
 								$('.gp').attr('data',JSON.parse(data));		
 								
 								$('.gp').attr('title',tarif_gp);				
@@ -97,23 +102,35 @@ function getConnection() {
 								if(state==1) status="In Bearbeitung bei Lieferant";
 								if(state==2) status="In Belieferung";
 								
-								$('.state').html(status);							
+								$('.state_gp').html(status);							
 						});
 						$.post(api+"roleLookup/0x0000000000000000000000000000000000000006/relations/"+account+"/101?token="+token,{},function(data) {									
 							tarif_ap=JSON.parse(data);
 							$.post(api+"singleclearing/"+tarif_ap+"/energyCost/?token="+token,{},function(data) {							
-								$('.ap').html(mvalueDisplay(JSON.parse(data)*10));
+								$('.ap').html((JSON.parse(data)/10000000).toLocaleString());
 								$('.ap').attr('data',JSON.parse(data));
 								$('.ap').attr('title',tarif_ap);
 								$('#tarifInfo').show();
 							});
-							
+							$.post(api+"singleclearing/"+tarif_ap+"/state/?token="+token,{},function(data) {
+								var state=JSON.parse(data)*1;
+								var status="unbekannt";
+								if(state==0) status="Warten auf Lieferant";
+								if(state==1) status="In Bearbeitung bei Lieferant";
+								if(state==2) status="In Belieferung";
+								
+								$('.state_ap').html(status);							
+							});
 							$.post(api+"singleclearing/"+tarif_ap+"/meterpoint/?token="+token,{},function(data) {	
 								var meterpoint = JSON.parse(data);
 								$.post(api+"mpr/0x0/readings/"+meterpoint+"/?token="+token,{},function(data) {
 											data = JSON.parse(data);
-											$('#readingtime').val(new Date(parseInt(data.time._bn,16)*100).toLocaleString());
+											$('#readingtime').val(new Date(parseInt(data.time._bn,16)*1000).toLocaleString());
 											$('#readingpower').val(parseInt(data.power._bn,16));
+											if(meterpoint.toLowerCase()!=account.toLowerCase()) {
+												$('#readingtime').attr('disabled','disabled');
+												$('#readingpower').attr('disabled','disabled');
+											}
 								});
 							});
 							$.post(api+"singleclearing/"+tarif_ap+"/last_reading/?token="+token,{},function(data) {							
@@ -180,6 +197,8 @@ function renderAddress	() {
 
 function app() {
 	renderAddress();
+	$('#dsp_account').show();
+	$('#dsp_email').html($('#email').val());
 	$('#app').show();
 	
 }
