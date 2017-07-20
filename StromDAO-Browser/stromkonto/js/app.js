@@ -24,8 +24,11 @@ function accountLabel(address) {
 			names[address]=data;
 			$('.'+address).html(data);
 		});
+		return address.substr(0,10)+"...";
+	} else {
+		return names[address];
 	}
-	return address.substr(0,10)+"...";
+	
 }
 
 
@@ -36,6 +39,30 @@ function getTarifs() {
 	$('#confTarif').click(confTarifs);
 }
 
+function getShareHoldersAP(address,idx) {
+	
+	$.post(api+"singleclearing/"+address+"/accounts/"+idx+"/?token="+token,{},function(data) {	
+		data=JSON.parse(data);								
+		$.post(api+"singleclearing/"+address+"/balanceOf/"+data+"/?token="+token,{},function(data2) {	
+				$('#costSplit').show();								
+				$('#apshares').append("<tr><td ><span class='"+data+"'>"+accountLabel(data)+"</span>&nbsp;</td><td>"+valueDisplay(data2*100)+" €</td></tr>");
+				idx++;
+				getShareHoldersAP(address,idx);
+		});
+	});	
+}
+function getShareHoldersGP(address,idx) {
+	
+	$.post(api+"singleclearing/"+address+"/accounts/"+idx+"/?token="+token,{},function(data) {	
+		data=JSON.parse(data);								
+		$.post(api+"singleclearing/"+address+"/balanceOf/"+data+"/?token="+token,{},function(data2) {	
+				$('#costSplit').show();								
+				$('#gpshares').append("<tr><td ><span class='"+data+"'>"+accountLabel(data)+"</span>&nbsp;</td><td>"+valueDisplay(data2*100)+" €</td></tr>");
+				idx++;
+				getShareHoldersGP(address,idx);
+		});
+	});	
+}
 function confirmTarif() {
 		$('#tarifConf').hide();
 		$('#log').empty();
@@ -95,13 +122,6 @@ function getConnection() {
 								
 								$('.gp').attr('title',tarif_gp);				
 						});
-						console.log(api+"singleclearing/"+tarif_gp+"/getProvider/?token="+token);
-						/*
-						$.post(api+"singleclearing/"+tarif_gp+"/provider/?token="+token,{},function(data) {
-								console.log("Provider Lookup",data);
-								$('.provider').html(accountLabel(data));								
-						});
-						* */
 						$.post(api+"singleclearing/"+tarif_gp+"/state/?token="+token,{},function(data) {
 								var state=JSON.parse(data)*1;
 								var status="unbekannt";
@@ -109,11 +129,11 @@ function getConnection() {
 								if(state==1) status="In Bearbeitung bei Lieferant";
 								if(state==2) { 
 									status="In Belieferung";
-									$.post(api+"singleclearing/"+tarif_ap+"/clearing/?token="+token,{},function(data) {
+									$.post(api+"singleclearing/"+tarif_gp+"/clearing/?token="+token,{},function(data) {
 											console.log("GP Clearing",data);	
 									});
 								}
-								
+								getShareHoldersGP(tarif_gp,0);
 								$('.state_gp').html(status);							
 						});
 						$.post(api+"roleLookup/0x0000000000000000000000000000000000000006/relations/"+account+"/101?token="+token,{},function(data) {									
@@ -132,7 +152,7 @@ function getConnection() {
 								if(state==2) { 
 									status="In Belieferung";
 									$.post(api+"singleclearing/"+tarif_ap+"/clearing/?token="+token,{},function(data) {
-											console.log("AP Clearing",data);	
+												
 									});
 								}
 								
@@ -157,6 +177,7 @@ function getConnection() {
 								$('.readingtime').html(JSON.parse(data));
 								$('#meterInfo').show();								
 							});
+							getShareHoldersAP(tarif_ap,0);
 						});
 				}
 	});	

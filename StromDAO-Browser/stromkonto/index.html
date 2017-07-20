@@ -59,10 +59,27 @@
 			<div class="row" style="display:none" id="tarifInfo">
 					<hr/>
 					<div class="col-md-3"><h4><span class="glyphicon glyphicon-euro" aria-hidden="true"></span> Stromtarif</h4><h3><span class="tarif"></span></h3></div>
-					<div class="col-md-3" style="text-align:right"><h4>Status</h4><h3><span class="provider"></span></h3>Grundvertrag:<span class="state_gp"></span><br/>Energielieferung:<span class="state_ap"></span></div>
-					<div class="col-md-3" style="text-align:right"><h4>Arbeitspreis</h4><h3><span class="ap"></span> €</h3>pro kWh</div>
-					<div class="col-md-3" style="text-align:right"><h4>Grundpreis</h4><h3><span class="gp"></span> €</h3>pro Jahr</div>								
+					<div class="col-md-3" style="text-align:right"><h4>Dienstleister</h4><h3><span class="provider"></span></h3></div>
+					<div class="col-md-3" style="text-align:right"><h4>Arbeitspreis</h4><h3><span class="ap"></span> €</h3>pro kWh<br/>
+					<span class="state_ap"></span>						
+					</div>
+					<div class="col-md-3" style="text-align:right"><h4>Grundpreis</h4><h3><span class="gp"></span> €</h3>pro Jahr<br/>
+					<span class="state_gp"></span>											
+					</div>								
 			</div>	
+			<div class="row" style="display:none" id="costSplit">
+						<hr/>
+					<div class="col-md-3"><h4><span class="glyphicon glyphicon-euro" aria-hidden="true"></span> Verteilung</h4><h3><span class="tarif"></span></h3></div>
+					<div class="col-md-3" style="text-align:right"></div>
+					<div class="col-md-3" style="text-align:right">												
+						<table class="table table-condensed table-striped table-bordered" id="apshares">
+						</table>
+					</div>
+					<div class="col-md-3" style="text-align:right">												
+						<table class="table table-condensed table-striped table-bordered" id="gpshares">
+						</table>
+					</div>	
+			</div>
 			<div class="row" style="display:none" id="meterInfo">
 					<hr/>
 					<div class="col-md-6"><h4><span class="glyphicon glyphicon-scale" aria-hidden="true"></span> Stromzähler</h4><h3><span class="tarif"></span></h3></div>
@@ -92,7 +109,8 @@
 				<h3>Stammdaten für Tarif</h3>
 					<div class="row">
 						<div class="col-md-3"><h4>Stadt/Gemeinde</h4><h3 id="cityname"></h3></div>
-						<div class="col-md-3" style="text-align:right"><h4>Arbeitspreis</h4><h3><span id="ap"></span> €</h3><h4>pro kWh</h4></div>
+						<div class="col-md-3" style="text-align:right"><h4>Arbeitspreis</h4><h3><span id="ap"></span> €</h3><h4>pro kWh</h4>						
+						</div>
 						<div class="col-md-3" style="text-align:right"><h4>Grundpreis</h4><h3><span id="gp"></span> €</h3><h4>pro Jahr</h4></div>
 						<div class="col-md-3" style="text-align:right"><h4><strong>Kosten</strong></h4><h3><strong><span id="jp"></span> €</strong></h3><h4>pro Jahr</h4></div>
 					</div>
