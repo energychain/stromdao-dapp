@@ -8,6 +8,11 @@ var meterpoint="";
 var smpcf="0xeCb1E8799155A15f62F098603ef79Fc45990f8B4";
 var stromkontoproxy="0x19BF166624F485f191d82900a5B7bc22Be569895";
 var names=[];
+
+$.ajaxSetup({
+  timeout: 25000
+});
+
 function valueDiv(num) {
 		return num/10000000000;
 }
@@ -17,9 +22,10 @@ function valueDisplay(num) {
 function mvalueDisplay(num) {	
 		return valueDiv(valueDiv(num)).toLocaleString(undefined,{minimumFractionDigits: 6,  maximumFractionDigits: 6})
 }
+
 function accountLabel(address) {	
 	if(typeof names[address] == "undefined") {
-		$.post(api+"roleLookup/0x0000000000000000000000000000000000000006/getName/"+address+"/?token="+token,{},function(data) {				
+		$.get(api+"roleLookup/0x0000000000000000000000000000000000000006/getName/"+address+"/?token="+token,{},function(data) {				
 			data=JSON.parse(data);
 			names[address]=data;
 			$('.'+address).html(data);
@@ -41,9 +47,9 @@ function getTarifs() {
 
 function getShareHoldersAP(address,idx) {
 	
-	$.post(api+"singleclearing/"+address+"/accounts/"+idx+"/?token="+token,{},function(data) {	
+	$.get(api+"singleclearing/"+address+"/accounts/"+idx+"/?token="+token,{},function(data) {	
 		data=JSON.parse(data);								
-		$.post(api+"singleclearing/"+address+"/balanceOf/"+data+"/?token="+token,{},function(data2) {	
+		$.get(api+"singleclearing/"+address+"/balanceOf/"+data+"/?token="+token,{},function(data2) {	
 				$('#costSplit').show();								
 				$('#apshares').append("<tr><td ><span class='"+data+"'>"+accountLabel(data)+"</span>&nbsp;</td><td>"+valueDisplay(data2*100)+" €</td></tr>");
 				idx++;
@@ -68,7 +74,7 @@ function confirmTarif() {
 		$('#log').empty();
 		$('#consoleLog').show();
 		$('#log').append("<li>Erstelle Clearing Verträge in der Blockchain...</li>");
-		$.post(api+"singleclearingfactory/"+smpcf+"/build/"+stromkontoproxy+"/"+account+"/"+Math.round($('#gp').attr("data")/8760)+"/"+account+"/false/?token="+token,{},function(data) {
+		$.get(api+"singleclearingfactory/"+smpcf+"/build/"+stromkontoproxy+"/"+account+"/"+Math.round($('#gp').attr("data")/8760)+"/"+account+"/false/?token="+token,{},function(data) {
 				$('#log').append("<li>Grundgebühr "+$('#gp').html()+" registriert unter: "+data+"</li>");	
 				var sc_gp=JSON.parse(data);		
 				$.post(api+"roleLookup/0x0000000000000000000000000000000000000006/setRelation/100/"+sc_gp+"?token="+token,{},function(data) {
@@ -105,7 +111,7 @@ function confTarifs() {
 	});		
 }
 function getConnection() {
-	$.post(api+"roleLookup/0x0000000000000000000000000000000000000006/relations/"+account+"/100?token="+token,{},function(data) {				
+	$.get(api+"roleLookup/0x0000000000000000000000000000000000000006/relations/"+account+"/100?token="+token,{},function(data) {				
 				data=JSON.parse(data);
 				if(data=="0x0000000000000000000000000000000000000000") {
 						$('#appAlert').html("<span class='glyphicon glyphicon-warning-sign'></span>&nbsp;<strong>Kein Tarif zugeordnet</strong>. Bitte wählen Sie einen Tarif aus, der dem Stromkonto zugeordnet werden soll.&nbsp;<span class='glyphicon glyphicon-warning-sign'></span><br/><button class='btn btn-sm btn-danger' id='switchTarif'>weiter &raquo;&raquo;</button>");
@@ -116,13 +122,13 @@ function getConnection() {
 				} else {
 						tarif_gp=data;
 						
-						$.post(api+"singleclearing/"+tarif_gp+"/energyCost/?token="+token,{},function(data) {
+						$.get(api+"singleclearing/"+tarif_gp+"/energyCost/?token="+token,{},function(data) {
 								$('.gp').html(valueDisplay(JSON.parse(data)*100000*8760));
 								$('.gp').attr('data',JSON.parse(data));		
 								
 								$('.gp').attr('title',tarif_gp);				
 						});
-						$.post(api+"singleclearing/"+tarif_gp+"/state/?token="+token,{},function(data) {
+						$.get(api+"singleclearing/"+tarif_gp+"/state/?token="+token,{},function(data) {
 								var state=JSON.parse(data)*1;
 								var status="unbekannt";
 								if(state==0) status="Warten auf Lieferant";
@@ -136,7 +142,7 @@ function getConnection() {
 								getShareHoldersGP(tarif_gp,0);
 								$('.state_gp').html(status);							
 						});
-						$.post(api+"roleLookup/0x0000000000000000000000000000000000000006/relations/"+account+"/101?token="+token,{},function(data) {									
+						$.get(api+"roleLookup/0x0000000000000000000000000000000000000006/relations/"+account+"/101?token="+token,{},function(data) {									
 							tarif_ap=JSON.parse(data);
 							$.post(api+"singleclearing/"+tarif_ap+"/energyCost/?token="+token,{},function(data) {							
 								$('.ap').html((JSON.parse(data)/10000000).toLocaleString());
@@ -158,7 +164,7 @@ function getConnection() {
 								
 								$('.state_ap').html(status);							
 							});
-							$.post(api+"singleclearing/"+tarif_ap+"/meterpoint/?token="+token,{},function(data) {	
+							$.get(api+"singleclearing/"+tarif_ap+"/meterpoint/?token="+token,{},function(data) {	
 								var meterpoint = JSON.parse(data);
 								$.post(api+"mpr/0x0/readings/"+meterpoint+"/?token="+token,{},function(data) {
 											data = JSON.parse(data);
@@ -170,10 +176,10 @@ function getConnection() {
 											}
 								});
 							});
-							$.post(api+"singleclearing/"+tarif_ap+"/last_reading/?token="+token,{},function(data) {							
+							$.get(api+"singleclearing/"+tarif_ap+"/last_reading/?token="+token,{},function(data) {							
 								$('.readingpower').html(JSON.parse(data));								
 							});
-							$.post(api+"singleclearing/"+tarif_ap+"/last_time/?token="+token,{},function(data) {							
+							$.get(api+"singleclearing/"+tarif_ap+"/last_time/?token="+token,{},function(data) {							
 								$('.readingtime').html(JSON.parse(data));
 								$('#meterInfo').show();								
 							});
