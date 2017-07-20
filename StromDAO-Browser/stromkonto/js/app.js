@@ -8,6 +8,7 @@ var meterpoint="";
 var smpcf="0xeCb1E8799155A15f62F098603ef79Fc45990f8B4";
 var stromkontoproxy="0x19BF166624F485f191d82900a5B7bc22Be569895";
 var names=[];
+var tarifConditions=[];
 
 $.ajaxSetup({
   timeout: 25000
@@ -94,19 +95,32 @@ function confirmTarif() {
 function confTarifs() {
 	$('#tarifInput').hide();
 	$('#tarifConf').show();
+	tarifConditions=[];
+	tarifConditions.push({name:"PLZ",value:$('#plz').val()});
 	$.get(priceAPI+$('#plz').val()+"/"+$('#ja').val()+"?token="+token,function(data) {
-			data=JSON.parse(data);			
-			console.log("Tarif Info",data);
-			$.each(data.Price,function(a,b) {
-				console.log(a,b);
-				console.log(b.UpGross);
+			data=JSON.parse(data);						
+			$.each(data.Price,function(a,b) {				
+				b.BpGross=Math.round((b.BpGross*100)/12)/100;
+				b.Total=Math.round(b.Total/4);
 				$('#cityname').html(b.City);
 				$('#ap').html((b.UpGross/100).toLocaleString());
 				$('#ap').attr('data',b.UpGross*100000);
 				$('#gp').html((b.BpGross*1).toLocaleString());
 				$('#gp').attr('data',b.BpGross*100000);
-				$('#jp').html((b.Total*1).toLocaleString());
+				$('#jp').html((b.Total*1).toLocaleString());	
+				tarifConditions.push({name:"Arbeitspreis",value:(b.UpGross/100).toLocaleString()});			
+				tarifConditions.push({name:"Grundpreis im Monat",value:(b.BpGross*1).toLocaleString()});
+				tarifConditions.push({name:"Deckung",value:(b.Total*1).toLocaleString()});
 			});
+			var html="<table class='table table-striped'>";
+			$.each(data.Elements,function(c,d) {
+				if((d.Name!="SEA Budget")&&(d.Name!="Provision Grundgebühr")&&(d.Name!="Provision Arbeitspreis")&&(d.Value!="Modell 0")&&(d.Name!="Vertriebsmodell")) {
+					tarifConditions.push({name:d.Name,value:d.Value});
+					html+="<tr><td>"+d.Name+"</td><td>"+d.Value+"</td></tr>";
+				}				
+			});
+			html+="</table>";
+			$('#tarifTable').html(html);
 			$('#selTarif').click(confirmTarif);
 	});		
 }
