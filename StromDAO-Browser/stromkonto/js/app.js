@@ -1,5 +1,5 @@
-var api="http://localhost:3000/api/";
-var priceAPI="http://localhost:3000/prices/";
+var api="https://demo.stromdao.de/api/";
+var priceAPI="https://demo.stromdao.de/prices/";
 var token="";
 var auth="";
 var account="";
@@ -7,7 +7,7 @@ var tarif="";
 var meterpoint="";
 var smpcf="0xeCb1E8799155A15f62F098603ef79Fc45990f8B4";
 var stromkontoproxy="0x19BF166624F485f191d82900a5B7bc22Be569895";
-
+var names=[];
 function valueDiv(num) {
 		return num/10000000000;
 }
@@ -17,7 +17,14 @@ function valueDisplay(num) {
 function mvalueDisplay(num) {	
 		return valueDiv(valueDiv(num)).toLocaleString(undefined,{minimumFractionDigits: 6,  maximumFractionDigits: 6})
 }
-function accountLabel(address) {
+function accountLabel(address) {	
+	if(typeof names[address] == "undefined") {
+		$.post(api+"roleLookup/0x0000000000000000000000000000000000000006/getName/"+address+"/?token="+token,{},function(data) {				
+			data=JSON.parse(data);
+			names[address]=data;
+			$('.'+address).html(data);
+		});
+	}
 	return address.substr(0,10)+"...";
 }
 
@@ -100,7 +107,12 @@ function getConnection() {
 								var status="unbekannt";
 								if(state==0) status="Warten auf Lieferant";
 								if(state==1) status="In Bearbeitung bei Lieferant";
-								if(state==2) status="In Belieferung";
+								if(state==2) { 
+									status="In Belieferung";
+									$.post(api+"singleclearing/"+tarif_ap+"/clearing/?token="+token,{},function(data) {
+											console.log("GP Clearing",data);	
+									});
+								}
 								
 								$('.state_gp').html(status);							
 						});
@@ -117,7 +129,12 @@ function getConnection() {
 								var status="unbekannt";
 								if(state==0) status="Warten auf Lieferant";
 								if(state==1) status="In Bearbeitung bei Lieferant";
-								if(state==2) status="In Belieferung";
+								if(state==2) { 
+									status="In Belieferung";
+									$.post(api+"singleclearing/"+tarif_ap+"/clearing/?token="+token,{},function(data) {
+											console.log("AP Clearing",data);	
+									});
+								}
 								
 								$('.state_ap').html(status);							
 							});
@@ -172,8 +189,8 @@ function updateHistory() {
 					var dir="";
 					var val=render.value;
 					var acc="";
-					if(render.to.toLowerCase()==account.toLowerCase()) { dir="von"; acc=render.from; } else { dir= "an";  acc=render.to;val*=-1;}
-					html+="<tr><td>#"+render.blockNumber+"</td><td>"+dir+" <span title='"+acc+"'>"+accountLabel(acc)+"</span></td><td align='right'>"+valueDisplay(val)+" €</td></tr>";
+					if(render.to.toLowerCase()==account.toLowerCase()) { dir="von"; acc=render.from; } else { dir= "an";  acc=render.to;val*=-1;}					
+					html+="<tr><td>#"+render.blockNumber+"</td><td>"+dir+" <span title='"+acc+"' class='"+acc+"'>"+accountLabel(acc)+"</span></td><td align='right'>"+valueDisplay(val)+" €</td></tr>";
 			});
 			if(data.length==0) {
 					html+="<tr><td colspan='3'><em>Noch keine Buchungen vorhanden.</em></td></tr>";
