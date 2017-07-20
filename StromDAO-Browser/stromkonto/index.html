@@ -56,6 +56,22 @@
 					<div class="col-md-3" style="text-align:right"><h4>Haben</h4><h3><span class="haben"></span> €</h3></div>
 					<div class="col-md-3" style="text-align:right"><h4>Saldo</h4><h3><span class="saldo"></span> €</h3></div>
 			</div>
+			<div class="row" style="display:none" id="meterInfo">
+					<hr/>
+					<div class="col-md-6"><h4><span class="glyphicon glyphicon-scale" aria-hidden="true"></span> Stromzähler</h4><h3><span class="tarif"></span></h3></div>
+					<div class="col-md-3" style="text-align:right"><h4>Letzte Ablesung</h4><h3>
+					<div class="input-group input-group-sm">
+						<input type="text" class="form-control pull-right" style="text-align:right" id="readingtime">
+						<span class="input-group-addon" id="sizing-addon3"><span class="glyphicon glyphicon-time"></span></span>
+					</div></h3>
+					</div>
+					<div class="col-md-3" style="text-align:right"><h4>Zählerstand</h4><h3>
+					<div class="input-group  input-group-sm">				 
+						<input type="number" class="form-control pull-right" style="text-align:right" id="readingpower">
+						<span class="input-group-addon" id="sizing-addon3">Wh</span>
+					</div></h3>
+					</div>					
+			</div>				
 			<div class="row" style="display:none" id="tarifInfo">
 					<hr/>
 					<div class="col-md-3"><h4><span class="glyphicon glyphicon-euro" aria-hidden="true"></span> Stromtarif</h4><h3><span class="tarif"></span></h3></div>
@@ -80,22 +96,7 @@
 						</table>
 					</div>	
 			</div>
-			<div class="row" style="display:none" id="meterInfo">
-					<hr/>
-					<div class="col-md-6"><h4><span class="glyphicon glyphicon-scale" aria-hidden="true"></span> Stromzähler</h4><h3><span class="tarif"></span></h3></div>
-					<div class="col-md-3" style="text-align:right"><h4>Letzte Ablesung</h4><h3>
-					<div class="input-group input-group-sm">
-						<input type="text" class="form-control pull-right" style="text-align:right" id="readingtime">
-						<span class="input-group-addon" id="sizing-addon3"><span class="glyphicon glyphicon-time"></span></span>
-					</div></h3>
-					</div>
-					<div class="col-md-3" style="text-align:right"><h4>Zählerstand</h4><h3>
-					<div class="input-group  input-group-sm">				 
-						<input type="number" class="form-control pull-right" style="text-align:right" id="readingpower">
-						<span class="input-group-addon" id="sizing-addon3">Wh</span>
-					</div></h3>
-					</div>					
-			</div>	
+
 			
 					
 			<div id="divHistory">
