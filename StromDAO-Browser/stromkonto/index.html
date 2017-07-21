@@ -96,7 +96,31 @@
 						</table>
 					</div>	
 			</div>
+			<div class="row" style="display:none" id="profileUser">
+					<hr/>
+					<div class="col-md-6"><h4><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Stammdaten Stromkonto</h4></div>
+					<div class="col-md-6">
+						 <div class="form-group">
+							<label for="profileVorname">Vorname</label>
+							<input type="text" class="form-control profileField" id="profileVorname" placeholder="Ihr Vorname">
+						 </div>					
 
+						 <div class="form-group">
+							<label for="profileNachname">Nachname</label>
+							<input type="text" class="form-control profileField" id="profileNachname" placeholder="Ihr Nachname">
+						 </div>					
+						 
+						 <div class="form-group">
+							<label for="profileEmail">E-Mail</label>
+							<input type="email" class="form-control profileField" id="profileEmail" placeholder="Ihre Email Anschrift">
+						 </div>		
+						<div class="form-group">
+							<label for="profilePhone">Telefonnummer</label>
+							<input type="tel" class="form-control profileField" id="profilePhone" placeholder="01234-567789">
+						 </div>						
+					</div>
+					<button type="submit" class="btn btn-danger" id="updateProfile">Stammdaten aktualisieren &raquo;&raquo;</button>	
+			</div>
 			
 					
 			<div id="divHistory">
@@ -133,7 +157,7 @@
 							
 						</div>
 					</div>
-					<button type="submit" class="btn btn-danger" id="selTarif">Tarif buchen &raquo;&raquo;</button>	
+					<button type="submit" class="btn btn-danger" id="selTarif">Tarif hinterlegen &raquo;&raquo;</button>	
 			</div>
 			<div id="consoleLog" style="display:none">
 				<h3>Laufende Verarbeitung...</h3>

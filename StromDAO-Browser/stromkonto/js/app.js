@@ -1,4 +1,5 @@
 var api="https://demo.stromdao.de/api/";
+var coldAPI=api+"cold/";
 var priceAPI="https://demo.stromdao.de/prices/";
 var token="";
 var auth="";
@@ -9,6 +10,7 @@ var smpcf="0xeCb1E8799155A15f62F098603ef79Fc45990f8B4";
 var stromkontoproxy="0x19BF166624F485f191d82900a5B7bc22Be569895";
 var names=[];
 var tarifConditions=[];
+var consensWiz=false;
 
 $.ajaxSetup({
   timeout: 25000
@@ -58,9 +60,8 @@ function getShareHoldersAP(address,idx) {
 		});
 	});	
 }
-function getShareHoldersGP(address,idx) {
-	
-	$.post(api+"singleclearing/"+address+"/accounts/"+idx+"/?token="+token,{},function(data) {	
+function getShareHoldersGP(address,idx) {	
+	$.get(api+"singleclearing/"+address+"/accounts/"+idx+"/?token="+token,{},function(data) {	
 		data=JSON.parse(data);								
 		$.post(api+"singleclearing/"+address+"/balanceOf/"+data+"/?token="+token,{},function(data2) {	
 				$('#costSplit').show();								
@@ -70,21 +71,56 @@ function getShareHoldersGP(address,idx) {
 		});
 	});	
 }
+function setCold(bucket,obj) {	
+	$.get(coldAPI+"set/",{bucket:bucket,obj:obj,token:token},function(data) {			
+		console.log(data);
+	});	
+}
+function getCold(account,bucket) {	
+	$.get(coldAPI+"get/",{bucket:bucket,token:token,account:account},function(data) {	
+		data = JSON.parse(data);		
+		console.log(data);
+		$('#'+bucket).val(data.data);
+	});	
+}
+
+function updateProfile() {	
+	$('#profileUser').show();	
+	$('#updateProfile').click(function() {
+		$('.profileField').each(function(a,b) {		
+			setCold($(b).attr("id"),$(b).val());
+			tarifConditions.push({name:$(b).attr("id"),value:$(b).val()});						
+		});
+		$('#profileUser').hide();
+		if(consensWiz) {
+			$.each(tarifConditions,function(a,b) {
+				setCold("tmp_"+b.name,b.value);							
+			});	
+			app();
+			//Abschluss Buchung: 0x9707F3C9ca3C554A6E6d31B71A3C03d7017063F4			
+		}
+	});
+}
 function confirmTarif() {
+		consensWiz=true;
 		$('#tarifConf').hide();
 		$('#log').empty();
 		$('#consoleLog').show();
-		$('#log').append("<li>Erstelle Clearing Verträge in der Blockchain...</li>");
+		$('#log').append("<li>Erstelle Verträge in der Blockchain...</li>");
 		$.get(api+"singleclearingfactory/"+smpcf+"/build/"+stromkontoproxy+"/"+account+"/"+Math.round($('#gp').attr("data")/8760)+"/"+account+"/false/?token="+token,{},function(data) {
 				$('#log').append("<li>Grundgebühr "+$('#gp').html()+" registriert unter: "+data+"</li>");	
 				var sc_gp=JSON.parse(data);		
+				tarifConditions.push({name:'sc_gp',value:sc_gp});
 				$.post(api+"roleLookup/0x0000000000000000000000000000000000000006/setRelation/100/"+sc_gp+"?token="+token,{},function(data) {
 						$('#log').append("<li>Relation Grundgebühr zu Stromkonto "+data+"</li>");
 						$.post(api+"singleclearingfactory/"+smpcf+"/build/"+stromkontoproxy+"/"+account+"/"+$('#ap').attr("data")+"/"+account+"/false/?token="+token,{},function(data) {
 							var sc_ap=JSON.parse(data);
+							tarifConditions.push({name:'sc_ap',value:sc_ap});
 							$('#log').append("<li>Arbeitspreis "+$('#ap').html()+" registriert unter: "+data+"</li>");	
 							$.post(api+"roleLookup/0x0000000000000000000000000000000000000006/setRelation/101/"+sc_ap+"?token="+token,{},function(data) {
 								$('#log').append("<li>Relation Arbeitspreis zu Stromkonto "+data+"</li>");
+								$('#consoleLog').hide();								
+								updateProfile();
 							});				
 						});
 				});	
@@ -250,6 +286,10 @@ function renderAddress	() {
 				updateBalance();
 				updateHistory();
 				getConnection();
+				$('.profileField').each(function(a,b) {		
+					getCold(account,$(b).attr("id"));
+					
+				});
 		});
 }
 
