@@ -1,6 +1,11 @@
+var api="http://localhost:3000/api/";
+var coldAPI=api+"cold/";
+var priceAPI="https://demo.stromdao.de/prices/";
+/*
 var api="https://demo.stromdao.de/api/";
 var coldAPI=api+"cold/";
 var priceAPI="https://demo.stromdao.de/prices/";
+*/
 var token="";
 var auth="";
 var account="";
@@ -71,6 +76,7 @@ function getShareHoldersGP(address,idx) {
 		});
 	});	
 }
+
 function setCold(bucket,obj) {	
 	$.get(coldAPI+"set/",{bucket:bucket,obj:obj,token:token},function(data) {			
 		console.log(data);
@@ -215,7 +221,7 @@ function getConnection() {
 								$('.state_ap').html(status);							
 							});
 							$.get(api+"singleclearing/"+tarif_ap+"/meterpoint/?token="+token,{},function(data) {	
-								var meterpoint = JSON.parse(data);
+								meterpoint = JSON.parse(data);
 								$.post(api+"mpr/0x0/readings/"+meterpoint+"/?token="+token,{},function(data) {
 											data = JSON.parse(data);
 											$('#readingtime').val(new Date(parseInt(data.time._bn,16)*1000).toLocaleString());
@@ -223,6 +229,8 @@ function getConnection() {
 											if(meterpoint.toLowerCase()!=account.toLowerCase()) {
 												$('#readingtime').attr('disabled','disabled');
 												$('#readingpower').attr('disabled','disabled');
+												$('#updateReading').attr('disabled','disabled');
+												$('#updateReading').hide();
 											}
 								});
 							});
@@ -276,7 +284,13 @@ function updateHistory() {
 			$('#history').addClass('table-striped');
 		});					
 }
-
+$('#updateReading').click(function() {
+	$('#updateReading').attr('disabled','disabled');
+	$.post(api+"mpr/0x0/storeReading/"+$('#readingpower').val()+"?token="+token,{},function(data) {	
+		$('#updateReading').removeAttr('disabled');
+		app();
+	});
+});
 function renderAddress	() { 
 		$.post(api+"info/"+$('#email').val()+"?token="+token,{},function(data) {				
 				data=JSON.parse(data);
@@ -288,7 +302,6 @@ function renderAddress	() {
 				getConnection();
 				$('.profileField').each(function(a,b) {		
 					getCold(account,$(b).attr("id"));
-					
 				});
 		});
 }
