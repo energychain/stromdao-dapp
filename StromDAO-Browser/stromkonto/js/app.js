@@ -16,6 +16,8 @@ var stromkontoproxy="0x19BF166624F485f191d82900a5B7bc22Be569895";
 var names=[];
 var tarifConditions=[];
 var consensWiz=false;
+var provider_ap="";
+var provider_gp="";
 
 $.ajaxSetup({
   timeout: 25000
@@ -131,9 +133,23 @@ function confirmTarif() {
 						});
 				});	
 
-		});
-		
+		});		
 }
+$('#cancleDelivery').click( function() {
+	$('#cancleDelivery').attr('disabled','disabled');
+	$('#consoleLog').show();
+	$('#divHistory').hide();	
+	$('#log').empty();
+	$('#log').append("<li>Entferne Tarif in der Blockchain</li>");
+	$.post(api+"roleLookup/0x0000000000000000000000000000000000000006/setRelation/100/"+account+"?token="+token,{},function(data) {
+				$('#log').append("<li>Aufgehoben: Relation Grundgebühr zu Stromkonto "+data+"</li>");
+				$.post(api+"roleLookup/0x0000000000000000000000000000000000000006/setRelation/101/"+account+"?token="+token,{},function(data) {
+						$('#log').append("<li>Aufgehoben: Relation Arbeitspreis zu Stromkonto "+data+"</li>");
+						$('#consoleLog').hide();								
+						app();
+				});				
+	});
+});
 function confTarifs() {
 	$('#tarifInput').hide();
 	$('#tarifConf').show();
@@ -169,7 +185,7 @@ function confTarifs() {
 function getConnection() {
 	$.get(api+"roleLookup/0x0000000000000000000000000000000000000006/relations/"+account+"/100?token="+token,{},function(data) {				
 				data=JSON.parse(data);
-				if(data=="0x0000000000000000000000000000000000000000") {
+				if((data=="0x0000000000000000000000000000000000000000")||(data==account)) {
 						$('#appAlert').html("<span class='glyphicon glyphicon-warning-sign'></span>&nbsp;<strong>Kein Tarif zugeordnet</strong>. Bitte wählen Sie einen Tarif aus, der dem Stromkonto zugeordnet werden soll.&nbsp;<span class='glyphicon glyphicon-warning-sign'></span><br/><button class='btn btn-sm btn-danger' id='switchTarif'>weiter &raquo;&raquo;</button>");
 						$('#appAlert').show();
 						$('#switchTarif').click(function() {
