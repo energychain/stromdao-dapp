@@ -1,11 +1,11 @@
 var api="http://localhost:3000/api/";
 var coldAPI=api+"cold/";
 var priceAPI="https://demo.stromdao.de/prices/";
-/*
+
 var api="https://demo.stromdao.de/api/";
 var coldAPI=api+"cold/";
 var priceAPI="https://demo.stromdao.de/prices/";
-*/
+
 var token="";
 var auth="";
 var account="";
