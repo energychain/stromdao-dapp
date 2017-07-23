@@ -125,10 +125,14 @@ function confirmTarif() {
 							var sc_ap=JSON.parse(data);
 							tarifConditions.push({name:'sc_ap',value:sc_ap});
 							$('#log').append("<li>Arbeitspreis "+$('#ap').html()+" registriert unter: "+data+"</li>");	
-							$.post(api+"roleLookup/0x0000000000000000000000000000000000000006/setRelation/101/"+sc_ap+"?token="+token,{},function(data) {
-								$('#log').append("<li>Relation Arbeitspreis zu Stromkonto "+data+"</li>");
-								$('#consoleLog').hide();								
-								updateProfile();
+							
+							$.post(api+"stromkontoproxy/"+stromkontoproxy+"/modifySender/"+sc_ap+"/true?token="+token,{},function(data) {
+								$('#log').append("<li>Freigabe zur Buchung des Arbeitspreises "+data+"</li>");
+								$.post(api+"roleLookup/0x0000000000000000000000000000000000000006/setRelation/101/"+sc_ap+"?token="+token,{},function(data) {
+									$('#log').append("<li>Relation Arbeitspreis zu Stromkonto "+data+"</li>");
+									$('#consoleLog').hide();								
+									updateProfile();
+								});																
 							});				
 						});
 				});	
