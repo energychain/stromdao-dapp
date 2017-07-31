@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">    
+    <title>Stromkonto der StromDAO</title>
+	<link href="css/jquery-ui.min.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+        <style>
+    h3 {
+			color:#909090;
+	}
+    </style>
+  </head>
+  <body >
+	<div class="container" style="margin-top:30px;">
+		<div class="row">		
+			<div class="col-md-6">
+				<h3 id="dsp_account" style="display:none"><span class="glyphicon glyphicon-king">&nbsp;</span><span id="dsp_email"></span></h3>
+			</div>		
+			<div class="col-md-6" style="text-align:right"> 
+				<a href='https://stromdao.de/'><img src='./stromdao_logo.png'/></a><br/>
+				<em style='color:#999999'>digital energy infrastructure for tomorrow.</em>
+			</div>
+				
+
+		</div>
+		<hr/>
+		<div id="loginFrm">
+			<h3><span id="anmelden">Anmelden/</span>Registrieren</h3>
+			<div class="alert alert-warning" role="alert" style="display:none" id="loginAlert"></div>
+			<div class="form-group">
+					<label for="email">Email</label>
+					<input type="email" class="form-control" id="email">
+			</div>
+			<div class="form-group">
+				<label for="pwd">Passwort</label>
+				<input type="password" class="form-control" id="pwd">
+			</div>
+			<div id="registrieren" style="display:none">
+				<div class="form-group">
+					<label for="pwd2">Passwort (bestätigen)</label>
+					<input type="password" class="form-control" id="pwd2">
+				</div>			
+			</div>	
+			<button type="submit" class="btn btn-warning" id="demo" style="display:none">Demo-Modus &raquo;&raquo;</button>				
+			<button type="submit" class="btn btn-danger" id="login">weiter &raquo;&raquo;</button>		
+		</div>	
+				
+		<div id="app" style="display:none">
+			<div class="row">
+					<div class="col-md-3"><h4><span class="glyphicon glyphicon-book" aria-hidden="true"></span> Bilanz</h4><h3><span class="account"></span></h3></div>
+					<div class="col-md-3" style="text-align:right"><h4>Aktiva</h4><h3><span class="soll"></span> €</h3></div>
+					<div class="col-md-3" style="text-align:right"><h4>Passiva</h4><h3><span class="haben"></span> €</h3></div>
+					<div class="col-md-3" style="text-align:right"><h4>Saldo</h4><h3><span class="saldo"></span> €</h3></div>
+			</div>
+			<hr/>
+			<div class="row">
+					<div class="col-md-6"><h4><span class="glyphicon glyphicon-gift" aria-hidden="true"></span> Vertrag</h4><h3><span class="tarif"></span></h3></div>
+					<div class="col-md-6">
+						<div class="form-group">						
+							<input type="text" class="form-control" id="smpc" value="0xCc12C96d78665F6899Cc1C55e9219b7efB614D98">
+						</div>
+						<button type="submit" class="btn btn-danger" id="opensmpc">öffnen &raquo;&raquo;</button>	
+					</div>
+			</div>
+			<div class="row meterInfo" style="display:none">
+					<hr/>
+					<div class="col-md-6"><h4><span class="glyphicon glyphicon-scale" aria-hidden="true"></span> Stromzähler</h4><h3><span class="tarif"></span></h3></div>
+					<div class="col-md-3" style="text-align:right"><h4>Letzte Ablesung</h4><h3>
+					<div class="input-group input-group-sm">
+						<input type="text" class="form-control pull-right" style="text-align:right" id="readingtime" disabled="disabled">
+						<span class="input-group-addon" id="sizing-addon3"><span class="glyphicon glyphicon-time"></span></span>
+					</div></h3>
+					</div>
+					<div class="col-md-3" style="text-align:right"><h4>Zählerstand</h4><h3>
+					<div class="input-group  input-group-sm">				 
+						<input type="number" class="form-control pull-right" style="text-align:right" id="readingpower">
+						<span class="input-group-addon" id="sizing-addon3">Wh</span>
+					</div></h3>					
+					</div>					
+			</div>		
+			<div class="row meterInfo" style="display:none">
+				<div class="col-md-6"></div>				
+				<div class="col-md-6">
+					<div class="form-group">
+							<label for="mpid">Zählerkennung</label>
+							<input type="text" class="form-control" id="mpid" value="">
+					</div>
+					<button type="submit" class="btn btn-danger" id="asignmeter">zuordnen</button>	
+				</div>
+			</div>
+			<div class="row" style="display:none" id="smpcInfo">
+					<hr/>
+					<div class="col-md-6"><h4><span class="glyphicon glyphicon-flag" aria-hidden="true"></span> Konditionen</h4><h3><span class="tarif"></span></h3>
+						<button type="submit" class="btn btn-danger" id="assign" style="display:none">zuordnen</button>
+						<button type="submit" class="btn btn-success" id="activate" style="display:none">aktivieren</button>
+						<button type="submit" class="btn btn-danger" id="deactivate" style="display:none">deaktivieren</button>
+					</div>
+					<div class="col-md-3" style="text-align:right"><h4>Brutto Preis</h4><h3><span class="ap"></span> €</h3>pro kWh<br/>
+						<span class="state_ap"></span>						
+					</div>
+					<div class="col-md-3" style="text-align:right"><h4>Stammdaten</h4>
+							<table class="table table-condensed table-striped">
+								<tr><td>Eigentümer</td><td class="" id="smpcOwner"></td></tr>
+							</table>
+					</div>								
+			</div>			
+				<div class="row" style="display:none" id="costSplit">
+					<hr/>
+					<div class="col-md-6"><h4><span class="glyphicon glyphicon-euro" aria-hidden="true"></span> Kostenschlüssel</h4><h3><span class="tarif"></span></h3>
+							<button type="submit" class="btn btn-danger" id="addShareHolder">hinterlegen &raquo;&raquo;</button>						
+					</div>
+					<div class="col-md-6">						
+												
+					</div>
+				</div>
+		</div>
+		<footer><hr/>&copy; 2017 <a href="https://stromdao.de/">StromDAO Ltd.</a></footer>
+	</div>
+	<script src="https://cdn.ethers.io/scripts/ethers-v2.0.min.js" type="text/javascript"></script>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/jquery-ui.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+	<script src="js/provider.js"></script>
+	
+  </body>
+</html>
