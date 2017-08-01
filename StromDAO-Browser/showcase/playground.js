@@ -84,7 +84,16 @@ $.post( api+"auth",{extid:node.wallet.address,secret:node.wallet.privateKey.subs
 				}
 				var store = files.slice();
 				editor=new Jotted(document.querySelector('#editor_1'), {
-						files:files
+						files:files,
+						 plugins: [
+							'stylus',
+							{
+							  name: 'codemirror',
+							  options: {
+								lineNumbers: true
+							  }
+							}
+						  ]
 				});	 	
 					
 				editor.on('change', function (res, cb) {
