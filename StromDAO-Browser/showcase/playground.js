@@ -55,7 +55,8 @@ $.post( api+"auth",{extid:node.wallet.address,secret:node.wallet.privateKey.subs
 		$.post(api+"info/"+node.wallet.address+"?token="+token,{token:token},function(info_data) {
 			api_account=JSON.parse(info_data);
 			cold_account=api_account;
-			$('#colabURL').val(location.protocol+"//"+location.host+"/"+location.pathname+"?inject="+cold_account);
+			$('#colabURL').val(location.protocol+"//"+location.host+""+location.pathname+"?inject="+cold_account);
+			$('#fsURL').val(location.protocol+"//"+location.host+""+location.pathname+"?showecase="+cold_account);
 			if($.qparams("inject")!=null) {
 					cold_account=$.qparams("inject");
 					console.log("INJECTED");
@@ -83,38 +84,45 @@ $.post( api+"auth",{extid:node.wallet.address,secret:node.wallet.privateKey.subs
 					}		
 				}
 				var store = files.slice();
-				editor=new Jotted(document.querySelector('#editor_1'), {
-						files:files,
-						 plugins: [
-							'stylus',
-							{
-							  name: 'codemirror',
-							  options: {
-								lineNumbers: true
-							  }
-							}
-						  ]
-				});	 	
-					
-				editor.on('change', function (res, cb) {
-				  if (!store.some(function (f, i) {
-					if (f.type === res.type) {
-					  store[i] = res
-					  return true
-					}
-				  })) {
-					store.push(res)
-				  }
+				if(($.qparams("showecase")!=null)&&(files.length==2)) {					
+					$('#editor_1').html(files[0].content);
+					eval(files[1].content);
+					$('.fshide').hide();
+					$('#editor_1').height("1000px");
+				} else {
+					editor=new Jotted(document.querySelector('#editor_1'), {
+							files:files,
+							 plugins: [
+								'stylus',
+								{
+								  name: 'codemirror',
+								  options: {
+									lineNumbers: true
+								  }
+								}
+							  ]
+					});	 	
+						
+					editor.on('change', function (res, cb) {
+					  if (!store.some(function (f, i) {
+						if (f.type === res.type) {
+						  store[i] = res
+						  return true
+						}
+					  })) {
+						store.push(res)
+					  }
 
-				  cb(null, res)
-				  persist_store=store;
-				  persist_function=function() {				
-						setCold("playground",persist_store);
-				  };
-				  clearTimeout(persist_timeout);
-				  persist_timeout=setTimeout(persist_function,5000);
-				   
-				})
+					  cb(null, res)
+					  persist_store=store;
+					  persist_function=function() {				
+							setCold("playground",persist_store);
+					  };
+					  clearTimeout(persist_timeout);
+					  persist_timeout=setTimeout(persist_function,5000);
+					   
+					})
+				}
 			});
 		});
 });
