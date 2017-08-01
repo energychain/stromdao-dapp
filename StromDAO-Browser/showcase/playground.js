@@ -48,7 +48,7 @@ function getCold(account,bucket,cb) {
 function saveSession() {
 		
 }
-
+$('.fshide').hide();
 $.post( api+"auth",{extid:node.wallet.address,secret:node.wallet.privateKey.substr(0,10)},function( data ) {
 		data=JSON.parse(data);		
 		token=data.token;
@@ -90,6 +90,7 @@ $.post( api+"auth",{extid:node.wallet.address,secret:node.wallet.privateKey.subs
 					$('.fshide').hide();
 					$('#editor_1').height("1000px");
 				} else {
+					$('.fshide').show();
 					editor=new Jotted(document.querySelector('#editor_1'), {
 							files:files,
 							 plugins: [
