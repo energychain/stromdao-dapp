@@ -71,7 +71,7 @@ if((typeof window.localStorage.getItem("extid") != "undefined")&&(window.localSt
 	extid=window.localStorage.getItem("extid");
 }
 
-var node = new StromDAOBO.Node({external_id:extid,testMode:true,rpc:"https://demo.stromdao.de/rpc",abilocation:"https://cdn.rawgit.com/energychain/StromDAO-BusinessObject/6dc9e073/smart_contracts/"});
+var node = new StromDAOBO.Node({external_id:extid,testMode:true,rpc:"https://demo.stromdao.de/rpc",abilocation:"https://cdn.jsdelivr.net/gh/energychain/StromDAO-BusinessObject@6dc9e073/smart_contracts/"});
 document.node = node;
 
 function split64(data) { return "0x"+data.substr(0,64);}

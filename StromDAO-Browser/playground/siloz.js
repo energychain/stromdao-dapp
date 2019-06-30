@@ -3926,13 +3926,13 @@ function actions(store) {
       files[0].content += "\n\r\n\r";
       files[0].content += "\n\r\n\r";
       files[0].content += "\n\r\n\r";
-      files[0].content += '<script src="https://cdn.rawgit.com/energychain/StromDAO-BusinessObject/master/dist/loader.js"></script>';
+      files[0].content += '<script src="https://cdn.jsdelivr.net/gh/energychain/StromDAO-BusinessObject/dist/loader.js"></script>';
       files[0].content += '<script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>';
       files[0].content += '<link href="https://demo.stromdao.de/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>';
       files[0].content += '<script src="https://demo.stromdao.de/js/bootstrap.min.js"></script>';
       files[0].content += "\n\r\n\r";
 
-      files[2].content = "var node = new document.StromDAOBO.Node({external_id:$('#extid').val(),testMode:true,rpc:\"https://demo.stromdao.de/rpc\",abilocation:\"https://cdn.rawgit.com/energychain/StromDAO-BusinessObject/6dc9e073/smart_contracts/\"});";
+      files[2].content = "var node = new document.StromDAOBO.Node({external_id:$('#extid').val(),testMode:true,rpc:\"https://demo.stromdao.de/rpc\",abilocation:\"https://cdn.jsdelivr.net/gh/energychain/StromDAO-BusinessObject@6dc9e073/smart_contracts/\"});";
     }
     return files;
   }
